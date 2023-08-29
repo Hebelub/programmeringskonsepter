@@ -54,3 +54,10 @@ INFO: Successfully applied 4 migrations to schema "PUBLIC", now at version v4 (e
 2023.08.29 10:46:02 INFO  Connected to Build server: Bloop v1.5.8[0m
 2023.08.29 10:46:03 INFO  time: Imported build in 0.2s[0m
 2023.08.29 10:46:11 INFO  time: indexed workspace in 8.1s[0m
+2023.08.29 11:11:05 INFO  compiling root (1 scala source)[0m
+2023.08.29 11:11:19 INFO  time: compiled root in 13s[0m
+2023.08.29 11:18:40 INFO  Shutting down server[0m
+2023.08.29 11:18:40 INFO  shutting down Metals[0m
+2023.08.29 11:18:40 INFO  Shut down connection with build server.[0m
+2023.08.29 11:18:40 INFO  Shut down connection with build server.[0m
+2023.08.29 11:18:40 INFO  Exiting server[0m
