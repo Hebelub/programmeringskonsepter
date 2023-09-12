@@ -14,7 +14,7 @@ object Puzzle {
 
   def gridToString2(grid: Grid): String = {
     grid.map(row => row.map {
-      case 'v' => ' '
+      case 'v' => 'v'
       case 'x' => 'x'
       case '.' => '.'
       case other => other
@@ -29,4 +29,5 @@ object Puzzle {
       if targetTypes.isEmpty || targetTypes.contains(cellType)
     } yield (i, j, cellType)).toList
   }
+  
 }
