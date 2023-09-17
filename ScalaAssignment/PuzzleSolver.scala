@@ -218,8 +218,8 @@ object PuzzleSolver {
       println("\n--------------------------\n")
     }
 
-    // Write the solved puzzles to a file
-    PuzzleReaderWriter.writePuzzlesToFile("puzzle_solved.txt", solvedPuzzles)
+    // Write the solved puzzles to a file in the "data/ikt212/answers" folder
+    PuzzleReaderWriter.writePuzzlesToFile("data/ikt212/answers/puzzle_solved.txt", solvedPuzzles)
 
     val endTime = System.nanoTime()  // Record the end time
     val timeElapsed = (endTime - startTime) / 1e6  // Time in milliseconds
