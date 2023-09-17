@@ -193,6 +193,8 @@ object PuzzleSolver {
 
     val solveRules = RuleParser.getAllRulesFromFile("rules.txt")
 
+    var solvedPuzzles = List[Puzzle.Grid]()  // Initialize an empty list to store solved puzzles
+
     for ((grid, index) <- grids.zipWithIndex) {
       println(s"Solving puzzle ${index + 1}")
       println(PuzzleReaderWriter.gridToString(grid) + "\n")
@@ -204,6 +206,7 @@ object PuzzleSolver {
         case Some(solvedPuzzle) =>
           println("Solved Puzzle:")
           println(PuzzleReaderWriter.gridToString(solvedPuzzle))
+          solvedPuzzles = solvedPuzzles :+ solvedPuzzle  // Add solved puzzle to the list
         case None =>
           println("Puzzle is unsolvable")
       }
@@ -214,6 +217,9 @@ object PuzzleSolver {
 
       println("\n--------------------------\n")
     }
+
+    // Write the solved puzzles to a file
+    PuzzleReaderWriter.writePuzzlesToFile("solved_puzzles.txt", solvedPuzzles)
 
     val endTime = System.nanoTime()  // Record the end time
     val timeElapsed = (endTime - startTime) / 1e6  // Time in milliseconds

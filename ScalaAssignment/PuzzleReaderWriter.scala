@@ -1,7 +1,30 @@
 import scala.io.Source
 import scala.util.control.Breaks._
+import java.io.PrintWriter
+import java.io.File
 
 object PuzzleReaderWriter {
+
+  def writePuzzlesToFile(filePath: String, puzzles: List[Puzzle.Grid]): Unit = {
+    val writer = new PrintWriter(new File(filePath))
+    writer.write(s"${puzzles.size}\n")  // Write the number of puzzles to the file
+
+    // Iterate through each puzzle grid and write its string representation to the file
+    puzzles.foreach { grid =>
+      // Calculate the grid dimensions based on the Puzzle.Grid
+      val rows = grid.length / 2  // Assumes that the number of rows is even
+      val cols = grid(0).length / 2  // Assumes that the number of columns is even
+
+      writer.write(s"Grid: ${cols}x${rows}\n")  // Write the grid dimensions
+
+      // Convert the grid to its string representation and write to the file
+      val gridStr = gridToString(grid)
+      writer.write(gridStr)
+      writer.write("\n")  // Add a newline after each grid
+    }
+
+    writer.close()
+  }
 
   def stringToGridCell(cell: Char): Char = cell match {
     case '*' => '*'
