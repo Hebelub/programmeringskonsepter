@@ -219,7 +219,7 @@ object PuzzleSolver {
     }
 
     // Write the solved puzzles to a file
-    PuzzleReaderWriter.writePuzzlesToFile("solved_puzzles.txt", solvedPuzzles)
+    PuzzleReaderWriter.writePuzzlesToFile("puzzle_solved.txt", solvedPuzzles)
 
     val endTime = System.nanoTime()  // Record the end time
     val timeElapsed = (endTime - startTime) / 1e6  // Time in milliseconds

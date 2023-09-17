@@ -33,3 +33,4 @@ metals.sbt
 
 # Special files
 solved_puzzles.txt
+puzzle_solved.txt
