@@ -186,13 +186,15 @@ object PuzzleSolver {
   }
 
   def main(args: Array[String]): Unit = {
-    if (args.length < 2) {
-      println("Error: Missing command-line arguments for input and output files.")
-      return
-    }
 
-    val inputFilePath = args(0)
-    val outputFilePath = args(1)
+    // Define default file paths for local execution
+    val defaultInputFilePath = "puzzles.txt"
+    val defaultOutputFilePath = "data/ikt212/answers/puzzle_solved.txt"
+
+    // Use command-line arguments if provided, else use default paths
+    val inputFilePath = if (args.length > 0) args(0) else defaultInputFilePath
+    val outputFilePath = if (args.length > 1) args(1) else defaultOutputFilePath
+
 
     val grids = PuzzleReaderWriter.readPuzzlesFromFile(inputFilePath)
 
@@ -233,5 +235,6 @@ object PuzzleSolver {
 
     println(s"Total time taken: $timeElapsed ms")
   }
+
 
 }
