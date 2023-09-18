@@ -186,8 +186,15 @@ object PuzzleSolver {
   }
 
   def main(args: Array[String]): Unit = {
+    if (args.length < 2) {
+      println("Error: Missing command-line arguments for input and output files.")
+      return
+    }
 
-    val grids = PuzzleReaderWriter.readPuzzlesFromFile("puzzles.txt")
+    val inputFilePath = args(0)
+    val outputFilePath = args(1)
+
+    val grids = PuzzleReaderWriter.readPuzzlesFromFile(inputFilePath)
 
     val startTime = System.nanoTime()  // Record the start time
 
@@ -218,8 +225,8 @@ object PuzzleSolver {
       println("\n--------------------------\n")
     }
 
-    // Write the solved puzzles to a file in the "data/ikt212/answers" folder
-    PuzzleReaderWriter.writePuzzlesToFile("data/ikt212/answers/puzzle_solved.txt", solvedPuzzles)
+    // Write the solved puzzles to the output file specified in args(1)
+    PuzzleReaderWriter.writePuzzlesToFile(outputFilePath, solvedPuzzles)
 
     val endTime = System.nanoTime()  // Record the end time
     val timeElapsed = (endTime - startTime) / 1e6  // Time in milliseconds
