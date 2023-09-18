@@ -189,7 +189,7 @@ object PuzzleSolver {
 
     // Define default file paths for local execution
     val defaultInputFilePath = "puzzles.txt"
-    val defaultOutputFilePath = "data/ikt212/answers/puzzle_solved.txt"
+    val defaultOutputFilePath = "solved_puzzles.txt"
 
     // Use command-line arguments if provided, else use default paths
     val inputFilePath = if (args.length > 0) args(0) else defaultInputFilePath
