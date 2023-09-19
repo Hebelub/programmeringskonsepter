@@ -269,7 +269,7 @@ object PuzzleSolver {
 
     for ((grid, index) <- grids.zipWithIndex) {
       println(s"Solving puzzle ${index + 1}")
-      println(PuzzleReaderWriter.gridToString(grid) + "\n")
+      // println(PuzzleReaderWriter.gridToString(grid) + "\n")
 
       val puzzleStartTime = System.nanoTime()  // Record the start time for this puzzle
 
@@ -277,7 +277,7 @@ object PuzzleSolver {
       solvePuzzle(grid) match {
         case Some(solvedPuzzle) =>
           println("Solved Puzzle:")
-          println(PuzzleReaderWriter.gridToString(solvedPuzzle))
+          // println(PuzzleReaderWriter.gridToString(solvedPuzzle))
           solvedPuzzles = solvedPuzzles :+ solvedPuzzle  // Add solved puzzle to the list
         case None =>
           println("Puzzle is unsolvable")
