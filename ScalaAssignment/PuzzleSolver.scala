@@ -179,36 +179,43 @@ object PuzzleSolver {
     if (emptyEdges.isEmpty) {
       None
     } else {
-      val scoredEdges = emptyEdges.map { edge =>
+      var maxScore = Double.MinValue
+      var bestEdge: Option[Cell.Cell] = None
+      
+      for (edge <- emptyEdges) {
+        var edgeScore = 0.0  // Initialize the score for this edge
+        
+        // Use getTouchingCells to get the adjacent cells to this edge
         val touchingCells = Cell.getTouchingCells(grid, edge)
         
-        val score = touchingCells.map { touchingCell =>
+        for (touchingCell <- touchingCells) {
           val (_, _, cellType) = touchingCell
-          var scoreForCell = cellType match {
-            case '*' => 2
-            case 'o' => 1
-            case _   => 0
+          cellType match {
+            case '*' => edgeScore += 2
+            case 'o' => edgeScore += 0.9
+            case _   => // Do nothing
           }
           
-          // Get connected lines ('l' and 'x') to the touching cell and count them
+          // Get the lines connected to this touching cell and accumulate their scores
           val connectedLines = Cell.getConnectedLines(grid, touchingCell)
-          val additionalScore = connectedLines.foldLeft(0: Double) { (acc, cell) =>
-            cell._3 match {
-              case 'l' => acc + 0.9 // Add 2 points for 'l'
-              case 'x' => acc + 0.8  // Add 1 point for 'x'
-              case _   => acc      // Do not add any points for other types
+          
+          for (connectedLine <- connectedLines) {
+            connectedLine._3 match {
+              case 'l' => edgeScore += 0.4  // Add 0.9 points for 'l'
+              case 'x' => edgeScore += 0.02  // Add 0.8 points for 'x'
+              case _   => // Do nothing
             }
           }
+        }
 
-          // Add the additional score to the score for the touching cell
-          scoreForCell + additionalScore
-        }.sum
-        
-        (edge, score)
+        // Update maxScore and bestEdge if this edge has a higher score
+        if (edgeScore > maxScore) {
+          maxScore = edgeScore
+          bestEdge = Some(edge)
+        }
       }
-
-      val sortedEdges = scoredEdges.sortBy(-_._2)  // Sort by descending score
-      Some(sortedEdges.head._1)  // Return the cell with the highest score
+      
+      bestEdge  // Return the edge with the highest score
     }
   }
 
