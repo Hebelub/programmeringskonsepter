@@ -180,21 +180,35 @@ object PuzzleSolver {
       None
     } else {
       val scoredEdges = emptyEdges.map { edge =>
-        val connectedAdjacentNodes = Cell.getTouchingCells(grid, edge)
-        val score = connectedAdjacentNodes.map { adjacentCell =>
-          val (_, _, cellType) = adjacentCell
-          cellType match {
-            case '*' => 10
+        val touchingCells = Cell.getTouchingCells(grid, edge)
+        
+        val score = touchingCells.map { touchingCell =>
+          val (_, _, cellType) = touchingCell
+          var scoreForCell = cellType match {
+            case '*' => 2
             case 'o' => 1
             case _   => 0
           }
+          
+          // Get connected lines ('l' and 'x') to the touching cell and count them
+          val connectedLines = Cell.getConnectedLines(grid, touchingCell)
+          val additionalScore = connectedLines.foldLeft(0: Double) { (acc, cell) =>
+            cell._3 match {
+              case 'l' => acc + 0.9 // Add 2 points for 'l'
+              case 'x' => acc + 0.8  // Add 1 point for 'x'
+              case _   => acc      // Do not add any points for other types
+            }
+          }
+
+          // Add the additional score to the score for the touching cell
+          scoreForCell + additionalScore
         }.sum
+        
         (edge, score)
       }
-      
-      val sortedEdges = scoredEdges.sortBy(-_._2)
-      
-      Some(sortedEdges.head._1)
+
+      val sortedEdges = scoredEdges.sortBy(-_._2)  // Sort by descending score
+      Some(sortedEdges.head._1)  // Return the cell with the highest score
     }
   }
 
