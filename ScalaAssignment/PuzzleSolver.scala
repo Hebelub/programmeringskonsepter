@@ -84,14 +84,38 @@ object PuzzleSolver {
     }
   }
 
-  def isEdgeLegal(grid: Puzzle.Grid, cell: Cell.Cell): Boolean = {
-    // Iterate through all the contradiction rules
-    for (rule <- Rules.contradictionRules) {
-      if (applyRule(grid, cell, rule)) {
-        return false // If a contradiction is found, return false
-      }
+  def isCellIllegal(grid: Puzzle.Grid, cell: Cell.Cell): Boolean = {
+    val (row, col, cellType) = cell
+    val connectedCells = Cell.getConnectedAdjacentNodes(grid, cell)
+
+    def connectedCellCount: Int = connectedCells.size
+
+    // Check for common condition: no more than 2 lines should be connected
+    if (connectedCellCount > 2) return true
+
+    cellType match {
+      case '*' => 
+        // All connected cells should be straight or connected to less than 2 lines
+        !connectedCells.forall { connectedCell =>
+          val adjacentToConnected = Cell.getConnectedAdjacentNodes(grid, connectedCell)
+          Cell.determineLineType(grid, connectedCell) == Cell.Straight || adjacentToConnected.size < 2
+        }
+      case 'o' => 
+        // Both of the connected cells can't be straight at the same time
+        connectedCells.count(cell => Cell.determineLineType(grid, cell) == Cell.Straight) == 2
+      case '.' => 
+        // For '.', 2 lines or less connected is okay, so it's never illegal based on your rules
+        false
+      case _ => 
+        // This covers other cases, which should not be part of the puzzle
+        false
     }
-    true // If no contradictions are found, return true
+  }
+
+
+  def areAllCellsLegal(grid: Puzzle.Grid): Boolean = {
+    val specialCells = Puzzle.getCellsOfTypes(grid, List('o', '*', '.'))
+    specialCells.forall(cell => !isCellIllegal(grid, cell))
   }
 
   def applyRulesForOneCycle(grid: Puzzle.Grid): (Puzzle.Grid, Boolean) = {
@@ -166,35 +190,51 @@ object PuzzleSolver {
     }
   }
 
+  def getComplexCellToTest(emptyEdges: List[Cell.Cell], grid: Puzzle.Grid): Option[Cell.Cell] = {
+    emptyEdges.find { edge =>
+      val connectedAdjacentNodes = Cell.getConnectedAdjacentNodes(grid, edge)
+      connectedAdjacentNodes.exists { adjacentCell =>
+        val (_, _, cellType) = adjacentCell
+        cellType == '*' || cellType == 'o'
+      }
+    }.orElse(emptyEdges.headOption)
+  }
+
   def solvePuzzle(grid: Puzzle.Grid): Option[Puzzle.Grid] = {
     val stableGrid = applyRulesUntilStable(grid)
 
+    // Check if all cells are legal in the stable grid
+    if (!areAllCellsLegal(stableGrid)) {
+      return None
+    }
+    
     if (isPuzzleComplete(stableGrid)) {
       Some(stableGrid)
     } else {
       val emptyEdges = Puzzle.getCellsOfTypes(stableGrid, List(' '))
       
-      if (emptyEdges.nonEmpty) {
-        val firstEmptyEdge = emptyEdges.head
-        val (row, col, _) = firstEmptyEdge
-        
-        // Hypothetical grid with a line ('l') in the first empty edge
-        val withGuess = Cell.setCell(stableGrid, (row, col, 'l'))
-        
-        // Try solving with the hypothetical line
-        solvePuzzle(withGuess) match {
-          case Some(solution) => return Some(solution)
-          case None => ()
-        }
+      getComplexCellToTest(emptyEdges, stableGrid) match {
+        case Some(cellToTest) => 
+          val (row, col, _) = cellToTest
 
-        // The hypothetical line led to a contradiction or was illegal, so place an 'x' instead
-        val withX = Cell.setCell(stableGrid, (row, col, 'x'))
-        solvePuzzle(withX)
-      } else {
-        None
+          // Hypothetical grid with a line ('l') in the cell to test
+          val withGuess = Cell.setCell(stableGrid, (row, col, 'l'))
+          
+          // Try solving with the hypothetical line
+          solvePuzzle(withGuess) match {
+            case Some(solution) => return Some(solution)
+            case None => ()
+          }
+
+          // The hypothetical line led to a contradiction or was illegal, so place an 'x' instead
+          val withX = Cell.setCell(stableGrid, (row, col, 'x'))
+          solvePuzzle(withX)
+        
+        case None => None
       }
     }
   }
+
 
   def main(args: Array[String]): Unit = {
 
