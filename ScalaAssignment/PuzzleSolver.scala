@@ -175,28 +175,25 @@ object PuzzleSolver {
     currentGrid
   }
 
-  def getAllPossibleBranches(grid: Puzzle.Grid): List[Puzzle.Grid] = {
-    val emptyEdges = Puzzle.getCellsOfTypes(grid, List(' '))
-    
-    // Create two new grids for each empty edge
-    emptyEdges.flatMap { edge =>
-      val (row, col, _) = edge
-      // Add both 'l' and 'x' for each empty edge
-      List(
-        Cell.setCell(grid, (row, col, 'l')),
-        Cell.setCell(grid, (row, col, 'x'))
-      )
-    }
-  }
-
   def getComplexCellToTest(emptyEdges: List[Cell.Cell], grid: Puzzle.Grid): Option[Cell.Cell] = {
-    emptyEdges.find { edge =>
-      val connectedAdjacentNodes = Cell.getConnectedAdjacentNodes(grid, edge)
-      connectedAdjacentNodes.exists { adjacentCell =>
-        val (_, _, cellType) = adjacentCell
-        cellType == '*' || cellType == 'o'
+    if (emptyEdges.isEmpty) {
+      None
+    } else {
+      val scoredEdges = emptyEdges.map { edge =>
+        val connectedAdjacentNodes = Cell.getConnectedAdjacentNodes(grid, edge)
+        val score = connectedAdjacentNodes.map { adjacentCell =>
+          val (_, _, cellType) = adjacentCell
+          cellType match {
+            case '*' => 3
+            case 'o' => 2
+            case _   => 0
+          }
+        }.sum
+        (edge, score)
       }
-    }.orElse(emptyEdges.headOption)
+      val sortedEdges = scoredEdges.sortBy(-_._2)  // Sort by descending score
+      Some(sortedEdges.head._1)  // Return the cell with the highest score
+    }
   }
 
   def solvePuzzle(grid: Puzzle.Grid): Option[Puzzle.Grid] = {
@@ -240,7 +237,6 @@ object PuzzleSolver {
     // Use command-line arguments if provided, else use default paths
     val inputFilePath = if (args.length > 0) args(0) else "puzzles.txt"
     val outputFilePath = if (args.length > 1) args(1) else "solved_puzzles.txt"
-
 
     val grids = PuzzleReaderWriter.readPuzzlesFromFile(inputFilePath)
 
