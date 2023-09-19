@@ -84,38 +84,37 @@ object PuzzleSolver {
     }
   }
 
-  def isCellIllegal(grid: Puzzle.Grid, cell: Cell.Cell): Boolean = {
+  def isCellLegal(grid: Puzzle.Grid, cell: Cell.Cell): Boolean = {
     val (row, col, cellType) = cell
     val connectedCells = Cell.getConnectedAdjacentNodes(grid, cell)
 
     def connectedCellCount: Int = connectedCells.size
 
     // Check for common condition: no more than 2 lines should be connected
-    if (connectedCellCount > 2) return true
+    if (connectedCellCount > 2) return false
 
     cellType match {
       case '*' => 
         // All connected cells should be straight or connected to less than 2 lines
-        !connectedCells.forall { connectedCell =>
+        connectedCells.forall { connectedCell =>
           val adjacentToConnected = Cell.getConnectedAdjacentNodes(grid, connectedCell)
           Cell.determineLineType(grid, connectedCell) == Cell.Straight || adjacentToConnected.size < 2
         }
       case 'o' => 
         // Both of the connected cells can't be straight at the same time
-        connectedCells.count(cell => Cell.determineLineType(grid, cell) == Cell.Straight) == 2
+        connectedCells.count(cell => Cell.determineLineType(grid, cell) == Cell.Straight) != 2
       case '.' => 
-        // For '.', 2 lines or less connected is okay, so it's never illegal based on your rules
-        false
+        // For '.', 2 lines or less connected is okay, so it's always legal based on your rules
+        true
       case _ => 
         // This covers other cases, which should not be part of the puzzle
-        false
+        true
     }
   }
 
-
   def areAllCellsLegal(grid: Puzzle.Grid): Boolean = {
     val specialCells = Puzzle.getCellsOfTypes(grid, List('o', '*', '.'))
-    specialCells.forall(cell => !isCellIllegal(grid, cell))
+    specialCells.forall(cell => isCellLegal(grid, cell))
   }
 
   def applyRulesForOneCycle(grid: Puzzle.Grid): (Puzzle.Grid, Boolean) = {
