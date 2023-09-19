@@ -180,7 +180,7 @@ object PuzzleSolver {
       None
     } else {
       val scoredEdges = emptyEdges.map { edge =>
-        val connectedAdjacentNodes = Cell.getConnectedAdjacentNodes(grid, edge)
+        val connectedAdjacentNodes = Cell.getTouchingCells(grid, edge)
         val score = connectedAdjacentNodes.map { adjacentCell =>
           val (_, _, cellType) = adjacentCell
           cellType match {
@@ -191,8 +191,10 @@ object PuzzleSolver {
         }.sum
         (edge, score)
       }
-      val sortedEdges = scoredEdges.sortBy(-_._2)  // Sort by descending score
-      Some(sortedEdges.head._1)  // Return the cell with the highest score
+      
+      val sortedEdges = scoredEdges.sortBy(-_._2)
+      
+      Some(sortedEdges.head._1)
     }
   }
 
