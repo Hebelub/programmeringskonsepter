@@ -1,13 +1,15 @@
 import Cell.CellType
 
-// Cell Type Constants
-val l: Cell.CellType = 'l'
-val x: Cell.CellType = 'x'
-val o: Cell.CellType = 'o'
-val v: Cell.CellType = 'v'
-val star: Cell.CellType = '*'
+
 
 object Rules {
+  // Cell Type Constants
+  val l: Cell.CellType = 'l'
+  val x: Cell.CellType = 'x'
+  val o: Cell.CellType = 'o'
+  val v: Cell.CellType = 'v'
+  val star: Cell.CellType = '*'
+  
   val solveRules: List[Rule] = List(
   Rule(l, List(RuleCondition(-1, 1, x), RuleCondition(0, 1, o))),
   Rule(l, List(RuleCondition(-1, -1, x), RuleCondition(-1, 0, o))),
