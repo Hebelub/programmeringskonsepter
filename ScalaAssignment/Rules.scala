@@ -1,15 +1,12 @@
 import Cell.CellType
 
-
-
 object Rules {
-  // Cell Type Constants
   val l: Cell.CellType = 'l'
   val x: Cell.CellType = 'x'
   val o: Cell.CellType = 'o'
   val v: Cell.CellType = 'v'
   val star: Cell.CellType = '*'
-  
+
   val solveRules: List[Rule] = List(
   Rule(l, List(RuleCondition(-1, 1, x), RuleCondition(0, 1, o))),
   Rule(l, List(RuleCondition(-1, -1, x), RuleCondition(-1, 0, o))),
@@ -113,5 +110,48 @@ object Rules {
   Rule(x, List(RuleCondition(-5, 0, o), RuleCondition(-3, 0, o), RuleCondition(-2, 0, l))),
   Rule(x, List(RuleCondition(0, -5, o), RuleCondition(0, -3, o), RuleCondition(0, -2, l))),
   Rule(x, List(RuleCondition(2, 0, l), RuleCondition(3, 0, o), RuleCondition(5, 0, o)))
+  )
+
+  val contradictionRules: List[Rule] = List(
+  Rule(l, List(RuleCondition(-1, 0, v), RuleCondition(-1, 1, l), RuleCondition(0, 2, l))),
+  Rule(l, List(RuleCondition(-2, 0, l), RuleCondition(-1, -1, l), RuleCondition(0, -1, v))),
+  Rule(l, List(RuleCondition(0, -2, l), RuleCondition(1, -1, l), RuleCondition(1, 0, v))),
+  Rule(l, List(RuleCondition(0, 1, v), RuleCondition(1, 1, l), RuleCondition(2, 0, l))),
+  Rule(l, List(RuleCondition(-1, -1, l), RuleCondition(-1, 0, v), RuleCondition(0, -2, l))),
+  Rule(l, List(RuleCondition(0, -1, v), RuleCondition(1, -1, l), RuleCondition(2, 0, l))),
+  Rule(l, List(RuleCondition(0, 2, l), RuleCondition(1, 0, v), RuleCondition(1, 1, l))),
+  Rule(l, List(RuleCondition(-2, 0, l), RuleCondition(-1, 1, l), RuleCondition(0, 1, v))),
+  Rule(l, List(RuleCondition(-1, 0, v), RuleCondition(-1, 1, l), RuleCondition(1, 0, v), RuleCondition(1, 1, l))),
+  Rule(l, List(RuleCondition(-1, -1, l), RuleCondition(-1, 1, l), RuleCondition(0, -1, v), RuleCondition(0, 1, v))),
+  Rule(l, List(RuleCondition(-1, -1, l), RuleCondition(-1, 0, v), RuleCondition(1, -1, l), RuleCondition(1, 0, v))),
+  Rule(l, List(RuleCondition(0, -1, v), RuleCondition(0, 1, v), RuleCondition(1, -1, l), RuleCondition(1, 1, l))),
+  Rule(l, List(RuleCondition(0, 1, star), RuleCondition(0, 2, l))),
+  Rule(l, List(RuleCondition(-2, 0, l), RuleCondition(-1, 0, star))),
+  Rule(l, List(RuleCondition(0, -2, l), RuleCondition(0, -1, star))),
+  Rule(l, List(RuleCondition(1, 0, star), RuleCondition(2, 0, l))),
+  Rule(l, List(RuleCondition(-1, 1, l), RuleCondition(0, 1, o))),
+  Rule(l, List(RuleCondition(-1, -1, l), RuleCondition(-1, 0, o))),
+  Rule(l, List(RuleCondition(0, -1, o), RuleCondition(1, -1, l))),
+  Rule(l, List(RuleCondition(1, 0, o), RuleCondition(1, 1, l))),
+  Rule(l, List(RuleCondition(-1, -1, l), RuleCondition(0, -1, o))),
+  Rule(l, List(RuleCondition(1, -1, l), RuleCondition(1, 0, o))),
+  Rule(l, List(RuleCondition(0, 1, o), RuleCondition(1, 1, l))),
+  Rule(l, List(RuleCondition(-1, 0, o), RuleCondition(-1, 1, l))),
+  Rule(l, List(RuleCondition(0, 1, o), RuleCondition(0, 2, x))),
+  Rule(l, List(RuleCondition(-2, 0, x), RuleCondition(-1, 0, o))),
+  Rule(l, List(RuleCondition(0, -2, x), RuleCondition(0, -1, o))),
+  Rule(l, List(RuleCondition(1, 0, o), RuleCondition(2, 0, x))),
+  Rule(l, List(RuleCondition(-1, 0, v), RuleCondition(-1, 1, x), RuleCondition(0, 2, x), RuleCondition(1, 0, v), RuleCondition(1, 1, x))),
+  Rule(l, List(RuleCondition(-2, 0, x), RuleCondition(-1, -1, x), RuleCondition(-1, 1, x), RuleCondition(0, -1, v), RuleCondition(0, 1, v))),
+  Rule(l, List(RuleCondition(-1, -1, x), RuleCondition(-1, 0, v), RuleCondition(0, -2, x), RuleCondition(1, -1, x), RuleCondition(1, 0, v))),
+  Rule(l, List(RuleCondition(0, -1, v), RuleCondition(0, 1, v), RuleCondition(1, -1, x), RuleCondition(1, 1, x), RuleCondition(2, 0, x))),
+  Rule(l, List(RuleCondition(-1, 1, x), RuleCondition(0, 1, star), RuleCondition(1, 1, x))),
+  Rule(l, List(RuleCondition(-1, -1, x), RuleCondition(-1, 0, star), RuleCondition(-1, 1, x))),
+  Rule(l, List(RuleCondition(-1, -1, x), RuleCondition(0, -1, star), RuleCondition(1, -1, x))),
+  Rule(l, List(RuleCondition(1, -1, x), RuleCondition(1, 0, star), RuleCondition(1, 1, x))),
+  Rule(x, List(RuleCondition(-1, 0, v), RuleCondition(-1, 1, x), RuleCondition(0, 2, l), RuleCondition(1, 0, v), RuleCondition(1, 1, x))),
+  Rule(x, List(RuleCondition(-2, 0, l), RuleCondition(-1, -1, x), RuleCondition(-1, 1, x), RuleCondition(0, -1, v), RuleCondition(0, 1, v))),
+  Rule(x, List(RuleCondition(-1, -1, x), RuleCondition(-1, 0, v), RuleCondition(0, -2, l), RuleCondition(1, -1, x), RuleCondition(1, 0, v))),
+  Rule(x, List(RuleCondition(0, -1, v), RuleCondition(0, 1, v), RuleCondition(1, -1, x), RuleCondition(1, 1, x), RuleCondition(2, 0, l)))
   )
 }

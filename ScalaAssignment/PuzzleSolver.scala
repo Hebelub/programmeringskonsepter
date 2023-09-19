@@ -1,5 +1,6 @@
 import scala.annotation.tailrec
 import Rules.solveRules
+import Rules.contradictionRules
 
 
 object PuzzleSolver {
@@ -72,7 +73,7 @@ object PuzzleSolver {
     }
   }
 
-  def solveEdge(grid: Puzzle.Grid, cell: Cell.Cell, solveRules: List[Rule]): Cell.Cell = {
+  def solveEdge(grid: Puzzle.Grid, cell: Cell.Cell): Cell.Cell = {
     val (row, col, _) = cell
     
     val maybeRule = solveRules.find(rule => applyRule(grid, cell, rule))
@@ -83,13 +84,23 @@ object PuzzleSolver {
     }
   }
 
-  def applyRulesForOneCycle(grid: Puzzle.Grid, solveRules: List[Rule]): (Puzzle.Grid, Boolean) = {
+  def isEdgeLegal(grid: Puzzle.Grid, cell: Cell.Cell): Boolean = {
+    // Iterate through all the contradiction rules
+    for (rule <- Rules.contradictionRules) {
+      if (applyRule(grid, cell, rule)) {
+        return false // If a contradiction is found, return false
+      }
+    }
+    true // If no contradictions are found, return true
+  }
+
+  def applyRulesForOneCycle(grid: Puzzle.Grid): (Puzzle.Grid, Boolean) = {
     val emptyEdges = Puzzle.getCellsOfTypes(grid, List(' '))
     var newGrid = grid
     var changed = false
     
     for (edge <- emptyEdges) {
-      val solvedEdge = solveEdge(newGrid, edge, solveRules)
+      val solvedEdge = solveEdge(newGrid, edge)
             if (solvedEdge._3 != ' ') {
         newGrid = Cell.setCell(newGrid, solvedEdge)
         changed = true
@@ -99,14 +110,14 @@ object PuzzleSolver {
     (newGrid, changed)
   }
 
-  def applyRulesUntilStable(grid: Puzzle.Grid, solveRules: List[Rule]): Puzzle.Grid = {
+  def applyRulesUntilStable(grid: Puzzle.Grid): Puzzle.Grid = {
     var currentGrid = grid
     var lastUpdated: Option[Cell.Cell] = None
     var done = false
 
     // Apply rules until the grid is stable
     while (!done) {
-      val (newGrid, changed) = applyRulesForOneCycle(currentGrid, solveRules)
+      val (newGrid, changed) = applyRulesForOneCycle(currentGrid)
       currentGrid = newGrid
       if (!changed) {
         done = true
@@ -122,7 +133,7 @@ object PuzzleSolver {
         var newLastUpdated: Option[Cell.Cell] = None
         
         for (edge <- emptyEdges) {
-          val solvedEdge = solveEdge(currentGrid, edge, solveRules)
+          val solvedEdge = solveEdge(currentGrid, edge)
           if (solvedEdge._3 != ' ') {
             currentGrid = Cell.setCell(currentGrid, solvedEdge)
             newLastUpdated = Some(solvedEdge)
@@ -155,15 +166,14 @@ object PuzzleSolver {
     }
   }
 
-  def solvePuzzle(grid: Puzzle.Grid, solveRules: List[Rule]): Option[Puzzle.Grid] = {
+  def solvePuzzle(grid: Puzzle.Grid): Option[Puzzle.Grid] = {
 
-    val stableGrid = applyRulesUntilStable(grid, solveRules)
+    val stableGrid = applyRulesUntilStable(grid)
 
     if (isPuzzleComplete(stableGrid)) {
       Some(stableGrid)
-    }
-    else {
-    
+    } else {
+      
       val emptyEdges = Puzzle.getCellsOfTypes(stableGrid, List(' '))
       
       if (emptyEdges.nonEmpty) {
@@ -173,13 +183,23 @@ object PuzzleSolver {
         // Hypothetical grid with a line ('l') in the first empty edge
         val withGuess = Cell.setCell(stableGrid, (row, col, 'l'))
         
-        // Try solving with the hypothetical line
-        solvePuzzle(withGuess, solveRules) match {
-          case Some(solution) => Some(solution)
-          case None => 
-          // The hypothetical line led to a contradiction, so place an 'x' instead
-          val withX = Cell.setCell(stableGrid, (row, col, 'x'))
-          solvePuzzle(withX, solveRules)
+        if (isEdgeLegal(withGuess, firstEmptyEdge)) {
+          // Try solving with the hypothetical line
+          solvePuzzle(withGuess) match {
+            case Some(solution) => return Some(solution)
+            case None => ()
+          }
+        } else {
+          println(s"Contradiction at cell ($row, $col)")
+        }
+        
+        // The hypothetical line led to a contradiction or was illegal, so place an 'x' instead
+        val withX = Cell.setCell(stableGrid, (row, col, 'x'))
+        if (isEdgeLegal(withX, firstEmptyEdge)) {
+          solvePuzzle(withX)
+        } else {
+          println(s"Contradiction at cell ($row, $col)")
+          None
         }
       } else {
         None
@@ -198,8 +218,6 @@ object PuzzleSolver {
 
     val startTime = System.nanoTime()  // Record the start time
 
-    // val solveRules = RuleParser.getAllRulesFromFile("rules.txt")
-
     var solvedPuzzles = List[Puzzle.Grid]()  // Initialize an empty list to store solved puzzles
 
     for ((grid, index) <- grids.zipWithIndex) {
@@ -209,7 +227,7 @@ object PuzzleSolver {
       val puzzleStartTime = System.nanoTime()  // Record the start time for this puzzle
 
       // Solve the puzzle
-      solvePuzzle(grid, solveRules) match {
+      solvePuzzle(grid) match {
         case Some(solvedPuzzle) =>
           println("Solved Puzzle:")
           println(PuzzleReaderWriter.gridToString(solvedPuzzle))
