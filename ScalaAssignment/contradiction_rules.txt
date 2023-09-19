@@ -1,33 +1,4 @@
 # Rule
-vl
-L l
-
-# Rule
-vl
-L
-vl
-
-# Rule
-L*l
-
-# Rule
- l
-Lo
-
-# Rule
-Lox
-
-# Rule
-vx
-L x
-vx
-
-# Rule
  x
 L*
  x
-
-# Rule
-vx
-X l
-vx

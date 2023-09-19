@@ -167,13 +167,11 @@ object PuzzleSolver {
   }
 
   def solvePuzzle(grid: Puzzle.Grid): Option[Puzzle.Grid] = {
-
     val stableGrid = applyRulesUntilStable(grid)
 
     if (isPuzzleComplete(stableGrid)) {
       Some(stableGrid)
     } else {
-      
       val emptyEdges = Puzzle.getCellsOfTypes(stableGrid, List(' '))
       
       if (emptyEdges.nonEmpty) {
@@ -183,24 +181,15 @@ object PuzzleSolver {
         // Hypothetical grid with a line ('l') in the first empty edge
         val withGuess = Cell.setCell(stableGrid, (row, col, 'l'))
         
-        if (isEdgeLegal(withGuess, firstEmptyEdge)) {
-          // Try solving with the hypothetical line
-          solvePuzzle(withGuess) match {
-            case Some(solution) => return Some(solution)
-            case None => ()
-          }
-        } else {
-          println(s"Contradiction at cell ($row, $col)")
+        // Try solving with the hypothetical line
+        solvePuzzle(withGuess) match {
+          case Some(solution) => return Some(solution)
+          case None => ()
         }
-        
+
         // The hypothetical line led to a contradiction or was illegal, so place an 'x' instead
         val withX = Cell.setCell(stableGrid, (row, col, 'x'))
-        if (isEdgeLegal(withX, firstEmptyEdge)) {
-          solvePuzzle(withX)
-        } else {
-          println(s"Contradiction at cell ($row, $col)")
-          None
-        }
+        solvePuzzle(withX)
       } else {
         None
       }

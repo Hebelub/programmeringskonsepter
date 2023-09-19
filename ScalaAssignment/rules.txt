@@ -2,6 +2,10 @@
  x
 Lo
 
+# Rule New
+ l
+Xo
+
 # Rule
 Lol
 
@@ -21,6 +25,9 @@ vl
 
 # Rule
 L l*
+
+# Rule New
+X*l
 
 # Rule
 L  *x
