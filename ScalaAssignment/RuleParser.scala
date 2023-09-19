@@ -1,7 +1,16 @@
 import scala.io.Source
+import java.nio.file.{Files, Paths}
 
-case class RuleCondition(deltaRow: Int, deltaCol: Int, cellType: Cell.CellType)
-case class Rule(targetCellType: Cell.CellType, conditions: List[RuleCondition])
+case class RuleCondition(deltaRow: Int, deltaCol: Int, cellType: Cell.CellType) {
+  def toScalaCode: String = s"RuleCondition($deltaRow, $deltaCol, ${cellType.toString})"
+}
+
+case class Rule(targetCellType: Cell.CellType, conditions: List[RuleCondition]) {
+  def toScalaCode: String = {
+    val conditionsCode = conditions.map(_.toScalaCode).mkString(", ")
+    s"Rule(${targetCellType.toString}, List($conditionsCode))"
+  }
+}
 
 object RuleParser {
 
@@ -150,4 +159,51 @@ object RuleParser {
       println(row.mkString(""))
     }
   }
+
+  def main(args: Array[String]): Unit = {
+    // Use a sample rule file for demonstration; replace with your actual file path
+    val filePath = "rules.txt"
+
+    // Parse the rules using your existing parser
+    val parsedRules = RuleParser.getAllRulesFromFile(filePath)
+
+    // Convert the parsed rules to Scala code
+    val rulesAsScalaCode = parsedRules.map(rule => {
+      val targetCellType = rule.targetCellType match {
+        case '*' => "star"
+        case c => c.toString
+      }
+      val conditionsAsScalaCode = rule.conditions.map { condition =>
+        val cellType = condition.cellType match {
+          case '*' => "star"
+          case c => c.toString
+        }
+        s"RuleCondition(${condition.deltaRow}, ${condition.deltaCol}, $cellType)"
+      }.mkString(", ")
+
+      s"Rule($targetCellType, List($conditionsAsScalaCode))"
+    }).mkString(",\n  ")
+
+    // Generate the content for the new Rules.scala file
+    val scalaCodeContent =
+      s"""import Cell.CellType
+         |
+         |// Cell Type Constants
+         |val l: Cell.CellType = 'l'
+         |val x: Cell.CellType = 'x'
+         |val o: Cell.CellType = 'o'
+         |val v: Cell.CellType = 'v'
+         |val star: Cell.CellType = '*'
+         |
+         |object Rules {
+         |  val solveRules: List[Rule] = List(
+         |  $rulesAsScalaCode
+         |  )
+         |}""".stripMargin
+
+    // Write the Scala code to a new file called Rules.scala
+    Files.write(Paths.get("Rules.scala"), scalaCodeContent.getBytes)
+  }
+
+
 }

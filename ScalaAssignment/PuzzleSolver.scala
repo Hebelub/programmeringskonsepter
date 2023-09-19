@@ -1,4 +1,6 @@
 import scala.annotation.tailrec
+import Rules.solveRules
+
 
 object PuzzleSolver {
 
@@ -187,20 +189,16 @@ object PuzzleSolver {
 
   def main(args: Array[String]): Unit = {
 
-    // Define default file paths for local execution
-    val defaultInputFilePath = "puzzles.txt"
-    val defaultOutputFilePath = "solved_puzzles.txt"
-
     // Use command-line arguments if provided, else use default paths
-    val inputFilePath = if (args.length > 0) args(0) else defaultInputFilePath
-    val outputFilePath = if (args.length > 1) args(1) else defaultOutputFilePath
+    val inputFilePath = if (args.length > 0) args(0) else "puzzles.txt"
+    val outputFilePath = if (args.length > 1) args(1) else "solved_puzzles.txt"
 
 
     val grids = PuzzleReaderWriter.readPuzzlesFromFile(inputFilePath)
 
     val startTime = System.nanoTime()  // Record the start time
 
-    val solveRules = RuleParser.getAllRulesFromFile("rules.txt")
+    // val solveRules = RuleParser.getAllRulesFromFile("rules.txt")
 
     var solvedPuzzles = List[Puzzle.Grid]()  // Initialize an empty list to store solved puzzles
 
