@@ -184,8 +184,8 @@ object PuzzleSolver {
         val score = connectedAdjacentNodes.map { adjacentCell =>
           val (_, _, cellType) = adjacentCell
           cellType match {
-            case '*' => 3
-            case 'o' => 2
+            case '*' => 10
+            case 'o' => 1
             case _   => 0
           }
         }.sum
