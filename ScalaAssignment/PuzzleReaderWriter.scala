@@ -26,19 +26,27 @@ object PuzzleReaderWriter {
     case '*' => '*'
     case 'o' => 'o'
     case '_' => '.'
-    case _ => throw new Exception("Unknown cell type")
+    case x => 
+      println(s"Unexpected cell character: '$x'")
+      throw new Exception("Unknown cell type")
   }
 
   def readPuzzlesFromFile(filePath: String): List[Puzzle.Grid] = {
-    val source = Source.fromFile(filePath)
-    val lines = source.getLines()
+    // Read the entire file content into a single string
+    val fileContent = scala.io.Source.fromFile(filePath).mkString
+
+    // Create an iterator from the lines of the file content
+    val lines = fileContent.split("\n").iterator
+
     val puzzles = ListBuffer[Puzzle.Grid]()
 
     lines.next()  // Skip the first line
 
     while (lines.hasNext) {
       val sizeLine = lines.next()
-      val Array(cols, rows) = sizeLine.split(" ")(1).split("x").map(_.toInt)
+      val splitSize = sizeLine.split(" ")(1).split("x")
+      val Array(cols, rows) = splitSize.map(_.trim.replaceAll("\"", "").toInt)
+
       var grid = Puzzle.createGrid(rows, cols)
       var incompleteGrid = false
 
@@ -46,7 +54,7 @@ object PuzzleReaderWriter {
         if (lines.hasNext) {
           val rowLine = lines.next()
           var c = 0
-          for (cell <- rowLine if cell != ' ') {  // Skip spaces directly
+          for (cell <- rowLine if !cell.isWhitespace) {  // Skip whitespaces directly
             grid = Cell.setCell(grid, (r * 2, c * 2, stringToGridCell(cell)))
             c += 1
           }
@@ -60,7 +68,7 @@ object PuzzleReaderWriter {
         puzzles += grid
       }
     }
-    source.close()
+
     puzzles.toList
   }
 
