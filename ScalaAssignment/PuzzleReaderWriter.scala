@@ -2,6 +2,7 @@ import scala.io.Source
 import scala.util.control.Breaks._
 import java.io.PrintWriter
 import java.io.File
+import scala.collection.mutable.ListBuffer
 
 object PuzzleReaderWriter {
 
@@ -31,22 +32,23 @@ object PuzzleReaderWriter {
   def readPuzzlesFromFile(filePath: String): List[Puzzle.Grid] = {
     val source = Source.fromFile(filePath)
     val lines = source.getLines()
-    var puzzles = List[Puzzle.Grid]()
+    val puzzles = ListBuffer[Puzzle.Grid]()
 
-    lines.next() // Skip the first line
-    
+    lines.next()  // Skip the first line
+
     while (lines.hasNext) {
       val sizeLine = lines.next()
       val Array(cols, rows) = sizeLine.split(" ")(1).split("x").map(_.toInt)
-
       var grid = Puzzle.createGrid(rows, cols)
       var incompleteGrid = false
 
       for (r <- 0 until rows if !incompleteGrid) {
         if (lines.hasNext) {
-          val rowCells = lines.next().replaceAll(" ", "").map(stringToGridCell)
-          for (c <- 0 until cols) {
-            grid = Cell.setCell(grid, (r * 2, c * 2, rowCells(c)))
+          val rowLine = lines.next()
+          var c = 0
+          for (cell <- rowLine if cell != ' ') {  // Skip spaces directly
+            grid = Cell.setCell(grid, (r * 2, c * 2, stringToGridCell(cell)))
+            c += 1
           }
         } else {
           println(s"Warning: Not enough lines to read a full ${rows}x${cols} grid.")
@@ -55,11 +57,11 @@ object PuzzleReaderWriter {
       }
 
       if (!incompleteGrid) {
-        puzzles = puzzles :+ grid
+        puzzles += grid
       }
     }
     source.close()
-    puzzles
+    puzzles.toList
   }
 
   def getSymbolFromCell(grid: Puzzle.Grid, cell: Cell.Cell): Char = {
@@ -96,21 +98,20 @@ object PuzzleReaderWriter {
   }
 
   def gridToString(grid: Puzzle.Grid): String = {
-    grid.zipWithIndex.flatMap { case (row, rowIndex) =>
-      if (rowIndex % 2 == 0) {  // Only process rows with even index
-        Some(
-          row.zipWithIndex.flatMap { case (cell, colIndex) =>
-            if (colIndex % 2 == 0) {  // Only process columns with even index
-              Some(getSymbolFromCell(grid, (rowIndex, colIndex, cell)))
-            } else {
-              None  // Skip cells with odd column index
-            }
-          }.mkString("")
-        )
-      } else {
-        None  // Skip rows with odd index
+    val sb = new StringBuilder()
+    
+    for (rowIndex <- 0 until grid.length by 2) {
+      val row = grid(rowIndex)
+      
+      for (colIndex <- 0 until row.length by 2) {
+        val cell = row(colIndex)
+        sb.append(getSymbolFromCell(grid, (rowIndex, colIndex, cell)))
       }
-    }.mkString("\n")
+      
+      sb.append("\n")
+    }
+    
+    sb.toString()
   }
 
 }
