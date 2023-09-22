@@ -59,6 +59,34 @@ object PuzzleSolver {
     visited == allLines
   }
 
+  def containsAnyLoop(grid: Puzzle.Grid): (Boolean, Boolean) = {
+    val allLines = Puzzle.getCellsOfTypes(grid, List('l')).toSet
+    if (allLines.isEmpty || allLines.size == 1) return (false, false)
+
+    var visited = Set[Cell.Cell]()
+    var stack = List[Cell.Cell](allLines.head)
+
+    visited += stack.head
+
+    while (stack.nonEmpty) {
+      val currentLine = stack.head
+      stack = stack.tail
+
+      val allAdjacentLines = Cell.getConnectedLines(grid, currentLine)
+      val unvisitedAdjacentLines = allAdjacentLines.filterNot(visited)
+
+      if (allAdjacentLines.size > 1 && allAdjacentLines.forall(visited.contains)) {
+        val isSingleClosedLoop = visited == allLines
+        return (true, isSingleClosedLoop)
+      }
+
+      visited ++= unvisitedAdjacentLines
+      stack ++= unvisitedAdjacentLines
+    }
+
+    (false, false)
+  }
+
   def isPuzzleComplete(grid: Puzzle.Grid): Boolean = {
     val specialCells = Puzzle.getCellsOfTypes(grid, List('o', '*'))
     val allCellsSatisfied = specialCells.forall(cell => isCellSatisfied(grid, cell))
@@ -94,7 +122,9 @@ object PuzzleSolver {
     if (connectedCellCount > 2) return false
     
     // New condition: cell should not be connected to 1 'l' and 3 'x'
-    if (connectedCellCount == 1 && Cell.getConnectedXes(grid, cell).size == 3) return false
+    if (connectedCellCount == 1 && Cell.getConnectedXes(grid, cell).size == 3) {
+      return false
+    }
 
     cellType match {
       case '*' => 
@@ -117,7 +147,22 @@ object PuzzleSolver {
 
   def areAllCellsLegal(grid: Puzzle.Grid): Boolean = {
     val specialCells = Puzzle.getCellsOfTypes(grid, List('o', '*', '.'))
-    specialCells.forall(cell => isCellLegal(grid, cell))
+    val allCellsLegal = specialCells.forall(cell => isCellLegal(grid, cell))
+
+    if (!allCellsLegal) {
+      return false
+    }
+
+    val (anyLoopExists, isSingleClosedLoop) = containsAnyLoop(grid)
+
+    // If any loop exists and it's not a single closed loop, print the puzzle and cut off this branch
+    // if (anyLoopExists && !isSingleClosedLoop) {
+    //   println("Cut off branch because of loop found.")
+    //   println(PuzzleReaderWriter.gridToString(grid))  // Assuming PuzzleReaderWriter.gridToString can print your grid
+    // }
+
+    // If any loop exists, it must be a single closed loop for the puzzle to be legal.
+    anyLoopExists == isSingleClosedLoop
   }
 
   def applyRulesForOneCycle(grid: Puzzle.Grid): (Puzzle.Grid, Boolean) = {
@@ -272,7 +317,7 @@ object PuzzleSolver {
 
     for ((grid, index) <- grids.zipWithIndex) {
       println(s"Solving puzzle ${index + 1}")
-      // println(PuzzleReaderWriter.gridToString(grid) + "\n")
+      println(PuzzleReaderWriter.gridToString(grid) + "\n")
 
       val puzzleStartTime = System.nanoTime()  // Record the start time for this puzzle
 
@@ -280,7 +325,7 @@ object PuzzleSolver {
       solvePuzzle(grid) match {
         case Some(solvedPuzzle) =>
           println("Solved Puzzle:")
-          // println(PuzzleReaderWriter.gridToString(solvedPuzzle))
+          println(PuzzleReaderWriter.gridToString(solvedPuzzle))
           solvedPuzzles = solvedPuzzles :+ solvedPuzzle  // Add solved puzzle to the list
         case None =>
           println("Puzzle is unsolvable")
