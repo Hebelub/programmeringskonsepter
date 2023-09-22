@@ -9,20 +9,13 @@ object PuzzleReaderWriter {
     val writer = new PrintWriter(new File(filePath))
     writer.write(s"puzzles ${puzzles.size}\n")  // Write the number of puzzles to the file
 
-    // Iterate through each puzzle grid and write its string representation to the file
-    puzzles.foreach { grid =>
-      // Calculate the grid dimensions based on the Puzzle.Grid
+    val puzzleStrings = puzzles.map { grid =>
       val rows = (grid.length + 1) / 2  // Assumes that the number of rows is even
       val cols = (grid(0).length + 1) / 2  // Assumes that the number of columns is even
-
-      writer.write(s"size ${cols}x${rows}\n")  // Write the grid dimensions
-
-      // Convert the grid to its string representation and write to the file
-      val gridStr = gridToString(grid)
-      writer.write(gridStr)
-      writer.write("\n")  // Add a newline after each grid
+      s"size ${cols}x${rows}\n" + gridToString(grid) + "\n"
     }
 
+    writer.write(puzzleStrings.mkString)
     writer.close()
   }
 
