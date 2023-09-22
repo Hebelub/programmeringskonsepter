@@ -7,15 +7,17 @@ object PuzzleReaderWriter {
 
   def writePuzzlesToFile(filePath: String, puzzles: List[Puzzle.Grid]): Unit = {
     val writer = new PrintWriter(new File(filePath))
-    writer.write(s"puzzles ${puzzles.size}\n")  // Write the number of puzzles to the file
-
-    val puzzleStrings = puzzles.map { grid =>
-      val rows = (grid.length + 1) / 2  // Assumes that the number of rows is even
-      val cols = (grid(0).length + 1) / 2  // Assumes that the number of columns is even
-      s"size ${cols}x${rows}\n" + gridToString(grid) + "\n"
+    val sb = new StringBuilder(s"puzzles ${puzzles.size}\n")
+    
+    puzzles.foreach { grid =>
+      val rows = (grid.length + 1) / 2
+      val cols = (grid(0).length + 1) / 2
+      sb.append(s"size ${cols}x${rows}\n")
+      sb.append(gridToString(grid))
+      sb.append("\n")
     }
-
-    writer.write(puzzleStrings.mkString)
+    
+    writer.write(sb.toString())
     writer.close()
   }
 
@@ -27,41 +29,36 @@ object PuzzleReaderWriter {
   }
 
   def readPuzzlesFromFile(filePath: String): List[Puzzle.Grid] = {
-    val lines = Source.fromFile(filePath).getLines().toList
+    val source = Source.fromFile(filePath)
+    val lines = source.getLines()
     var puzzles = List[Puzzle.Grid]()
-    var i = 1  // Skip the first line which contains the number of puzzles
 
-    while (i < lines.size) {
-      val sizeLine = lines(i)
+    lines.next() // Skip the first line
+    
+    while (lines.hasNext) {
+      val sizeLine = lines.next()
       val Array(cols, rows) = sizeLine.split(" ")(1).split("x").map(_.toInt)
-      i += 1
 
-      var grid = Puzzle.createGrid(rows, cols)  // Initialize an empty grid
+      var grid = Puzzle.createGrid(rows, cols)
       var incompleteGrid = false
 
-      breakable {
-        for (r <- 0 until rows) {
-          if (i + r < lines.size) {
-            val rowCells = lines(i + r).replaceAll(" ", "").map(stringToGridCell)
-            for (c <- 0 until cols) {
-              grid = Cell.setCell(grid, (r * 2, c * 2, rowCells(c)))  // Update the grid
-            }
-          } else {
-            // Handle the error or break the loop
-            println(s"Warning: Not enough lines to read a full ${rows}x${cols} grid.")
-            incompleteGrid = true
-            // Exit the for-loop
-            break
+      for (r <- 0 until rows if !incompleteGrid) {
+        if (lines.hasNext) {
+          val rowCells = lines.next().replaceAll(" ", "").map(stringToGridCell)
+          for (c <- 0 until cols) {
+            grid = Cell.setCell(grid, (r * 2, c * 2, rowCells(c)))
           }
+        } else {
+          println(s"Warning: Not enough lines to read a full ${rows}x${cols} grid.")
+          incompleteGrid = true
         }
       }
 
       if (!incompleteGrid) {
-        puzzles = puzzles :+ grid  // Add the grid to the list of puzzles
-        i += rows
+        puzzles = puzzles :+ grid
       }
     }
-
+    source.close()
     puzzles
   }
 
