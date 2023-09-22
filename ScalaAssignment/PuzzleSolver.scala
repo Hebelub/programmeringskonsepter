@@ -155,12 +155,6 @@ object PuzzleSolver {
 
     val (anyLoopExists, isSingleClosedLoop) = containsAnyLoop(grid)
 
-    // If any loop exists and it's not a single closed loop, print the puzzle and cut off this branch
-    // if (anyLoopExists && !isSingleClosedLoop) {
-    //   println("Cut off branch because of loop found.")
-    //   println(PuzzleReaderWriter.gridToString(grid))  // Assuming PuzzleReaderWriter.gridToString can print your grid
-    // }
-
     // If any loop exists, it must be a single closed loop for the puzzle to be legal.
     anyLoopExists == isSingleClosedLoop
   }
@@ -317,15 +311,15 @@ object PuzzleSolver {
 
     for ((grid, index) <- grids.zipWithIndex) {
       println(s"Solving puzzle ${index + 1}")
-      println(PuzzleReaderWriter.gridToString(grid) + "\n")
+      // println(PuzzleReaderWriter.gridToString(grid) + "\n")
 
       val puzzleStartTime = System.nanoTime()  // Record the start time for this puzzle
 
       // Solve the puzzle
       solvePuzzle(grid) match {
         case Some(solvedPuzzle) =>
-          println("Solved Puzzle:")
-          println(PuzzleReaderWriter.gridToString(solvedPuzzle))
+          // println("Solved Puzzle:")
+          // println(PuzzleReaderWriter.gridToString(solvedPuzzle))
           solvedPuzzles = solvedPuzzles :+ solvedPuzzle  // Add solved puzzle to the list
         case None =>
           println("Puzzle is unsolvable")
@@ -333,9 +327,9 @@ object PuzzleSolver {
 
       val puzzleEndTime = System.nanoTime()  // Record the end time for this puzzle
       val puzzleTimeElapsed = (puzzleEndTime - puzzleStartTime) / 1e6  // Time in milliseconds
-      println(s"Time taken to solve puzzle ${index + 1}: $puzzleTimeElapsed ms")
+      // println(s"Time taken to solve puzzle ${index + 1}: $puzzleTimeElapsed ms")
 
-      println("\n--------------------------\n")
+      // println("\n--------------------------\n")
     }
 
     // Write the solved puzzles to the output file specified in args(1)
