@@ -114,6 +114,34 @@ object Cell {
     connectedLines
   }
 
+  def getConnectedXes(grid: Puzzle.Grid, cell: Cell): List[Cell] = {
+    val (row, col, cellType) = cell
+
+    // Define offsets to find adjacent cells (edges)
+    val offsets = List(
+      (-1, 0), // above
+      (1, 0),  // below
+      (0, -1), // left
+      (0, 1)   // right
+    )
+
+    // Create a list to hold connected 'x'-es
+    var connectedXes: List[Cell] = List()
+
+    // Loop through each offset to find adjacent cells
+    for ((deltaRow, deltaCol) <- offsets) {
+      val adjacentCell = Cell.getRelativeCell(grid, cell, deltaRow, deltaCol)
+      val (_, _, adjType) = adjacentCell
+
+      // Check if the adjacent cell is an 'x'
+      if (adjType == 'x') {
+        connectedXes = adjacentCell :: connectedXes
+      }
+    }
+
+    connectedXes
+  }
+
   def getCell(grid: Puzzle.Grid, row: Int, col: Int): Cell = {
     val cellType = 
       if (row >= 0 && row < grid.length && col >= 0 && col < grid(0).length) {

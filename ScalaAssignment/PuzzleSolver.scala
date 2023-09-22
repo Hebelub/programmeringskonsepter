@@ -89,9 +89,12 @@ object PuzzleSolver {
     val connectedCells = Cell.getConnectedAdjacentNodes(grid, cell)
 
     def connectedCellCount: Int = connectedCells.size
-
+    
     // Check for common condition: no more than 2 lines should be connected
     if (connectedCellCount > 2) return false
+    
+    // New condition: cell should not be connected to 1 'l' and 3 'x'
+    if (connectedCellCount == 1 && Cell.getConnectedXes(grid, cell).size == 3) return false
 
     cellType match {
       case '*' => 
