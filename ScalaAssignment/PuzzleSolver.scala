@@ -152,11 +152,14 @@ object PuzzleSolver {
     if (!allCellsLegal) {
       return false
     }
+    else {
+      return true
+    }
 
-    val (anyLoopExists, isSingleClosedLoop) = containsAnyLoop(grid)
+    // val (anyLoopExists, isSingleClosedLoop) = containsAnyLoop(grid)
 
-    // If any loop exists, it must be a single closed loop for the puzzle to be legal.
-    anyLoopExists == isSingleClosedLoop
+    // // If any loop exists, it must be a single closed loop for the puzzle to be legal.
+    // anyLoopExists == isSingleClosedLoop
   }
 
   def applyRulesForOneCycle(grid: Puzzle.Grid): (Puzzle.Grid, Boolean) = {
