@@ -34,24 +34,24 @@ object PuzzleSolver {
     val allLines = Puzzle.getCellsOfTypes(grid, List('l')).toSet
     var visited = Set[Cell.Cell]()
     var stack = List[Cell.Cell]()
-    
+
     if (allLines.isEmpty) return false
-    
+
     val firstLine = allLines.head
     visited += firstLine
     stack = firstLine :: stack
-    
+
     while (stack.nonEmpty) {
       val currentLine = stack.head
       stack = stack.tail
-      
+
       val allAdjacentLines = Cell.getConnectedLines(grid, currentLine)
       val unvisitedAdjacentLines = allAdjacentLines.filter(!visited.contains(_))
-      
+
       if (allAdjacentLines.size != 2) {
         return false  // Not a single closed loop
       }
-      
+
       visited ++= unvisitedAdjacentLines
       stack = unvisitedAdjacentLines ++ stack
     }
@@ -103,9 +103,9 @@ object PuzzleSolver {
 
   def solveEdge(grid: Puzzle.Grid, cell: Cell.Cell): Cell.Cell = {
     val (row, col, _) = cell
-    
+
     val maybeRule = solveRules.find(rule => applyRule(grid, cell, rule))
-    
+
     maybeRule match {
       case Some(rule) => (row, col, rule.targetCellType)
       case None => (row, col, ' ')
@@ -117,29 +117,29 @@ object PuzzleSolver {
     val connectedCells = Cell.getConnectedAdjacentNodes(grid, cell)
 
     def connectedCellCount: Int = connectedCells.size
-    
+
     // Check for common condition: no more than 2 lines should be connected
     if (connectedCellCount > 2) return false
-    
+
     // New condition: cell should not be connected to 1 'l' and 3 'x'
     if (connectedCellCount == 1 && Cell.getConnectedXes(grid, cell).size == 3) {
       return false
     }
 
     cellType match {
-      case '*' => 
+      case '*' =>
         // All connected cells should be straight or connected to less than 2 lines
         connectedCells.forall { connectedCell =>
           val adjacentToConnected = Cell.getConnectedAdjacentNodes(grid, connectedCell)
           Cell.determineLineType(grid, connectedCell) == Cell.Straight || adjacentToConnected.size < 2
         }
-      case 'o' => 
+      case 'o' =>
         // Both of the connected cells can't be straight at the same time
         connectedCells.count(cell => Cell.determineLineType(grid, cell) == Cell.Straight) != 2
-      case '.' => 
+      case '.' =>
         // For '.', 2 lines or less connected is okay, so it's always legal based on your rules
         true
-      case _ => 
+      case _ =>
         // This covers other cases, which should not be part of the puzzle
         true
     }
@@ -152,21 +152,18 @@ object PuzzleSolver {
     if (!allCellsLegal) {
       return false
     }
-    else {
-      return true
-    }
 
-    // val (anyLoopExists, isSingleClosedLoop) = containsAnyLoop(grid)
+    val (anyLoopExists, isSingleClosedLoop) = containsAnyLoop(grid)
 
-    // // If any loop exists, it must be a single closed loop for the puzzle to be legal.
-    // anyLoopExists == isSingleClosedLoop
+    // If any loop exists, it must be a single closed loop for the puzzle to be legal.
+    anyLoopExists == isSingleClosedLoop
   }
 
   def applyRulesForOneCycle(grid: Puzzle.Grid): (Puzzle.Grid, Boolean) = {
     val emptyEdges = Puzzle.getCellsOfTypes(grid, List(' '))
     var newGrid = grid
     var changed = false
-    
+
     for (edge <- emptyEdges) {
       val solvedEdge = solveEdge(newGrid, edge)
             if (solvedEdge._3 != ' ') {
@@ -174,7 +171,7 @@ object PuzzleSolver {
         changed = true
       }
     }
-    
+
     (newGrid, changed)
   }
 
@@ -194,12 +191,12 @@ object PuzzleSolver {
 
     while (!done) {
       val emptyEdges = Puzzle.getCellsOfTypes(currentGrid, List(' '))
-      
+
       if (emptyEdges.isEmpty) {
         done = true
       } else {
         var newLastUpdated: Option[Cell.Cell] = None
-        
+
         for (edge <- emptyEdges) {
           val solvedEdge = solveEdge(currentGrid, edge)
           if (solvedEdge._3 != ' ') {
@@ -207,7 +204,7 @@ object PuzzleSolver {
             newLastUpdated = Some(solvedEdge)
           }
         }
-        
+
         if (newLastUpdated == lastUpdated) {
           // No changes were made, and we are back to the last updated cell.
           done = true
@@ -216,7 +213,7 @@ object PuzzleSolver {
         }
       }
     }
-    
+
     currentGrid
   }
 
@@ -226,13 +223,13 @@ object PuzzleSolver {
     } else {
       var maxScore = Double.MinValue
       var bestEdge: Option[Cell.Cell] = None
-      
+
       for (edge <- emptyEdges) {
         var edgeScore = 0.0  // Initialize the score for this edge
-        
+
         // Use getTouchingCells to get the adjacent cells to this edge
         val touchingCells = Cell.getTouchingCells(grid, edge)
-        
+
         for (touchingCell <- touchingCells) {
           val (_, _, cellType) = touchingCell
           cellType match {
@@ -240,10 +237,10 @@ object PuzzleSolver {
             case 'o' => edgeScore += 0.9
             case _   => // Do nothing
           }
-          
+
           // Get the lines connected to this touching cell and accumulate their scores
           val connectedLines = Cell.getConnectedLines(grid, touchingCell)
-          
+
           for (connectedLine <- connectedLines) {
             connectedLine._3 match {
               case 'l' => edgeScore += 0.4  // Add 0.9 points for 'l'
@@ -259,7 +256,7 @@ object PuzzleSolver {
           bestEdge = Some(edge)
         }
       }
-      
+
       bestEdge  // Return the edge with the highest score
     }
   }
@@ -271,19 +268,19 @@ object PuzzleSolver {
     if (!areAllCellsLegal(stableGrid)) {
       return None
     }
-    
+
     if (isPuzzleComplete(stableGrid)) {
       Some(stableGrid)
     } else {
       val emptyEdges = Puzzle.getCellsOfTypes(stableGrid, List(' '))
-      
+
       getComplexCellToTest(emptyEdges, stableGrid) match {
-        case Some(cellToTest) => 
+        case Some(cellToTest) =>
           val (row, col, _) = cellToTest
 
           // Hypothetical grid with a line ('l') in the cell to test
           val withGuess = Cell.setCell(stableGrid, (row, col, 'l'))
-          
+
           // Try solving with the hypothetical line
           solvePuzzle(withGuess) match {
             case Some(solution) => return Some(solution)
@@ -293,7 +290,7 @@ object PuzzleSolver {
           // The hypothetical line led to a contradiction or was illegal, so place an 'x' instead
           val withX = Cell.setCell(stableGrid, (row, col, 'x'))
           solvePuzzle(withX)
-        
+
         case None => None
       }
     }
@@ -302,47 +299,47 @@ object PuzzleSolver {
 
   def main(args: Array[String]): Unit = {
 
-    val totalStartTime = System.nanoTime()  // Record the start time for everything
-    
+    // val totalStartTime = System.nanoTime()  // Record the start time for everything
+
     // Reading from File
-    val readStartTime = System.nanoTime()
+    // val readStartTime = System.nanoTime()
     val inputFilePath = if (args.length > 0) args(0) else "puzzles.txt"
     val grids = PuzzleReaderWriter.readPuzzlesFromFile(inputFilePath)
-    val readEndTime = System.nanoTime()
-    val readTimeElapsed = (readEndTime - readStartTime) / 1e6  // Time in milliseconds
+    // val readEndTime = System.nanoTime()
+    // val readTimeElapsed = (readEndTime - readStartTime) / 1e6  // Time in milliseconds
 
     // Solving Puzzles
-    val solveStartTime = System.nanoTime()
+    // val solveStartTime = System.nanoTime()
     var solvedPuzzles = List[Puzzle.Grid]()
     for ((grid, index) <- grids.zipWithIndex) {
       solvePuzzle(grid) match {
         case Some(solvedPuzzle) =>
           val rows = (solvedPuzzle.length + 1) / 2
           val cols = (solvedPuzzle(0).length + 1) / 2
-          println(s"Solved puzzle ${index + 1} of size ${rows}x${cols}")  // Print the size of the solved grid
+          // println(s"Solved puzzle ${index + 1} of size ${rows}x${cols}")  // Print the size of the solved grid
           solvedPuzzles = solvedPuzzles :+ solvedPuzzle  // Add solved puzzle to the list
         case None =>
           println("Puzzle is unsolvable")
       }
     }
-    println(s"Time taken to read from file: $readTimeElapsed ms")
+    // println(s"Time taken to read from file: $readTimeElapsed ms")
 
-    val solveEndTime = System.nanoTime()
-    val solveTimeElapsed = (solveEndTime - solveStartTime) / 1e6  // Time in milliseconds
-    println(s"Time taken to solve puzzles: $solveTimeElapsed ms")
+    // val solveEndTime = System.nanoTime()
+    // val solveTimeElapsed = (solveEndTime - solveStartTime) / 1e6  // Time in milliseconds
+    // println(s"Time taken to solve puzzles: $solveTimeElapsed ms")
 
     // Writing to File
-    val writeStartTime = System.nanoTime()
+    // val writeStartTime = System.nanoTime()
     val outputFilePath = if (args.length > 1) args(1) else "solved_puzzles.txt"
     PuzzleReaderWriter.writePuzzlesToFile(outputFilePath, solvedPuzzles)
-    val writeEndTime = System.nanoTime()
-    val writeTimeElapsed = (writeEndTime - writeStartTime) / 1e6  // Time in milliseconds
-    println(s"Time taken to write to file: $writeTimeElapsed ms")
+    // val writeEndTime = System.nanoTime()
+    // val writeTimeElapsed = (writeEndTime - writeStartTime) / 1e6  // Time in milliseconds
+    // println(s"Time taken to write to file: $writeTimeElapsed ms")
 
     // Total Time
-    val totalEndTime = System.nanoTime()
-    val totalTimeElapsed = (totalEndTime - totalStartTime) / 1e6  // Time in milliseconds
-    println(s"Total time taken: $totalTimeElapsed ms")
+    // val totalEndTime = System.nanoTime()
+    // val totalTimeElapsed = (totalEndTime - totalStartTime) / 1e6  // Time in milliseconds
+    // println(s"Total time taken: $totalTimeElapsed ms")
   }
 
 }
