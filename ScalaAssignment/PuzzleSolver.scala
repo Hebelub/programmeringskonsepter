@@ -297,44 +297,49 @@ object PuzzleSolver {
   }
 
 
-def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit = {
 
-  val totalStartTime = System.nanoTime()  // Record the start time for everything
-  
-  // Reading from File
-  val readStartTime = System.nanoTime()
-  val inputFilePath = if (args.length > 0) args(0) else "puzzles.txt"
-  val grids = PuzzleReaderWriter.readPuzzlesFromFile(inputFilePath)
-  val readEndTime = System.nanoTime()
-  val readTimeElapsed = (readEndTime - readStartTime) / 1e6  // Time in milliseconds
-  println(s"Time taken to read from file: $readTimeElapsed ms")
+    val totalStartTime = System.nanoTime()  // Record the start time for everything
+    
+    // Reading from File
+    val readStartTime = System.nanoTime()
+    val inputFilePath = if (args.length > 0) args(0) else "puzzles.txt"
+    val grids = PuzzleReaderWriter.readPuzzlesFromFile(inputFilePath)
+    val readEndTime = System.nanoTime()
+    val readTimeElapsed = (readEndTime - readStartTime) / 1e6  // Time in milliseconds
 
-  // Solving Puzzles
-  val solveStartTime = System.nanoTime()
-  var solvedPuzzles = List[Puzzle.Grid]()
-  for ((grid, index) <- grids.zipWithIndex) {
-    solvePuzzle(grid) match {
-      case Some(solvedPuzzle) =>
-        solvedPuzzles = solvedPuzzles :+ solvedPuzzle  // Add solved puzzle to the list
-      case None =>
-        println("Puzzle is unsolvable")
+    // Solving Puzzles
+    val solveStartTime = System.nanoTime()
+    var solvedPuzzles = List[Puzzle.Grid]()
+    for ((grid, index) <- grids.zipWithIndex) {
+      solvePuzzle(grid) match {
+        case Some(solvedPuzzle) =>
+          val rows = (solvedPuzzle.length + 1) / 2
+          val cols = (solvedPuzzle(0).length + 1) / 2
+          println(s"Solved puzzle ${index + 1} of size ${rows}x${cols}")  // Print the size of the solved grid
+          solvedPuzzles = solvedPuzzles :+ solvedPuzzle  // Add solved puzzle to the list
+        case None =>
+          println("Puzzle is unsolvable")
+      }
     }
+    println(s"Time taken to read from file: $readTimeElapsed ms")
+
+    val solveEndTime = System.nanoTime()
+    val solveTimeElapsed = (solveEndTime - solveStartTime) / 1e6  // Time in milliseconds
+    println(s"Time taken to solve puzzles: $solveTimeElapsed ms")
+
+    // Writing to File
+    val writeStartTime = System.nanoTime()
+    val outputFilePath = if (args.length > 1) args(1) else "solved_puzzles.txt"
+    PuzzleReaderWriter.writePuzzlesToFile(outputFilePath, solvedPuzzles)
+    val writeEndTime = System.nanoTime()
+    val writeTimeElapsed = (writeEndTime - writeStartTime) / 1e6  // Time in milliseconds
+    println(s"Time taken to write to file: $writeTimeElapsed ms")
+
+    // Total Time
+    val totalEndTime = System.nanoTime()
+    val totalTimeElapsed = (totalEndTime - totalStartTime) / 1e6  // Time in milliseconds
+    println(s"Total time taken: $totalTimeElapsed ms")
   }
-  val solveEndTime = System.nanoTime()
-  val solveTimeElapsed = (solveEndTime - solveStartTime) / 1e6  // Time in milliseconds
-  println(s"Time taken to solve puzzles: $solveTimeElapsed ms")
 
-  // Writing to File
-  val writeStartTime = System.nanoTime()
-  val outputFilePath = if (args.length > 1) args(1) else "solved_puzzles.txt"
-  PuzzleReaderWriter.writePuzzlesToFile(outputFilePath, solvedPuzzles)
-  val writeEndTime = System.nanoTime()
-  val writeTimeElapsed = (writeEndTime - writeStartTime) / 1e6  // Time in milliseconds
-  println(s"Time taken to write to file: $writeTimeElapsed ms")
-
-  // Total Time
-  val totalEndTime = System.nanoTime()
-  val totalTimeElapsed = (totalEndTime - totalStartTime) / 1e6  // Time in milliseconds
-  println(s"Total time taken: $totalTimeElapsed ms")
-}
 }
