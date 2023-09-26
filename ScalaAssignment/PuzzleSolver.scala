@@ -316,7 +316,7 @@ object PuzzleSolver {
         case Some(solvedPuzzle) =>
           val rows = (solvedPuzzle.length + 1) / 2
           val cols = (solvedPuzzle(0).length + 1) / 2
-          // println(s"Solved puzzle ${index + 1} of size ${rows}x${cols}")  // Print the size of the solved grid
+          println(s"Solved puzzle ${index + 1} of size ${rows}x${cols}")  // Print the size of the solved grid
           solvedPuzzles = solvedPuzzles :+ solvedPuzzle  // Add solved puzzle to the list
         case None =>
           println("Puzzle is unsolvable")
