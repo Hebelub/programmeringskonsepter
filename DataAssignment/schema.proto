@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+message Puzzle {
+  int32 sizex = 1;  // Puzzle size for testing.
+  int32 sizey = 2;  // Puzzle size for testing.
+}
+
+message Puzzles {
+  repeated Puzzle puzzle = 1;
+}
+
+message Solution {
+  int32 sizex = 1;  // Puzzle size.
+  int32 sizey = 2;  // Puzzle size.
+  string sol = 3;   // Solution as text
+}
+
+message Solutions {
+  repeated Solution solution = 1;
+}
