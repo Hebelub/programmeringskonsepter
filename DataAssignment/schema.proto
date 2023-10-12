@@ -1,18 +1,28 @@
 syntax = "proto3";
 
 message Puzzle {
-  int32 sizex = 1;  // Puzzle size for testing.
-  int32 sizey = 2;  // Puzzle size for testing.
+  int32 sizeX = 1;  // Puzzle size for testing.
+  int32 sizeY = 2;  // Puzzle size for testing.
+  repeated int32 black_hints = 3;  // List of coordinates for black hints.
+  repeated int32 white_hints = 4;  // List of coordinates for white hints.
 }
 
 message Puzzles {
   repeated Puzzle puzzle = 1;
 }
 
+message Connection {
+  int32 indexFrom = 1;
+  int32 indexTo = 2;
+}
+
+message Connections {
+  repeated Connection connections = 1;
+}
+
 message Solution {
-  int32 sizex = 1;  // Puzzle size.
-  int32 sizey = 2;  // Puzzle size.
-  string sol = 3;   // Solution as text
+  Puzzle puzzle = 1;
+  Connections connections = 2;
 }
 
 message Solutions {

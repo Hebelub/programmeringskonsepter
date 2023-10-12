@@ -2,13 +2,15 @@ import sys
 import schema_pb2
 
 infile = sys.argv[1]
-outfile= sys.argv[2]
+outfile = sys.argv[2]
+
 
 def readFromFile():
     puzzles = schema_pb2.Solutions()
     with open(infile, "rb") as f:
         puzzles.ParseFromString(f.read())
     return puzzles
+
 
 def writeToFile(solutions):
     count = 0
@@ -22,6 +24,7 @@ def writeToFile(solutions):
             topic2 = "size " + str(sizex) + "x" + str(sizey) + "\n"
             f.write(topic2)
             f.write(puzzle.sol+"\n")
+
 
 solutionsFromScala = readFromFile()
 writeToFile(solutionsFromScala)
