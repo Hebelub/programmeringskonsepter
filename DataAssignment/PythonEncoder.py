@@ -8,7 +8,7 @@ def calculate_coordinates(index, size_x):
     return x, y
 
 
-def encode_protobuf_to_text(binary_input):
+def encode_protobuf_to_text(binary_input, output_file):
     # Deserialize the binary input into a Protocol Buffers message
     solution: schema_pb2.Solution = schema_pb2.Solution()  # Replace with your specific message type
     solution.ParseFromString(binary_input)
@@ -59,5 +59,6 @@ def encode_protobuf_to_text(binary_input):
 
     print(text_output)
 
-    # Need to implement the grid to string method
-    return text_output
+    # Write the binary data to the output file
+    with open(output_file, "wb") as file:
+        file.write(text_output)
