@@ -1,0 +1,59 @@
+puzzles 2
+size: 15x15
+        *   o         o      
+                             
+o o   o                   o  
+                             
+            o   * *       o  
+                             
+*   *       o     o       o  
+                             
+            o o         o   *
+                             
+o       *   *       o   o    
+                             
+      o         o   o        
+                             
+    o     o o     *         *
+                             
+o o o           o           o
+                             
+          *   *   o o   o    
+                             
+  o   o *               *   *
+                             
+  o           *     * o o    
+                             
+*         o *     *         o
+                             
+      o o                   o
+                             
+*           o o   *   o      
+size: 14x14
+        *   o         o    
+                           
+o o   o                   o
+                           
+            o   * *       o
+                           
+*   *       o     o       o
+                           
+            o o         o  
+                           
+o       *   *       o   o  
+                           
+      o         o   o      
+                           
+    o     o o     *        
+                           
+o o o           o          
+                           
+          *   *   o o   o  
+                           
+  o   o *               *  
+                           
+  o           *     * o o  
+                           
+*         o *     *        
+                           
+      o o                  

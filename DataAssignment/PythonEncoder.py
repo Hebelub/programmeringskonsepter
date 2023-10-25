@@ -10,33 +10,74 @@ infile = sys.argv[1] if len(sys.argv) > 1 else default_infile
 outfile = sys.argv[2] if len(sys.argv) > 2 else default_outfile
 
 
-# Reads the input and returns a list of puzzle sizes.
 def splitFile(inputFile):
     with open(inputFile, "r") as file:
         content = file.readlines()
         content.pop(0)
+
         boards = list()
+        current_puzzle = ""
 
         for line_index, line in enumerate(content):
-            content[line_index] = line.rstrip('\n')
+            line = line.rstrip('\n')
 
-        for line_index, line in enumerate(content):
             if "size" in line:
+                if current_puzzle:  # If current_puzzle is not empty, add it to boards
+                    boards.append(current_puzzle.strip())
+                    current_puzzle = ""
+
                 size_x = int(line[4:line.rfind('x')])
                 size_y = int(line[line.rfind('x')+1:])
-                print(f"Found puzzle with size ({size_x}, {size_y})")
-                boards.append((size_x, size_y))
+
+                current_puzzle += f"size {size_x}x{size_y}\n"
+
+            else:
+                current_puzzle += line + "\n"
+
+        if current_puzzle:  # Don't forget the last puzzle
+            boards.append(current_puzzle.strip())
+
         return boards
+
+
+def puzzle_to_protobuf(input_puzzle, proto_puzzle):
+    lines = input_puzzle.split("\n")
+
+    # Parse size
+    size_line = lines[0]
+    size_x = int(size_line[4:size_line.rfind('x')])
+    size_y = int(size_line[size_line.rfind('x')+1:])
+    proto_puzzle.sizeX = size_x
+    proto_puzzle.sizeY = size_y
+
+    # Initialize a counter for the index (coord)
+    coord = 0
+
+    # Parse puzzle lines
+    for line in lines[1:]:
+        for char in line:
+            if char == '*':
+                proto_puzzle.blackHints.append(coord)
+            elif char == 'o':
+                proto_puzzle.whiteHints.append(coord)
+            coord += 1
 
 
 if __name__ == "__main__":
     protoPuzzles = schema_pb2.Puzzles()
     inputPuzzles = splitFile(infile)
 
-    for puzzle in inputPuzzles:
+    for input_puzzle in inputPuzzles:
         protoPuzzle = protoPuzzles.puzzle.add()
-        protoPuzzle.sizeX = puzzle[0]
-        protoPuzzle.sizeY = puzzle[1]
+        puzzle_to_protobuf(input_puzzle, protoPuzzle)
 
+    # Existing serialization code
     with open(outfile, "wb") as f:
         f.write(protoPuzzles.SerializeToString())
+
+    # Debugging: Deserialize immediately to check
+    with open(outfile, "rb") as f:
+        data = f.read()
+        newProtoPuzzles = schema_pb2.Puzzles()
+        newProtoPuzzles.ParseFromString(data)
+        print(f"Debugging Deserialize: {newProtoPuzzles}")
