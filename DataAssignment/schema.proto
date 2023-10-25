@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 message Puzzle {
-  int32 sizeX = 1;  // Puzzle size for testing.
-  int32 sizeY = 2;  // Puzzle size for testing.
+  int32 sizeX = 1;
+  int32 sizeY = 2;
   repeated int32 blackHints = 3;  // List of coordinates for black hints.
   repeated int32 whiteHints = 4;  // List of coordinates for white hints.
 }

@@ -100,8 +100,6 @@ def writeToFile(solutions):
         # Initialize grid based on solution data
         grid = [[' ' for _ in range(size_x * 2 - 1)] for _ in range(size_y * 2 - 1)]
 
-        print(len(grid))
-
         # Update grid based on hints and connections
         for index in puzzle.whiteHints:
             x, y = calculate_coordinates(index, size_x)
@@ -118,10 +116,18 @@ def writeToFile(solutions):
 
         # Generate text_output from the updated grid
         text_output = f"size: {size_x}x{size_y}\n"
-        text_output += '\n'.join([''.join(row) for row in grid])
+
+        # Use get_symbol_from_cell to get the symbol for cells with even x and y
+        for y in range(0, len(grid), 2):
+            for x in range(0, len(grid[0]), 2):
+                cell_type = grid[y][x]
+                cell = (y, x, cell_type)
+                symbol = get_symbol_from_cell(grid, cell)
+                text_output += symbol
+            text_output += "\n"
 
         # Write text_output to the output text file
-        with open(outfile, "a") as f:
+        with open(outfile, "a", encoding='utf-8') as f:
             f.write(text_output + "\n")
 
 

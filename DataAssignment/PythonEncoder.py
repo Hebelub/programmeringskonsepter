@@ -10,7 +10,7 @@ infile = sys.argv[1] if len(sys.argv) > 1 else default_infile
 outfile = sys.argv[2] if len(sys.argv) > 2 else default_outfile
 
 
-def splitFile(inputFile):
+def split_file(inputFile):
     with open(inputFile, "r") as file:
         content = file.readlines()
         content.pop(0)
@@ -64,16 +64,16 @@ def puzzle_to_protobuf(input_puzzle, proto_puzzle):
 
 
 if __name__ == "__main__":
-    protoPuzzles = schema_pb2.Puzzles()
-    inputPuzzles = splitFile(infile)
+    proto_puzzles = schema_pb2.Puzzles()
+    input_puzzles = split_file(infile)
 
-    for input_puzzle in inputPuzzles:
-        protoPuzzle = protoPuzzles.puzzle.add()
+    for input_puzzle in input_puzzles:
+        protoPuzzle = proto_puzzles.puzzle.add()
         puzzle_to_protobuf(input_puzzle, protoPuzzle)
 
     # Existing serialization code
     with open(outfile, "wb") as f:
-        f.write(protoPuzzles.SerializeToString())
+        f.write(proto_puzzles.SerializeToString())
 
     # Debugging: Deserialize immediately to check
     with open(outfile, "rb") as f:
