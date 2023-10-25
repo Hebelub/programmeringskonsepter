@@ -3,9 +3,13 @@ import scala.util.control.Breaks._
 import java.io.PrintWriter
 import java.io.File
 import scala.collection.mutable.ListBuffer
+import com.some.Schema
+import java.nio.file.{Files, Paths}
+import com.google.protobuf.InvalidProtocolBufferException
+import scala.jdk.CollectionConverters.CollectionHasAsScala
+
 
 object PuzzleReaderWriter {
-
   def writePuzzlesToFile(filePath: String, puzzles: List[Puzzle.Grid]): Unit = {
     val writer = new PrintWriter(new File(filePath))
     val sb = new StringBuilder(s"puzzles ${puzzles.size}\n")
@@ -32,43 +36,32 @@ object PuzzleReaderWriter {
   }
 
   def readPuzzlesFromFile(filePath: String): List[Puzzle.Grid] = {
-    // Read the entire file content into a single string
-    val fileContent = scala.io.Source.fromFile(filePath).mkString
-
-    // Create an iterator from the lines of the file content
-    val lines = fileContent.split("\n").iterator
-
     val puzzles = ListBuffer[Puzzle.Grid]()
+    try {
+      val byteArray = Files.readAllBytes(Paths.get(filePath))
+      val puzzlesProto = Schema.Puzzles.parseFrom(byteArray)
 
-    lines.next()  // Skip the first line
+      for (puzzleProto <- puzzlesProto.getPuzzleList().asScala) {
+        val rows = puzzleProto.getSizeY()
+        val cols = puzzleProto.getSizeX()
+        var grid = Puzzle.createGrid(rows, cols)
 
-    while (lines.hasNext) {
-      val sizeLine = lines.next()
-      val splitSize = sizeLine.split(" ")(1).split("x")
-      val Array(cols, rows) = splitSize.map(_.trim.replaceAll("\"", "").toInt)
+        // Assume you can get the grid cells from puzzleProto, maybe like this:
+        // val cells = puzzleProto.getCellsList().asScala
 
-      var grid = Puzzle.createGrid(rows, cols)
-      var incompleteGrid = false
-
-      for (r <- 0 until rows if !incompleteGrid) {
-        if (lines.hasNext) {
-          val rowLine = lines.next()
-          var c = 0
-          for (cell <- rowLine if !cell.isWhitespace) {  // Skip whitespaces directly
-            grid = Cell.setCell(grid, (r * 2, c * 2, stringToGridCell(cell)))
-            c += 1
+        // Populate grid with cells
+        for (r <- 0 until rows) {
+          for (c <- 0 until cols) {
+            // Update grid with the cell value
+            // grid = Cell.setCell(grid, (r, c, cells(r * cols + c)))
           }
-        } else {
-          println(s"Warning: Not enough lines to read a full ${rows}x${cols} grid.")
-          incompleteGrid = true
         }
-      }
-
-      if (!incompleteGrid) {
         puzzles += grid
       }
+    } catch {
+      case e: InvalidProtocolBufferException => println("Failed to parse the file.")
+      case e: Exception => println("An error occurred: " + e.getMessage)
     }
-
     puzzles.toList
   }
 
@@ -120,6 +113,23 @@ object PuzzleReaderWriter {
     }
 
     sb.toString()
+  }
+
+  def main(args: Array[String]): Unit = {
+    val inputFilePath = if (args.length > 0) args(0) else "serialized_puzzles.pb"
+
+    val puzzles = readPuzzlesFromFile(inputFilePath)
+
+    // Debugging: Print the returned puzzles
+    println("---- Debugging: Start ----")
+    for ((puzzle, index) <- puzzles.zipWithIndex) {
+      println(s"Puzzle $index:")
+      for (row <- puzzle) {  // Assuming that each puzzle is a 2D array or similar structure
+        println(row.map(cell => cell.toString).mkString(" "))  // Assuming that each cell can be converted to a string
+      }
+      println("-------------------------")
+    }
+    println("---- Debugging: End ----")
   }
 
 }
