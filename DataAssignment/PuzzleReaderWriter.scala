@@ -3,7 +3,7 @@ import com.google.protobuf.InvalidProtocolBufferException
 
 import java.nio.file.{Files, Paths}
 import scala.collection.mutable.ListBuffer
-import scala.jdk.CollectionConverters._
+import scala.collection.JavaConverters._
 
 
 object PuzzleReaderWriter {
