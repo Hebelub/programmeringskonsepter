@@ -3,7 +3,7 @@ import schema_pb2
 
 # Default file paths for local execution
 default_infile = "puzzles_input.txt"
-default_outfile = "serialized_puzzles.pb"
+default_outfile = "serialized_puzzles.in.bin"
 
 # Use command-line arguments if provided, else use default files
 infile = sys.argv[1] if len(sys.argv) > 1 else default_infile

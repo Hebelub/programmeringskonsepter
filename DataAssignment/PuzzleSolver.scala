@@ -303,7 +303,7 @@ object PuzzleSolver {
 
     // Reading from File
     val readStartTime = System.nanoTime()
-    val inputFilePath = if (args.length > 0) args(0) else "serialized_puzzles.pb"
+    val inputFilePath = if (args.length > 0) args(0) else "serialized_puzzles.in.bin"
     val grids = PuzzleReaderWriter.readPuzzlesFromFile(inputFilePath)
     val readEndTime = System.nanoTime()
     val readTimeElapsed = (readEndTime - readStartTime) / 1e6  // Time in milliseconds
@@ -333,7 +333,7 @@ object PuzzleSolver {
 
     // Writing to File
     val writeStartTime = System.nanoTime()
-    val outputFilePath = if (args.length > 1) args(1) else "serialized_solutions.pb"
+    val outputFilePath = if (args.length > 1) args(1) else "serialized_solutions.out.bin"
     PuzzleReaderWriter.writePuzzlesToFile(outputFilePath, solvedPuzzles)
     val writeEndTime = System.nanoTime()
     val writeTimeElapsed = (writeEndTime - writeStartTime) / 1e6  // Time in milliseconds
