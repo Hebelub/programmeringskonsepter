@@ -4,26 +4,110 @@ import java.io.PrintWriter
 import java.io.File
 import scala.collection.mutable.ListBuffer
 import com.some.Schema
+import Schema.{Puzzles, Solutions}
+
+import scala.jdk.CollectionConverters._
 import java.nio.file.{Files, Paths}
 import com.google.protobuf.InvalidProtocolBufferException
+
 import scala.jdk.CollectionConverters.CollectionHasAsScala
 
 
 object PuzzleReaderWriter {
-  def writePuzzlesToFile(filePath: String, puzzles: List[Puzzle.Grid]): Unit = {
-    val writer = new PrintWriter(new File(filePath))
-    val sb = new StringBuilder(s"puzzles ${puzzles.size}\n")
 
-    puzzles.foreach { grid =>
+  def writePuzzlesToFile(filePath: String, puzzles: List[Puzzle.Grid]): Unit = {
+    val solutionsBuilder = Solutions.newBuilder()
+
+    for (grid <- puzzles) {
       val rows = (grid.length + 1) / 2
       val cols = (grid(0).length + 1) / 2
-      sb.append(s"size ${cols}x${rows}\n")
-      sb.append(gridToString(grid))
-      sb.append("\n")
+
+      val puzzleBuilder = com.some.Schema.Puzzle.newBuilder()
+      puzzleBuilder.setSizeX(cols)
+      puzzleBuilder.setSizeY(rows)
+
+      val blackHints = ListBuffer[Int]()
+      val whiteHints = ListBuffer[Int]()
+
+      var actualR = 0
+      var actualC = 0
+
+      for (r <- grid.indices) {
+        for (c <- grid(0).indices) {
+          val cell = grid(r)(c)
+
+          if (cell == '*' || cell == 'o') {
+            actualR = r / 2
+            actualC = c / 2
+            val index = actualR * ((grid(0).length+1) / 2) + actualC
+
+            if (cell == '*') {
+              blackHints += index
+            } else if (cell == 'o') {
+              whiteHints += index
+            }
+          }
+        }
+      }
+
+
+      var connections = ListBuffer[(Int, Int)]() // List to store the connections
+
+      for (r <- grid.indices) {
+        for (c <- grid(0).indices) {
+          val cell = grid(r)(c)
+
+          if (cell == 'l') {
+            var fromIndex = 0
+            var toIndex = 0
+
+            if (r % 2 == 1) { // Odd row, vertical connection
+              actualR = (r - 1) / 2
+              actualC = c / 2
+              fromIndex = actualR * ((grid(0).length + 1) / 2) + actualC
+
+              actualR = (r + 1) / 2
+              // actualC remains the same
+              toIndex = actualR * ((grid(0).length + 1) / 2) + actualC
+            } else if (c % 2 == 1) { // Odd column, horizontal connection
+              actualR = r / 2
+              actualC = (c - 1) / 2
+              fromIndex = actualR * ((grid(0).length + 1) / 2) + actualC
+
+              // actualR remains the same
+              actualC = (c + 1) / 2
+              toIndex = actualR * ((grid(0).length + 1) / 2) + actualC
+            }
+
+            connections += ((fromIndex, toIndex))
+          }
+        }
+      }
+
+      println(gridToString(grid))
+
+      println("Connections: " + connections)
+
+
+      puzzleBuilder.addAllBlackHints(blackHints.map(Integer.valueOf).asJava)
+      puzzleBuilder.addAllWhiteHints(whiteHints.map(Integer.valueOf).asJava)
+
+      val solutionBuilder = com.some.Schema.Solution.newBuilder()
+      solutionBuilder.setPuzzle(puzzleBuilder)
+
+      // Add connections to the solution builder
+      for ((from, to) <- connections) {
+        val connectionBuilder = com.some.Schema.Connection.newBuilder()
+        connectionBuilder.setIndexFrom(from)
+        connectionBuilder.setIndexTo(to)
+        solutionBuilder.addConnections(connectionBuilder)
+      }
+
+      solutionsBuilder.addSolution(solutionBuilder)
     }
 
-    writer.write(sb.toString())
-    writer.close()
+    val solutionsProto = solutionsBuilder.build()
+    Files.write(Paths.get(filePath), solutionsProto.toByteArray)
   }
 
   def stringToGridCell(cell: Char): Char = cell match {
@@ -46,22 +130,26 @@ object PuzzleReaderWriter {
         val cols = puzzleProto.getSizeX()
         var grid = Puzzle.createGrid(rows, cols)
 
-        // Assume you can get the grid cells from puzzleProto, maybe like this:
-        // val cells = puzzleProto.getCellsList().asScala
-
-        // Populate grid with cells
-        for (r <- 0 until rows) {
-          for (c <- 0 until cols) {
-            // Update grid with the cell value
-            // grid = Cell.setCell(grid, (r, c, cells(r * cols + c)))
-          }
+        // Populate grid with hints
+        for (blackHint <- puzzleProto.getBlackHintsList.asScala) {
+          val r = blackHint / cols
+          val c = blackHint % cols
+          grid = Cell.setCell(grid, (r*2, c*2, '*'))
         }
+        for (whiteHint <- puzzleProto.getWhiteHintsList.asScala) {
+          val r = whiteHint / cols
+          val c = whiteHint % cols
+          grid = Cell.setCell(grid, (r*2, c*2, 'o'))
+        }
+
         puzzles += grid
       }
+
     } catch {
       case e: InvalidProtocolBufferException => println("Failed to parse the file.")
       case e: Exception => println("An error occurred: " + e.getMessage)
     }
+
     puzzles.toList
   }
 
