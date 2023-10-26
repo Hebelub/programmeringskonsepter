@@ -3,7 +3,7 @@ import schema_pb2
 
 # Command-line arguments for the input and output files with default values
 infile = sys.argv[1] if len(sys.argv) > 1 else "serialized_solutions.pb"
-outfile = sys.argv[2] if len(sys.argv) > 2 else "solutions.txt"
+outfile = sys.argv[2] if len(sys.argv) > 2 else "solved_puzzles.txt"
 
 
 def get_cell(grid, row, col):
