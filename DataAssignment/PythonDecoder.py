@@ -115,7 +115,7 @@ def writeToFile(solutions):
             grid[y_between][x_between] = 'l'
 
         # Generate text_output from the updated grid
-        text_output = f"size: {size_x}x{size_y}\n"
+        text_output = f"size {size_x}x{size_y}\n"
 
         # Use get_symbol_from_cell to get the symbol for cells with even x and y
         for y in range(0, len(grid), 2):
