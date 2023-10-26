@@ -9,6 +9,9 @@ Puzzle_ACT_ONE/
 Schema.java
 schema_pb2.py
 
+# Pychache
+__pycache__/
+
 # Ignore default puzzle files
 puzzles_input.txt
 serialized_puzzles.pb
