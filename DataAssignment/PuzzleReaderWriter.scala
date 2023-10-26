@@ -1,16 +1,9 @@
-import scala.io.Source
-import scala.util.control.Breaks._
-import java.io.PrintWriter
-import java.io.File
-import scala.collection.mutable.ListBuffer
-import com.some.Schema
-import Schema.{Puzzles, Solutions}
-
-import scala.jdk.CollectionConverters._
-import java.nio.file.{Files, Paths}
+import Schema.Solutions
 import com.google.protobuf.InvalidProtocolBufferException
 
-import scala.jdk.CollectionConverters.CollectionHasAsScala
+import java.nio.file.{Files, Paths}
+import scala.collection.mutable.ListBuffer
+import scala.jdk.CollectionConverters._
 
 
 object PuzzleReaderWriter {
@@ -22,7 +15,7 @@ object PuzzleReaderWriter {
       val rows = (grid.length + 1) / 2
       val cols = (grid(0).length + 1) / 2
 
-      val puzzleBuilder = com.some.Schema.Puzzle.newBuilder()
+      val puzzleBuilder = Schema.Puzzle.newBuilder()
       puzzleBuilder.setSizeX(cols)
       puzzleBuilder.setSizeY(rows)
 
@@ -92,12 +85,12 @@ object PuzzleReaderWriter {
       puzzleBuilder.addAllBlackHints(blackHints.map(Integer.valueOf).asJava)
       puzzleBuilder.addAllWhiteHints(whiteHints.map(Integer.valueOf).asJava)
 
-      val solutionBuilder = com.some.Schema.Solution.newBuilder()
+      val solutionBuilder = Schema.Solution.newBuilder()
       solutionBuilder.setPuzzle(puzzleBuilder)
 
       // Add connections to the solution builder
       for ((from, to) <- connections) {
-        val connectionBuilder = com.some.Schema.Connection.newBuilder()
+        val connectionBuilder = Schema.Connection.newBuilder()
         connectionBuilder.setIndexFrom(from)
         connectionBuilder.setIndexTo(to)
         solutionBuilder.addConnections(connectionBuilder)
