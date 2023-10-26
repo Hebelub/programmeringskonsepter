@@ -128,7 +128,7 @@ def writeToFile(solutions):
 
         # Write text_output to the output text file
         with open(outfile, "a", encoding='utf-8') as f:
-            f.write(text_output + "\n")
+            f.write(text_output)
 
 
 if __name__ == "__main__":
