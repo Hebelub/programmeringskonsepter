@@ -1,5 +1,6 @@
 import sys
 import schema_pb2
+import os
 
 # Command-line arguments for the input and output files with default values
 infile = sys.argv[1] if len(sys.argv) > 1 else "serialized_solutions.out.bin"
@@ -142,3 +143,6 @@ if __name__ == "__main__":
     with open(outfile, 'r', encoding='utf-8') as f:
         print(f"Contents of {outfile}:")
         print(f.read())
+
+    print(f"Size of decoders infile ({infile}) is: {os.path.getsize(infile)}")
+    print(f"Size of decoders outfile ({outfile}) is: {os.path.getsize(outfile)}")

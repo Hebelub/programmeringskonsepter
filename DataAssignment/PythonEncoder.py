@@ -1,5 +1,6 @@
 import sys
 import schema_pb2
+import os
 
 # Default file paths for local execution
 default_infile = "puzzles_input.txt"
@@ -89,3 +90,6 @@ if __name__ == "__main__":
         newProtoPuzzles = schema_pb2.Puzzles()
         newProtoPuzzles.ParseFromString(data)
         print(f"Debugging Deserialize: {newProtoPuzzles}")
+
+    print(f"Size of encoders infile ({infile}) is: {os.path.getsize(infile)}")
+    print(f"Size of encoders outfile ({outfile}) is: {os.path.getsize(outfile)}")
