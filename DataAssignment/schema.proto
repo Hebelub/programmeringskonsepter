@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package com.some;
+//package com.some;
 
 message Puzzle {
   int32 sizeX = 1;
