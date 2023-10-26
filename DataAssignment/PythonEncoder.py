@@ -55,8 +55,11 @@ def puzzle_to_protobuf(input_puzzle, proto_puzzle):
 
     # Parse puzzle lines
     for line in lines[1:]:
+        # Replace underscores with whitespaces and remove all other whitespaces
+        line = line.replace(" ", "")
+
         # Pad line with whitespaces if shorter than size_x
-        line = line.ljust(size_x, ' ')
+        line = line.ljust(size_x, '_')
 
         for char in line:
             if char == '*':
@@ -64,6 +67,7 @@ def puzzle_to_protobuf(input_puzzle, proto_puzzle):
             elif char == 'o':
                 proto_puzzle.whiteHints.append(coord)
             coord += 1
+
 
 
 if __name__ == "__main__":
