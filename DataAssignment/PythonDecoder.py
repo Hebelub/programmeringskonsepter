@@ -137,3 +137,8 @@ if __name__ == "__main__":
 
     # Write Protocol Buffers object data to text file
     writeToFile(solutions)
+
+    # Read the contents of the output file and print it to the console
+    with open(outfile, 'r', encoding='utf-8') as f:
+        print(f"Contents of {outfile}:")
+        print(f.read())
