@@ -11,8 +11,10 @@ schema_pb2.py
 
 # Pychache
 __pycache__/
+*.pyc
 
 # Ignore default puzzle files
 puzzles_input.txt
 serialized_puzzles.pb
 solved_puzzles.txt
+serialized_solutions.pb
