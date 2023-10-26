@@ -71,6 +71,7 @@ if __name__ == "__main__":
     input_puzzles = split_file(infile)
 
     for input_puzzle in input_puzzles:
+        print("Input Puzzle Debug: ", input_puzzle)
         protoPuzzle = proto_puzzles.puzzle.add()
         puzzle_to_protobuf(input_puzzle, protoPuzzle)
 
