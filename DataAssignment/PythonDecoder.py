@@ -37,7 +37,7 @@ def get_symbol_from_cell(grid, cell):
     # Pattern match to find the correct symbol
     if adjacent_cells.count('l') == 2 and cell_type == '*':
         return '┼'
-    elif a == b == 'l' and cell_type == 'o':
+    elif b == d == 'l' and cell_type == 'o':
         return '╡'
     elif a == c == 'l' and cell_type == 'o':
         return '╨'
