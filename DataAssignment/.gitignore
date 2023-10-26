@@ -5,10 +5,6 @@
 # Build output or temporary directories
 Puzzle_ACT_ONE/
 
-# Auto-generated files
-Schema.java
-schema_pb2.py
-
 # Pychache
 __pycache__/
 *.pyc
