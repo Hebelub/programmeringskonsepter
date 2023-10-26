@@ -17,13 +17,13 @@ public final class Schema {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int32 sizeX = 1;</code>
+     * <code>uint32 sizeX = 1;</code>
      * @return The sizeX.
      */
     int getSizeX();
 
     /**
-     * <code>int32 sizeY = 2;</code>
+     * <code>uint32 sizeY = 2;</code>
      * @return The sizeY.
      */
     int getSizeY();
@@ -33,7 +33,7 @@ public final class Schema {
      * List of coordinates for black hints.
      * </pre>
      *
-     * <code>repeated int32 blackHints = 3;</code>
+     * <code>repeated uint32 blackHints = 3;</code>
      * @return A list containing the blackHints.
      */
     java.util.List<java.lang.Integer> getBlackHintsList();
@@ -42,7 +42,7 @@ public final class Schema {
      * List of coordinates for black hints.
      * </pre>
      *
-     * <code>repeated int32 blackHints = 3;</code>
+     * <code>repeated uint32 blackHints = 3;</code>
      * @return The count of blackHints.
      */
     int getBlackHintsCount();
@@ -51,7 +51,7 @@ public final class Schema {
      * List of coordinates for black hints.
      * </pre>
      *
-     * <code>repeated int32 blackHints = 3;</code>
+     * <code>repeated uint32 blackHints = 3;</code>
      * @param index The index of the element to return.
      * @return The blackHints at the given index.
      */
@@ -62,7 +62,7 @@ public final class Schema {
      * List of coordinates for white hints.
      * </pre>
      *
-     * <code>repeated int32 whiteHints = 4;</code>
+     * <code>repeated uint32 whiteHints = 4;</code>
      * @return A list containing the whiteHints.
      */
     java.util.List<java.lang.Integer> getWhiteHintsList();
@@ -71,7 +71,7 @@ public final class Schema {
      * List of coordinates for white hints.
      * </pre>
      *
-     * <code>repeated int32 whiteHints = 4;</code>
+     * <code>repeated uint32 whiteHints = 4;</code>
      * @return The count of whiteHints.
      */
     int getWhiteHintsCount();
@@ -80,7 +80,7 @@ public final class Schema {
      * List of coordinates for white hints.
      * </pre>
      *
-     * <code>repeated int32 whiteHints = 4;</code>
+     * <code>repeated uint32 whiteHints = 4;</code>
      * @param index The index of the element to return.
      * @return The whiteHints at the given index.
      */
@@ -126,7 +126,7 @@ public final class Schema {
     public static final int SIZEX_FIELD_NUMBER = 1;
     private int sizeX_ = 0;
     /**
-     * <code>int32 sizeX = 1;</code>
+     * <code>uint32 sizeX = 1;</code>
      * @return The sizeX.
      */
     @java.lang.Override
@@ -137,7 +137,7 @@ public final class Schema {
     public static final int SIZEY_FIELD_NUMBER = 2;
     private int sizeY_ = 0;
     /**
-     * <code>int32 sizeY = 2;</code>
+     * <code>uint32 sizeY = 2;</code>
      * @return The sizeY.
      */
     @java.lang.Override
@@ -154,7 +154,7 @@ public final class Schema {
      * List of coordinates for black hints.
      * </pre>
      *
-     * <code>repeated int32 blackHints = 3;</code>
+     * <code>repeated uint32 blackHints = 3;</code>
      * @return A list containing the blackHints.
      */
     @java.lang.Override
@@ -167,7 +167,7 @@ public final class Schema {
      * List of coordinates for black hints.
      * </pre>
      *
-     * <code>repeated int32 blackHints = 3;</code>
+     * <code>repeated uint32 blackHints = 3;</code>
      * @return The count of blackHints.
      */
     public int getBlackHintsCount() {
@@ -178,7 +178,7 @@ public final class Schema {
      * List of coordinates for black hints.
      * </pre>
      *
-     * <code>repeated int32 blackHints = 3;</code>
+     * <code>repeated uint32 blackHints = 3;</code>
      * @param index The index of the element to return.
      * @return The blackHints at the given index.
      */
@@ -196,7 +196,7 @@ public final class Schema {
      * List of coordinates for white hints.
      * </pre>
      *
-     * <code>repeated int32 whiteHints = 4;</code>
+     * <code>repeated uint32 whiteHints = 4;</code>
      * @return A list containing the whiteHints.
      */
     @java.lang.Override
@@ -209,7 +209,7 @@ public final class Schema {
      * List of coordinates for white hints.
      * </pre>
      *
-     * <code>repeated int32 whiteHints = 4;</code>
+     * <code>repeated uint32 whiteHints = 4;</code>
      * @return The count of whiteHints.
      */
     public int getWhiteHintsCount() {
@@ -220,7 +220,7 @@ public final class Schema {
      * List of coordinates for white hints.
      * </pre>
      *
-     * <code>repeated int32 whiteHints = 4;</code>
+     * <code>repeated uint32 whiteHints = 4;</code>
      * @param index The index of the element to return.
      * @return The whiteHints at the given index.
      */
@@ -245,24 +245,24 @@ public final class Schema {
                         throws java.io.IOException {
       getSerializedSize();
       if (sizeX_ != 0) {
-        output.writeInt32(1, sizeX_);
+        output.writeUInt32(1, sizeX_);
       }
       if (sizeY_ != 0) {
-        output.writeInt32(2, sizeY_);
+        output.writeUInt32(2, sizeY_);
       }
       if (getBlackHintsList().size() > 0) {
         output.writeUInt32NoTag(26);
         output.writeUInt32NoTag(blackHintsMemoizedSerializedSize);
       }
       for (int i = 0; i < blackHints_.size(); i++) {
-        output.writeInt32NoTag(blackHints_.getInt(i));
+        output.writeUInt32NoTag(blackHints_.getInt(i));
       }
       if (getWhiteHintsList().size() > 0) {
         output.writeUInt32NoTag(34);
         output.writeUInt32NoTag(whiteHintsMemoizedSerializedSize);
       }
       for (int i = 0; i < whiteHints_.size(); i++) {
-        output.writeInt32NoTag(whiteHints_.getInt(i));
+        output.writeUInt32NoTag(whiteHints_.getInt(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -275,17 +275,17 @@ public final class Schema {
       size = 0;
       if (sizeX_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, sizeX_);
+          .computeUInt32Size(1, sizeX_);
       }
       if (sizeY_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, sizeY_);
+          .computeUInt32Size(2, sizeY_);
       }
       {
         int dataSize = 0;
         for (int i = 0; i < blackHints_.size(); i++) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt32SizeNoTag(blackHints_.getInt(i));
+            .computeUInt32SizeNoTag(blackHints_.getInt(i));
         }
         size += dataSize;
         if (!getBlackHintsList().isEmpty()) {
@@ -299,7 +299,7 @@ public final class Schema {
         int dataSize = 0;
         for (int i = 0; i < whiteHints_.size(); i++) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt32SizeNoTag(whiteHints_.getInt(i));
+            .computeUInt32SizeNoTag(whiteHints_.getInt(i));
         }
         size += dataSize;
         if (!getWhiteHintsList().isEmpty()) {
@@ -638,17 +638,17 @@ public final class Schema {
                 done = true;
                 break;
               case 8: {
-                sizeX_ = input.readInt32();
+                sizeX_ = input.readUInt32();
                 bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 16: {
-                sizeY_ = input.readInt32();
+                sizeY_ = input.readUInt32();
                 bitField0_ |= 0x00000002;
                 break;
               } // case 16
               case 24: {
-                int v = input.readInt32();
+                int v = input.readUInt32();
                 ensureBlackHintsIsMutable();
                 blackHints_.addInt(v);
                 break;
@@ -658,13 +658,13 @@ public final class Schema {
                 int limit = input.pushLimit(length);
                 ensureBlackHintsIsMutable();
                 while (input.getBytesUntilLimit() > 0) {
-                  blackHints_.addInt(input.readInt32());
+                  blackHints_.addInt(input.readUInt32());
                 }
                 input.popLimit(limit);
                 break;
               } // case 26
               case 32: {
-                int v = input.readInt32();
+                int v = input.readUInt32();
                 ensureWhiteHintsIsMutable();
                 whiteHints_.addInt(v);
                 break;
@@ -674,7 +674,7 @@ public final class Schema {
                 int limit = input.pushLimit(length);
                 ensureWhiteHintsIsMutable();
                 while (input.getBytesUntilLimit() > 0) {
-                  whiteHints_.addInt(input.readInt32());
+                  whiteHints_.addInt(input.readUInt32());
                 }
                 input.popLimit(limit);
                 break;
@@ -698,7 +698,7 @@ public final class Schema {
 
       private int sizeX_ ;
       /**
-       * <code>int32 sizeX = 1;</code>
+       * <code>uint32 sizeX = 1;</code>
        * @return The sizeX.
        */
       @java.lang.Override
@@ -706,7 +706,7 @@ public final class Schema {
         return sizeX_;
       }
       /**
-       * <code>int32 sizeX = 1;</code>
+       * <code>uint32 sizeX = 1;</code>
        * @param value The sizeX to set.
        * @return This builder for chaining.
        */
@@ -718,7 +718,7 @@ public final class Schema {
         return this;
       }
       /**
-       * <code>int32 sizeX = 1;</code>
+       * <code>uint32 sizeX = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearSizeX() {
@@ -730,7 +730,7 @@ public final class Schema {
 
       private int sizeY_ ;
       /**
-       * <code>int32 sizeY = 2;</code>
+       * <code>uint32 sizeY = 2;</code>
        * @return The sizeY.
        */
       @java.lang.Override
@@ -738,7 +738,7 @@ public final class Schema {
         return sizeY_;
       }
       /**
-       * <code>int32 sizeY = 2;</code>
+       * <code>uint32 sizeY = 2;</code>
        * @param value The sizeY to set.
        * @return This builder for chaining.
        */
@@ -750,7 +750,7 @@ public final class Schema {
         return this;
       }
       /**
-       * <code>int32 sizeY = 2;</code>
+       * <code>uint32 sizeY = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearSizeY() {
@@ -772,7 +772,7 @@ public final class Schema {
        * List of coordinates for black hints.
        * </pre>
        *
-       * <code>repeated int32 blackHints = 3;</code>
+       * <code>repeated uint32 blackHints = 3;</code>
        * @return A list containing the blackHints.
        */
       public java.util.List<java.lang.Integer>
@@ -785,7 +785,7 @@ public final class Schema {
        * List of coordinates for black hints.
        * </pre>
        *
-       * <code>repeated int32 blackHints = 3;</code>
+       * <code>repeated uint32 blackHints = 3;</code>
        * @return The count of blackHints.
        */
       public int getBlackHintsCount() {
@@ -796,7 +796,7 @@ public final class Schema {
        * List of coordinates for black hints.
        * </pre>
        *
-       * <code>repeated int32 blackHints = 3;</code>
+       * <code>repeated uint32 blackHints = 3;</code>
        * @param index The index of the element to return.
        * @return The blackHints at the given index.
        */
@@ -808,7 +808,7 @@ public final class Schema {
        * List of coordinates for black hints.
        * </pre>
        *
-       * <code>repeated int32 blackHints = 3;</code>
+       * <code>repeated uint32 blackHints = 3;</code>
        * @param index The index to set the value at.
        * @param value The blackHints to set.
        * @return This builder for chaining.
@@ -827,7 +827,7 @@ public final class Schema {
        * List of coordinates for black hints.
        * </pre>
        *
-       * <code>repeated int32 blackHints = 3;</code>
+       * <code>repeated uint32 blackHints = 3;</code>
        * @param value The blackHints to add.
        * @return This builder for chaining.
        */
@@ -844,7 +844,7 @@ public final class Schema {
        * List of coordinates for black hints.
        * </pre>
        *
-       * <code>repeated int32 blackHints = 3;</code>
+       * <code>repeated uint32 blackHints = 3;</code>
        * @param values The blackHints to add.
        * @return This builder for chaining.
        */
@@ -862,7 +862,7 @@ public final class Schema {
        * List of coordinates for black hints.
        * </pre>
        *
-       * <code>repeated int32 blackHints = 3;</code>
+       * <code>repeated uint32 blackHints = 3;</code>
        * @return This builder for chaining.
        */
       public Builder clearBlackHints() {
@@ -884,7 +884,7 @@ public final class Schema {
        * List of coordinates for white hints.
        * </pre>
        *
-       * <code>repeated int32 whiteHints = 4;</code>
+       * <code>repeated uint32 whiteHints = 4;</code>
        * @return A list containing the whiteHints.
        */
       public java.util.List<java.lang.Integer>
@@ -897,7 +897,7 @@ public final class Schema {
        * List of coordinates for white hints.
        * </pre>
        *
-       * <code>repeated int32 whiteHints = 4;</code>
+       * <code>repeated uint32 whiteHints = 4;</code>
        * @return The count of whiteHints.
        */
       public int getWhiteHintsCount() {
@@ -908,7 +908,7 @@ public final class Schema {
        * List of coordinates for white hints.
        * </pre>
        *
-       * <code>repeated int32 whiteHints = 4;</code>
+       * <code>repeated uint32 whiteHints = 4;</code>
        * @param index The index of the element to return.
        * @return The whiteHints at the given index.
        */
@@ -920,7 +920,7 @@ public final class Schema {
        * List of coordinates for white hints.
        * </pre>
        *
-       * <code>repeated int32 whiteHints = 4;</code>
+       * <code>repeated uint32 whiteHints = 4;</code>
        * @param index The index to set the value at.
        * @param value The whiteHints to set.
        * @return This builder for chaining.
@@ -939,7 +939,7 @@ public final class Schema {
        * List of coordinates for white hints.
        * </pre>
        *
-       * <code>repeated int32 whiteHints = 4;</code>
+       * <code>repeated uint32 whiteHints = 4;</code>
        * @param value The whiteHints to add.
        * @return This builder for chaining.
        */
@@ -956,7 +956,7 @@ public final class Schema {
        * List of coordinates for white hints.
        * </pre>
        *
-       * <code>repeated int32 whiteHints = 4;</code>
+       * <code>repeated uint32 whiteHints = 4;</code>
        * @param values The whiteHints to add.
        * @return This builder for chaining.
        */
@@ -974,7 +974,7 @@ public final class Schema {
        * List of coordinates for white hints.
        * </pre>
        *
-       * <code>repeated int32 whiteHints = 4;</code>
+       * <code>repeated uint32 whiteHints = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearWhiteHints() {
@@ -1834,13 +1834,13 @@ public final class Schema {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int32 indexFrom = 1;</code>
+     * <code>uint32 indexFrom = 1;</code>
      * @return The indexFrom.
      */
     int getIndexFrom();
 
     /**
-     * <code>int32 indexTo = 2;</code>
+     * <code>uint32 indexTo = 2;</code>
      * @return The indexTo.
      */
     int getIndexTo();
@@ -1883,7 +1883,7 @@ public final class Schema {
     public static final int INDEXFROM_FIELD_NUMBER = 1;
     private int indexFrom_ = 0;
     /**
-     * <code>int32 indexFrom = 1;</code>
+     * <code>uint32 indexFrom = 1;</code>
      * @return The indexFrom.
      */
     @java.lang.Override
@@ -1894,7 +1894,7 @@ public final class Schema {
     public static final int INDEXTO_FIELD_NUMBER = 2;
     private int indexTo_ = 0;
     /**
-     * <code>int32 indexTo = 2;</code>
+     * <code>uint32 indexTo = 2;</code>
      * @return The indexTo.
      */
     @java.lang.Override
@@ -1917,10 +1917,10 @@ public final class Schema {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (indexFrom_ != 0) {
-        output.writeInt32(1, indexFrom_);
+        output.writeUInt32(1, indexFrom_);
       }
       if (indexTo_ != 0) {
-        output.writeInt32(2, indexTo_);
+        output.writeUInt32(2, indexTo_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1933,11 +1933,11 @@ public final class Schema {
       size = 0;
       if (indexFrom_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, indexFrom_);
+          .computeUInt32Size(1, indexFrom_);
       }
       if (indexTo_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, indexTo_);
+          .computeUInt32Size(2, indexTo_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -2224,12 +2224,12 @@ public final class Schema {
                 done = true;
                 break;
               case 8: {
-                indexFrom_ = input.readInt32();
+                indexFrom_ = input.readUInt32();
                 bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 16: {
-                indexTo_ = input.readInt32();
+                indexTo_ = input.readUInt32();
                 bitField0_ |= 0x00000002;
                 break;
               } // case 16
@@ -2252,7 +2252,7 @@ public final class Schema {
 
       private int indexFrom_ ;
       /**
-       * <code>int32 indexFrom = 1;</code>
+       * <code>uint32 indexFrom = 1;</code>
        * @return The indexFrom.
        */
       @java.lang.Override
@@ -2260,7 +2260,7 @@ public final class Schema {
         return indexFrom_;
       }
       /**
-       * <code>int32 indexFrom = 1;</code>
+       * <code>uint32 indexFrom = 1;</code>
        * @param value The indexFrom to set.
        * @return This builder for chaining.
        */
@@ -2272,7 +2272,7 @@ public final class Schema {
         return this;
       }
       /**
-       * <code>int32 indexFrom = 1;</code>
+       * <code>uint32 indexFrom = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearIndexFrom() {
@@ -2284,7 +2284,7 @@ public final class Schema {
 
       private int indexTo_ ;
       /**
-       * <code>int32 indexTo = 2;</code>
+       * <code>uint32 indexTo = 2;</code>
        * @return The indexTo.
        */
       @java.lang.Override
@@ -2292,7 +2292,7 @@ public final class Schema {
         return indexTo_;
       }
       /**
-       * <code>int32 indexTo = 2;</code>
+       * <code>uint32 indexTo = 2;</code>
        * @param value The indexTo to set.
        * @return This builder for chaining.
        */
@@ -2304,7 +2304,7 @@ public final class Schema {
         return this;
       }
       /**
-       * <code>int32 indexTo = 2;</code>
+       * <code>uint32 indexTo = 2;</code>
        * @return This builder for chaining.
        */
       public Builder clearIndexTo() {
@@ -4184,11 +4184,11 @@ public final class Schema {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014schema.proto\"N\n\006Puzzle\022\r\n\005sizeX\030\001 \001(\005\022" +
-      "\r\n\005sizeY\030\002 \001(\005\022\022\n\nblackHints\030\003 \003(\005\022\022\n\nwh" +
-      "iteHints\030\004 \003(\005\"\"\n\007Puzzles\022\027\n\006puzzle\030\001 \003(" +
+      "\n\014schema.proto\"N\n\006Puzzle\022\r\n\005sizeX\030\001 \001(\r\022" +
+      "\r\n\005sizeY\030\002 \001(\r\022\022\n\nblackHints\030\003 \003(\r\022\022\n\nwh" +
+      "iteHints\030\004 \003(\r\"\"\n\007Puzzles\022\027\n\006puzzle\030\001 \003(" +
       "\0132\007.Puzzle\"0\n\nConnection\022\021\n\tindexFrom\030\001 " +
-      "\001(\005\022\017\n\007indexTo\030\002 \001(\005\"E\n\010Solution\022\027\n\006puzz" +
+      "\001(\r\022\017\n\007indexTo\030\002 \001(\r\"E\n\010Solution\022\027\n\006puzz" +
       "le\030\001 \001(\0132\007.Puzzle\022 \n\013connections\030\002 \003(\0132\013" +
       ".Connection\"(\n\tSolutions\022\033\n\010solution\030\001 \003" +
       "(\0132\t.Solutionb\006proto3"

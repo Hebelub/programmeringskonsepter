@@ -1,12 +1,10 @@
 syntax = "proto3";
 
-//package com.some;
-
 message Puzzle {
-  int32 sizeX = 1;
-  int32 sizeY = 2;
-  repeated int32 blackHints = 3;  // List of coordinates for black hints.
-  repeated int32 whiteHints = 4;  // List of coordinates for white hints.
+  uint32 sizeX = 1;
+  uint32 sizeY = 2;
+  repeated uint32 blackHints = 3;  // List of coordinates for black hints.
+  repeated uint32 whiteHints = 4;  // List of coordinates for white hints.
 }
 
 message Puzzles {
@@ -14,8 +12,8 @@ message Puzzles {
 }
 
 message Connection {
-  int32 indexFrom = 1;
-  int32 indexTo = 2;
+  uint32 indexFrom = 1;
+  uint32 indexTo = 2;
 }
 
 message Solution {
