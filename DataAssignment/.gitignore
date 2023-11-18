@@ -3,7 +3,7 @@
 .idea/
 
 # Build output or temporary directories
-Puzzle_ACT_ONE/
+# Puzzle_ACT_ONE/
 
 # Pychache
 __pycache__/
