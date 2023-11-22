@@ -6,8 +6,11 @@ prepare_puzzles(Puzzles, PreparedPuzzles) :-
 prepare_single_puzzle(Puzzle, PreparedPuzzle) :-
     length(Puzzle, Length),
     writeln('Original Puzzle:'), writeln(Puzzle), % Print the original puzzle
-    prepare_puzzle_rows(Puzzle, Length, 1, PreparedPuzzle),
-    writeln('Prepared Puzzle:'), writeln(PreparedPuzzle). % Print the prepared puzzle
+    prepare_puzzle_rows(Puzzle, Length, 1, EdgesPreparedPuzzle),
+    writeln('Edges Prepared Puzzle:'), writeln(EdgesPreparedPuzzle), % Print the prepared puzzle
+    % unify_reciprocal_connections(EdgesPreparedPuzzle, PreparedPuzzle),
+    PreparedPuzzle = EdgesPreparedPuzzle,
+    writeln('Unified Puzzle:'), writeln(PreparedPuzzle). % Print the unified puzzle
 
 % Recursive predicate to prepare each row of the puzzle
 prepare_puzzle_rows([], _, _, []).
@@ -48,12 +51,51 @@ prepare_last_cell([(Type, Up, _, Down, Left)|_], IsTopRow, IsBottomRow, Prepared
     (IsBottomRow -> BottomConnection = false; BottomConnection = Down),
     PreparedLastCell = [(Type, TopConnection, false, BottomConnection, Left)].
 
-% Set the 'Up' connection of each cell in the row to false
-set_top_edge([], []).
-set_top_edge([(Type, _, Right, Down, Left)|Rest], [(Type, false, Right, Down, Left)|PreparedRest]) :-
-    set_top_edge(Rest, PreparedRest).
 
-% Set the 'Down' connection of each cell in the row to false
-set_bottom_edge([], []).
-set_bottom_edge([(Type, Up, Right, _, Left)|Rest], [(Type, Up, Right, false, Left)|PreparedRest]) :-
-    set_bottom_edge(Rest, PreparedRest).
+% UNIFICATION
+
+% Unify reciprocal connections in a puzzle
+unify_reciprocal_connections(Puzzle, UnifiedPuzzle) :-
+    writeln('Unifying Reciprocal connections...'),
+    unify_horizontal_connections(Puzzle, HorizontallyUnified),
+    writeln('Horizontally Unified Puzzle:'), writeln(HorizontallyUnified).
+    % transpose(HorizontallyUnified, Transposed),
+    % writeln('Transposed Puzzle:'), writeln(Transposed),
+    % unify_horizontal_connections(Transposed, ReUnified),
+    % writeln('Re-Horizontally Unified Puzzle:'), writeln(ReUnified),
+    % transpose(ReUnified, UnifiedPuzzle).
+
+% Unify horizontal connections of the puzzle
+unify_horizontal_connections([], []).
+unify_horizontal_connections([Row|Rows], [UnifiedRow|UnifiedRows]) :-
+    unify_row_connections(Row, UnifiedRow),
+    unify_horizontal_connections(Rows, UnifiedRows).
+
+% Unify connections within a row
+unify_row_connections([_], [_]).
+unify_row_connections([Cell1, Cell2|Rest], [Cell1|UnifiedRest]) :-
+    unify_cells(Cell1, Cell2),
+    unify_row_connections([Cell2|Rest], UnifiedRest).
+
+% Unify two adjacent cells (right edge of Cell1 with left edge of Cell2)
+unify_cells((_, _, Right, _, _), (_, _, _, _, Left)) :-
+    Right = Left.
+
+
+% Transpose a matrix (grid)
+transpose([], []).
+transpose([F|Fs], Ts) :-
+    transpose(F, [F|Fs], Ts).
+
+transpose([], _, []).
+transpose([_|Rs], Ms, [Ts|Tss]) :-
+    lists_firsts_rests(Ms, Ts, Ms1),
+    transpose(Rs, Ms1, Tss).
+
+% Extract the first elements of each list and the remainders
+lists_firsts_rests([], [], []).
+lists_firsts_rests([[F|Os]|Rest], [F|Fs], [Os|Oss]) :-
+    lists_firsts_rests(Rest, Fs, Oss).
+
+
+
