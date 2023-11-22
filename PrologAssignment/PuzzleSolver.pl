@@ -1,26 +1,33 @@
 % FILEPATH: /C:/Users/glosn/uia/submission/gabriell/PrologAssignment/PuzzleSolver.pl
 
-:- initialization(main).
+% :- initialization(main).
 :- include('PuzzleTypes.pl').
 :- include('PuzzleReader.pl').
-:- include('Utility.pl').
+:- include('PuzzleWriter.pl').
 :- include('PrintPuzzle.pl').
+:- include('PreparePuzzle.pl').
 
 main :-
-    % Use the read_file predicate from PuzzleReader to read puzzles from the file.
+    % Read puzzles from the file
     read_file('puzzles.txt', Puzzles),
-    
-    % Solve each puzzle and collect the solutions.
-    findall(SolvedPuzzle, (member(Puzzle, Puzzles), solve_puzzle(Puzzle, SolvedPuzzle)), SolvedPuzzles),
 
-    % Write the solved puzzles to a file.
+    % Prepare the puzzles for solving
+    prepare_puzzles(Puzzles, PreparedPuzzles),
+    % PreparedPuzzles = Puzzles,
+
+    % Solve each puzzle and collect the first solution for each
+    solve_each_puzzle(PreparedPuzzles, SolvedPuzzles),
+
+    % Write the solved puzzles to a file
     write_solutions_to_file('solved_puzzles.txt', SolvedPuzzles),
 
-    % Optionally, print a confirmation.
+    % Print a confirmation
     writeln('All puzzles solved and written to solved_puzzles.txt.').
-    
-    % Properly terminate the program.
-    % halt.
+
+solve_each_puzzle([], []).
+solve_each_puzzle([Puzzle|Puzzles], [SolvedPuzzle|SolvedPuzzles]) :-
+    solve_puzzle(Puzzle, SolvedPuzzle),
+    solve_each_puzzle(Puzzles, SolvedPuzzles).
 
 solve_puzzle(Puzzle, SolvedPuzzle) :-
     % Debug: Print out the puzzle structure before attempting to solve.
