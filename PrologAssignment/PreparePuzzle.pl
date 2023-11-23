@@ -8,8 +8,8 @@ prepare_single_puzzle(Puzzle, PreparedPuzzle) :-
     writeln('Original Puzzle:'), writeln(Puzzle), % Print the original puzzle
     prepare_puzzle_rows(Puzzle, Length, 1, EdgesPreparedPuzzle),
     writeln('Edges Prepared Puzzle:'), writeln(EdgesPreparedPuzzle), % Print the prepared puzzle
-    % unify_reciprocal_connections(EdgesPreparedPuzzle, PreparedPuzzle),
-    PreparedPuzzle = EdgesPreparedPuzzle.
+    unify_reciprocal_connections(EdgesPreparedPuzzle, PreparedPuzzle),
+    writeln('Unified Puzzle:'), writeln(PreparedPuzzle). % Print the unified puzzle
 
 % Recursive predicate to prepare each row of the puzzle
 prepare_puzzle_rows([], _, _, []).
@@ -26,9 +26,6 @@ prepare_row(Length, Row, Index, FinalRow) :-
     prepare_first_cell(Row, IsTopRow, IsBottomRow, [PreparedFirstCell]),
     prepare_middle_cells(Row, IsTopRow, IsBottomRow, PreparedMiddleCells),
     prepare_last_cell(Row, IsTopRow, IsBottomRow, [PreparedLastCell]),
-
-    % Print out the prepared elements
-    writeln('Prepared Middle Cells:'), writeln(PreparedMiddleCells),
     
     % Construct the FinalRow
     append([PreparedFirstCell | PreparedMiddleCells], [PreparedLastCell], FinalRow).
@@ -97,7 +94,8 @@ unify_horizontal_connections([Row|Rows], [UnifiedRow|UnifiedRows]) :-
     unify_horizontal_connections(Rows, UnifiedRows).
 
 % Unify connections within a row
-unify_row_connections([_], [_]).
+unify_row_connections([], []).
+unify_row_connections([Cell], [Cell]).
 unify_row_connections([Cell1, Cell2|Rest], [Cell1|UnifiedRest]) :-
     unify_cells(Cell1, Cell2),
     unify_row_connections([Cell2|Rest], UnifiedRest).
