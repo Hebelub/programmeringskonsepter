@@ -5,11 +5,8 @@ prepare_puzzles(Puzzles, PreparedPuzzles) :-
 % Prepare a single puzzle
 prepare_single_puzzle(Puzzle, PreparedPuzzle) :-
     length(Puzzle, Length),
-    writeln('Original Puzzle:'), writeln(Puzzle), % Print the original puzzle
     prepare_puzzle_rows(Puzzle, Length, 1, EdgesPreparedPuzzle),
-    writeln('Edges Prepared Puzzle:'), writeln(EdgesPreparedPuzzle), % Print the prepared puzzle
-    unify_reciprocal_connections(EdgesPreparedPuzzle, PreparedPuzzle),
-    writeln('Unified Puzzle:'), writeln(PreparedPuzzle). % Print the unified puzzle
+    unify_reciprocal_connections(EdgesPreparedPuzzle, PreparedPuzzle).
 
 % Recursive predicate to prepare each row of the puzzle
 prepare_puzzle_rows([], _, _, []).
