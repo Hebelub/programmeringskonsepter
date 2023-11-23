@@ -28,9 +28,7 @@ prepare_row(Length, Row, Index, FinalRow) :-
     prepare_last_cell(Row, IsTopRow, IsBottomRow, [PreparedLastCell]),
 
     % Print out the prepared elements
-    writeln('Prepared First Cell:'), writeln(PreparedFirstCell),
     writeln('Prepared Middle Cells:'), writeln(PreparedMiddleCells),
-    writeln('Prepared Last Cell:'), writeln(PreparedLastCell),
     
     % Construct the FinalRow
     append([PreparedFirstCell | PreparedMiddleCells], [PreparedLastCell], FinalRow).
@@ -51,11 +49,8 @@ middle_elements([], []).
 middle_elements([_], []).
 middle_elements([_, _], []).
 middle_elements([_, X | Rest], Middle) :-
-    append([X], MiddleRest, Middle),
-    (   Rest = [_]
-    ->  MiddleRest = []
-    ;   middle_elements(Rest, MiddleRest)
-    ).
+    append(MiddleRest, [_], Rest),  % Ensure the last element is excluded
+    Middle = [X | MiddleRest].
 
 % Prepare each cell in the middle cell list
 prepare_each_middle_cell([], _, _, []).
