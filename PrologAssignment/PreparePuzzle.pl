@@ -9,8 +9,7 @@ prepare_single_puzzle(Puzzle, PreparedPuzzle) :-
     prepare_puzzle_rows(Puzzle, Length, 1, EdgesPreparedPuzzle),
     writeln('Edges Prepared Puzzle:'), writeln(EdgesPreparedPuzzle), % Print the prepared puzzle
     % unify_reciprocal_connections(EdgesPreparedPuzzle, PreparedPuzzle),
-    PreparedPuzzle = EdgesPreparedPuzzle,
-    writeln('Unified Puzzle:'), writeln(PreparedPuzzle). % Print the unified puzzle
+    PreparedPuzzle = EdgesPreparedPuzzle.
 
 % Recursive predicate to prepare each row of the puzzle
 prepare_puzzle_rows([], _, _, []).
@@ -27,6 +26,11 @@ prepare_row(Length, Row, Index, FinalRow) :-
     prepare_first_cell(Row, IsTopRow, IsBottomRow, [PreparedFirstCell]),
     prepare_middle_cells(Row, IsTopRow, IsBottomRow, PreparedMiddleCells),
     prepare_last_cell(Row, IsTopRow, IsBottomRow, [PreparedLastCell]),
+
+    % Print out the prepared elements
+    writeln('Prepared First Cell:'), writeln(PreparedFirstCell),
+    writeln('Prepared Middle Cells:'), writeln(PreparedMiddleCells),
+    writeln('Prepared Last Cell:'), writeln(PreparedLastCell),
     
     % Construct the FinalRow
     append([PreparedFirstCell | PreparedMiddleCells], [PreparedLastCell], FinalRow).
@@ -38,18 +42,44 @@ prepare_first_cell([(Type, Up, Right, Down, _)|_], IsTopRow, IsBottomRow, Prepar
     PreparedFirstCell = [(Type, TopConnection, Right, BottomConnection, false)].
 
 % Prepare the middle cells
-prepare_middle_cells([], _, _, []).
-prepare_middle_cells([(Type, Up, Right, Down, Left)|Rest], IsTopRow, IsBottomRow, [PreparedCell|PreparedRest]) :-
+prepare_middle_cells(Row, IsTopRow, IsBottomRow, PreparedMiddleCells) :-
+    middle_elements(Row, MiddleCells),
+    prepare_each_middle_cell(MiddleCells, IsTopRow, IsBottomRow, PreparedMiddleCells).
+
+% Extract middle elements of a list (excluding first and last)
+middle_elements([], []).
+middle_elements([_], []).
+middle_elements([_, _], []).
+middle_elements([_, X | Rest], Middle) :-
+    append([X], MiddleRest, Middle),
+    (   Rest = [_]
+    ->  MiddleRest = []
+    ;   middle_elements(Rest, MiddleRest)
+    ).
+
+% Prepare each cell in the middle cell list
+prepare_each_middle_cell([], _, _, []).
+prepare_each_middle_cell([(Type, Up, Right, Down, Left) | Rest], IsTopRow, IsBottomRow, [PreparedCell | PreparedRest]) :-
     (IsTopRow -> TopConnection = false; TopConnection = Up),
     (IsBottomRow -> BottomConnection = false; BottomConnection = Down),
     PreparedCell = (Type, TopConnection, Right, BottomConnection, Left),
-    prepare_middle_cells(Rest, IsTopRow, IsBottomRow, PreparedRest).
+    prepare_each_middle_cell(Rest, IsTopRow, IsBottomRow, PreparedRest).
 
 % Prepare the last cell (Right edge)
-prepare_last_cell([(Type, Up, _, Down, Left)|_], IsTopRow, IsBottomRow, PreparedLastCell) :-
+prepare_last_cell(Row, IsTopRow, IsBottomRow, PreparedLastCell) :-
+    last_cell(Row, LastCell),
+    prepare_single_last_cell(LastCell, IsTopRow, IsBottomRow, PreparedLastCell).
+
+% Extract the last cell from the row
+last_cell([Cell], Cell).
+last_cell([_|Rest], LastCell) :-
+    last_cell(Rest, LastCell).
+
+% Prepare a single last cell
+prepare_single_last_cell((Type, Up, _, Down, Left), IsTopRow, IsBottomRow, [(Type, TopConnection, false, BottomConnection, Left)]) :-
     (IsTopRow -> TopConnection = false; TopConnection = Up),
-    (IsBottomRow -> BottomConnection = false; BottomConnection = Down),
-    PreparedLastCell = [(Type, TopConnection, false, BottomConnection, Left)].
+    (IsBottomRow -> BottomConnection = false; BottomConnection = Down).
+
 
 
 % UNIFICATION
