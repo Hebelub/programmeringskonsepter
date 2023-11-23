@@ -79,31 +79,32 @@ prepare_single_last_cell((Type, Up, _, Down, Left), IsTopRow, IsBottomRow, [(Typ
 % Unify reciprocal connections in a puzzle
 unify_reciprocal_connections(Puzzle, UnifiedPuzzle) :-
     writeln('Unifying Reciprocal connections...'),
-    unify_horizontal_connections(Puzzle, HorizontallyUnified),
-    writeln('Horizontally Unified Puzzle:'), writeln(HorizontallyUnified).
-    % transpose(HorizontallyUnified, Transposed),
-    % writeln('Transposed Puzzle:'), writeln(Transposed),
-    % unify_horizontal_connections(Transposed, ReUnified),
-    % writeln('Re-Horizontally Unified Puzzle:'), writeln(ReUnified),
-    % transpose(ReUnified, UnifiedPuzzle).
+    unify_horizontal_connections(Puzzle, horizontal, HorizontallyUnified),
+    writeln('Horizontally Unified Puzzle:'), writeln(HorizontallyUnified),
+    transpose(HorizontallyUnified, Transposed),
+    writeln('Transposed Puzzle:'), writeln(Transposed),
+    unify_horizontal_connections(Transposed, vertical, ReUnified),
+    writeln('Re-Horizontally Unified Puzzle:'), writeln(ReUnified),
+    transpose(ReUnified, UnifiedPuzzle).
 
-% Unify horizontal connections of the puzzle
-unify_horizontal_connections([], []).
-unify_horizontal_connections([Row|Rows], [UnifiedRow|UnifiedRows]) :-
-    unify_row_connections(Row, UnifiedRow),
-    unify_horizontal_connections(Rows, UnifiedRows).
+% Unify horizontal connections of the puzzle, given direction
+unify_horizontal_connections([], _, []).
+unify_horizontal_connections([Row|Rows], Direction, [UnifiedRow|UnifiedRows]) :-
+    unify_row_connections(Row, Direction, UnifiedRow),
+    unify_horizontal_connections(Rows, Direction, UnifiedRows).
 
 % Unify connections within a row
-unify_row_connections([], []).
-unify_row_connections([Cell], [Cell]).
-unify_row_connections([Cell1, Cell2|Rest], [Cell1|UnifiedRest]) :-
-    unify_cells(Cell1, Cell2),
-    unify_row_connections([Cell2|Rest], UnifiedRest).
+unify_row_connections([], _, []).
+unify_row_connections([Cell], _, [Cell]).
+unify_row_connections([Cell1, Cell2|Rest], Direction, [Cell1|UnifiedRest]) :-
+    unify_cells(Cell1, Cell2, Direction),
+    unify_row_connections([Cell2|Rest], Direction, UnifiedRest).
 
-% Unify two adjacent cells (right edge of Cell1 with left edge of Cell2)
-unify_cells((_, _, Right, _, _), (_, _, _, _, Left)) :-
-    Right = Left.
-
+% Unify two adjacent cells based on direction
+unify_cells((Type1, Up1, Right1, Down1, Left1), (Type2, Up2, Right2, Down2, Left2), horizontal) :-
+    Right1 = Left2.
+unify_cells((Type1, Up1, Right1, Down1, Left1), (Type2, Up2, Right2, Down2, Left2), vertical) :-
+    Down1 = Up2.
 
 % Transpose a matrix (grid)
 transpose([], []).
