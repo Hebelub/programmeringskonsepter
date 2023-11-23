@@ -75,13 +75,9 @@ prepare_single_last_cell((Type, Up, _, Down, Left), IsTopRow, IsBottomRow, [(Typ
 
 % Unify reciprocal connections in a puzzle
 unify_reciprocal_connections(Puzzle, UnifiedPuzzle) :-
-    writeln('Unifying Reciprocal connections...'),
     unify_horizontal_connections(Puzzle, horizontal, HorizontallyUnified),
-    writeln('Horizontally Unified Puzzle:'), writeln(HorizontallyUnified),
     transpose(HorizontallyUnified, Transposed),
-    writeln('Transposed Puzzle:'), writeln(Transposed),
     unify_horizontal_connections(Transposed, vertical, ReUnified),
-    writeln('Re-Horizontally Unified Puzzle:'), writeln(ReUnified),
     transpose(ReUnified, UnifiedPuzzle).
 
 % Unify horizontal connections of the puzzle, given direction
