@@ -1,3 +1,5 @@
+% FILEPATH: /C:/Users/glosn/uia/submission/gabriell/PrologAssignment/PreparePuzzle.pl
+
 % Prepare each puzzle in the list
 prepare_puzzles(Puzzles, PreparedPuzzles) :-
     maplist(prepare_single_puzzle, Puzzles, PreparedPuzzles).
@@ -115,4 +117,4 @@ lists_firsts_rests([[F|Os]|Rest], [F|Fs], [Os|Oss]) :-
     lists_firsts_rests(Rest, Fs, Oss).
 
 
-
+% UNIFY OPOSITES FOR WHITE CELLS
