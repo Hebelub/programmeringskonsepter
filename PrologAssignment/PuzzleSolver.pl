@@ -6,6 +6,7 @@
 :- include('PuzzleWriter.pl').
 :- include('PrintPuzzle.pl').
 :- include('PreparePuzzle.pl').
+:- include('PuzzleRules.pl').
 
 main :-
     % Read puzzles from the file
@@ -13,7 +14,6 @@ main :-
 
     % Prepare the puzzles for solving
     prepare_puzzles(Puzzles, PreparedPuzzles),
-    % PreparedPuzzles = Puzzles,
 
     % Solve each puzzle and collect the first solution for each
     solve_each_puzzle(PreparedPuzzles, SolvedPuzzles),
@@ -36,7 +36,17 @@ solve_puzzle(Puzzle, SolvedPuzzle) :-
 
     % Print out the puzzle to solve
     writeln('Puzzle to solve:'),
+    writeln(Puzzle),
     print_puzzle(Puzzle),
 
-    % Assign the unsolved puzzle to the SolvedPuzzle variable (for now).
-    SolvedPuzzle = Puzzle.
+    % Call the solving predicate from PuzzleRules.pl
+    % apply_rules(Puzzle, RulesAppliedPuzzle),
+    RulesAppliedPuzzle = Puzzle,
+
+    % Print out the puzzle after solving
+    writeln('Puzzle after solving:'),
+    writeln(RulesAppliedPuzzle),
+    print_puzzle(RulesAppliedPuzzle),
+
+    % Assign the solution to the SolvedPuzzle variable
+    SolvedPuzzle = RulesAppliedPuzzle.
