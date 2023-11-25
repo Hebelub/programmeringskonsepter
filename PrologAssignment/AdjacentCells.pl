@@ -4,21 +4,25 @@
 
 % Add neighboring cells to each cell in the puzzle
 add_neighbors(Puzzle, PuzzleWithNeighbors) :-
-    maplist(add_neighbors_row(Puzzle), Puzzle, PuzzleWithNeighbors).
+    findall(RowWithNeighbors, 
+        (nth0(RowIndex, Puzzle, Row),
+         add_neighbors_row(Puzzle, RowIndex, Row, RowWithNeighbors)),
+        PuzzleWithNeighbors).
 
 % Add neighbors for each cell in a row
-add_neighbors_row(Puzzle, Row, RowWithNeighbors) :-
-    maplist(add_neighbors_cell(Puzzle, Row), Row, RowWithNeighbors).
+add_neighbors_row(Puzzle, RowIndex, Row, RowWithNeighbors) :-
+    findall(CellWithNeighbors,
+        (nth0(ColIndex, Row, Center),
+         add_neighbors_cell(Puzzle, RowIndex, ColIndex, Center, CellWithNeighbors)),
+        RowWithNeighbors).
 
 % Add neighbors for a specific cell
-add_neighbors_cell(Puzzle, Row, Center, (Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
-    nth0(RowIndex, Puzzle, Row),  % Get row index
-    nth0(ColIndex, Row, Center),  % Get column index
-
+add_neighbors_cell(Puzzle, RowIndex, ColIndex, Center, (Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
     find_upper_neighbor(Puzzle, RowIndex, ColIndex, AdjUp),
-    find_right_neighbor(Row, ColIndex, AdjRight),
+    nth0(RowIndex, Puzzle, CurrentRow), % Get the current row
+    find_right_neighbor(CurrentRow, ColIndex, AdjRight),
     find_lower_neighbor(Puzzle, RowIndex, ColIndex, AdjDown),
-    find_left_neighbor(Row, ColIndex, AdjLeft),
+    find_left_neighbor(CurrentRow, ColIndex, AdjLeft),
 
     % DEBUG:
     write('Center Cell: '), write(Center), nl,
