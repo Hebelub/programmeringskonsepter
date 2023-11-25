@@ -1,12 +1,13 @@
 % FILEPATH: /C:/Users/glosn/uia/submission/gabriell/PrologAssignment/PuzzleSolver.pl
 
-% :- initialization(main).
+:- initialization(main).
 :- include('PuzzleTypes.pl').
 :- include('PuzzleReader.pl').
 :- include('PuzzleWriter.pl').
 :- include('PrintPuzzle.pl').
 :- include('PreparePuzzle.pl').
 :- include('PuzzleRules.pl').
+:- include('AdjacentCells.pl').
 
 main :-
     % Read puzzles from the file
@@ -33,11 +34,14 @@ solve_puzzle(Puzzle, SolvedPuzzle) :-
     % Debug: Print out the puzzle structure before attempting to solve.
     writeln('Puzzle structure before solving:'),
     writeln(Puzzle),
-
-    % Print out the puzzle to solve
-    writeln('Puzzle to solve:'),
-    writeln(Puzzle),
     print_puzzle(Puzzle),
+
+    % Add neighbours to each cell
+    add_neighbors(Puzzle, PuzzleWithNeighbors),
+
+    % Print out the puzzle after adding neighbours
+    writeln('Puzzle after adding neighbours:'),
+    writeln(PuzzleWithNeighbors),
 
     % Call the solving predicate from PuzzleRules.pl
     % apply_rules(Puzzle, RulesAppliedPuzzle),
