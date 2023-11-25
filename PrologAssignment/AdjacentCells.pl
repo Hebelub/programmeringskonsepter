@@ -22,17 +22,7 @@ add_neighbors_cell(Puzzle, RowIndex, ColIndex, Center, (Center, AdjUp, AdjRight,
     nth0(RowIndex, Puzzle, CurrentRow), % Get the current row
     find_right_neighbor(CurrentRow, ColIndex, AdjRight),
     find_lower_neighbor(Puzzle, RowIndex, ColIndex, AdjDown),
-    find_left_neighbor(CurrentRow, ColIndex, AdjLeft),
-
-    % DEBUG:
-    write('Center Cell: '), write(Center), nl,
-    write('Row Index: '), write(RowIndex), nl,
-    write('Column Index: '), write(ColIndex), nl,
-    write('Upper Neighbor: '), write(AdjUp), nl,
-    write('Right Neighbor: '), write(AdjRight), nl,
-    write('Lower Neighbor: '), write(AdjDown), nl,
-    write('Left Neighbor: '), write(AdjLeft), nl,
-    nl.
+    find_left_neighbor(CurrentRow, ColIndex, AdjLeft).
 
 
 % FIND NEIGHBORING CELLS
