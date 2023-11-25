@@ -8,6 +8,7 @@
 :- include('PreparePuzzle.pl').
 :- include('PuzzleRules.pl').
 :- include('AdjacentCells.pl').
+:- include('IsPuzzleLegal.pl').
 
 main :-
     % Read puzzles from the file
