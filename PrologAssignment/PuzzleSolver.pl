@@ -44,6 +44,9 @@ solve_puzzle(Puzzle, SolvedPuzzle) :-
     writeln('Puzzle after adding neighbours:'),
     writeln(PuzzleWithNeighbors),
 
+    % Check if the puzzle is valid
+    is_puzzle_valid(PuzzleWithNeighbors),
+
     % Call the solving predicate from PuzzleRules.pl
     % apply_rules(Puzzle, RulesAppliedPuzzle),
     RulesAppliedPuzzle = Puzzle,
