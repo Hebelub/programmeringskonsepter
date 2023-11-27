@@ -20,5 +20,4 @@ all_star_cells_in_row_valid([StarCell | RestStarCells]) :-
 
 % Define a valid star cell predicate
 valid_star_cell(star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
-    write('Checking Center: '), write(Center), nl,
     valid_cell(Center).

@@ -21,7 +21,7 @@ read_puzzles(Stream, N, [Grid|Rest]) :- % Modified to return Grid directly
     read_line(Stream, [SizeLine]),
     atom_string(SizeAtom, SizeLine),
     atomic_list_concat(['size', Dimensions], ' ', SizeAtom),
-    atomic_list_concat([Rows, Cols], 'x', Dimensions),
+    atomic_list_concat([Cols, Rows], 'x', Dimensions),
     atom_number(Rows, NRows),
     atom_number(Cols, NCols),
     read_grid(Stream, NRows, NCols, [], Grid), % Grid is used directly
