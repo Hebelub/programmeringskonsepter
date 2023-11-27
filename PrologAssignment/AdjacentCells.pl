@@ -17,13 +17,13 @@ add_neighbors_row(Puzzle, RowIndex, Row, RowWithNeighbors) :-
         RowWithNeighbors).
 
 % Add neighbors for a specific cell
-add_neighbors_cell(Puzzle, RowIndex, ColIndex, Center, (Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
+add_neighbors_cell(Puzzle, RowIndex, ColIndex, Center, star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
     find_upper_neighbor(Puzzle, RowIndex, ColIndex, AdjUp),
     nth0(RowIndex, Puzzle, CurrentRow), % Get the current row
     find_right_neighbor(CurrentRow, ColIndex, AdjRight),
     find_lower_neighbor(Puzzle, RowIndex, ColIndex, AdjDown),
     find_left_neighbor(CurrentRow, ColIndex, AdjLeft).
-
+    
 
 % FIND NEIGHBORING CELLS
 
@@ -69,4 +69,3 @@ find_left_neighbor(Row, ColIndex, AdjLeft) :-
     ;
         empty_cell(AdjLeft)
     ).
-
