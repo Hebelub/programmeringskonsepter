@@ -9,6 +9,7 @@
 :- include('PuzzleRules.pl').
 :- include('AdjacentCells.pl').
 :- include('IsPuzzleLegal.pl').
+:- include('ExtractFromStarPuzzle.pl').
 
 main :-
     % Read puzzles from the file
@@ -51,9 +52,17 @@ solve_puzzle(Puzzle, SolvedPuzzle) :-
     writeln('Puzzle after checking if it is valid:'),
     writeln(PuzzleWithNeighbors),
 
+    % Extract the puzzle from the star puzzle
+    extract_center_elements(PuzzleWithNeighbors, Puzzle2),
+
     % Call the solving predicate from PuzzleRules.pl
     % apply_rules(Puzzle, RulesAppliedPuzzle),
-    RulesAppliedPuzzle = Puzzle,
+    RulesAppliedPuzzle = Puzzle2,
+
+    % Print Puzzle
+    writeln('Puzzle:'),
+    writeln(Puzzle),
+    print_puzzle(Puzzle),
 
     % Print out the puzzle after solving
     writeln('Puzzle after solving:'),

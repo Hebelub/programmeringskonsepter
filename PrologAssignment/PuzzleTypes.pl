@@ -31,3 +31,18 @@ valid_empty(Up, Right, Down, Left) :- is_turn(Up, Right, Down, Left). % Turn con
 
 % Checking Stars
 
+% % Define a valid star cell
+% valid_star(star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
+%     valid_center_cell(Center, AdjUp, AdjRight, AdjDown, AdjLeft).
+
+% % Define what constitutes a valid center cell for white, black, and empty cells
+% valid_center_cell((white, _, _, _, _), AdjUp, AdjRight, AdjDown, AdjLeft) :-
+%     valid_white_center(AdjUp, AdjRight, AdjDown, AdjLeft).
+% % Placeholder for black and empty center cell validation
+% % valid_center_cell((black, _, _, _, _), AdjUp, AdjRight, AdjDown, AdjLeft) :- ...
+% % valid_center_cell((empty, _, _, _, _), AdjUp, AdjRight, AdjDown, AdjLeft) :- ...
+
+% % Define rules for a white center cell
+% valid_white_center(AdjUp, AdjRight, AdjDown, AdjLeft) :-
+%     (is_turn(AdjLeft) ; is_straight(AdjLeft), is_turn(AdjRight)),
+%     (is_turn(AdjUp) ; is_straight(AdjUp), is_turn(AdjDown)).
