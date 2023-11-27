@@ -6,19 +6,19 @@ is_puzzle_valid(StarPuzzle) :-
     % First, validate all star cells in the puzzle
     all_star_cells_valid(StarPuzzle).
 
-% Check that all star cells in the puzzle are valid
+% Check that all rows in the puzzle are valid
 all_star_cells_valid([]).
-all_star_cells_valid([StarCell | RestStarCells]) :-
-    write('Checking star cell: '), write(StarCell), nl,
+all_star_cells_valid([Row | RestRows]) :-
+    all_star_cells_in_row_valid(Row),
+    all_star_cells_valid(RestRows).
+
+% Check that all star cells in a row are valid
+all_star_cells_in_row_valid([]).
+all_star_cells_in_row_valid([StarCell | RestStarCells]) :-
     valid_star_cell(StarCell),
-    all_star_cells_valid(RestStarCells).
+    all_star_cells_in_row_valid(RestStarCells).
 
 % Define a valid star cell predicate
 valid_star_cell(star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
-    valid_center_cell(Center).
-
-% Define what constitutes a valid center cell
-valid_center_cell(Center) :-
-    % This is a placeholder for whatever conditions a center cell must satisfy.
-    % For example:
+    write('Checking Center: '), write(Center), nl,
     valid_cell(Center).

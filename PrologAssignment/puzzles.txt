@@ -1,8 +1,9 @@
 puzzles 2
 size 3x3
-o * _
-_ o *
-* _ o
-size 2x4
-o * _ o
-* o o _
+* _ _
+_ _ o
+* _ _
+size 3x4
+* _ o _
+_ _ o _
+_ _ _ _

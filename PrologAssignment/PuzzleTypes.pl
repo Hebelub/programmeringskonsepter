@@ -1,5 +1,8 @@
 % FILEPATH: /C:/Users/glosn/uia/submission/gabriell/PrologAssignment/PuzzleTypes.pl
 
+
+% Checking Cells
+
 % Mapping the symbols to cell types
 cell_type('*', black).
 cell_type('o', white).
@@ -24,3 +27,7 @@ is_turn(true, false, false, true).
 valid_empty(false, false, false, false). % No connections
 valid_empty(Up, Right, Down, Left) :- is_straight(Up, Right, Down, Left). % Straight configuration
 valid_empty(Up, Right, Down, Left) :- is_turn(Up, Right, Down, Left). % Turn configuration
+
+
+% Checking Stars
+
