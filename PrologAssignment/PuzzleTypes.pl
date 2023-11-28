@@ -31,18 +31,19 @@ valid_empty(Up, Right, Down, Left) :- is_turn(Up, Right, Down, Left). % Turn con
 
 % Checking Stars
 
-% % Define a valid star cell
-% valid_star(star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
-%     valid_center_cell(Center, AdjUp, AdjRight, AdjDown, AdjLeft).
+% Define a valid star cell
 
-% % Define what constitutes a valid center cell for white, black, and empty cells
-% valid_center_cell((white, _, _, _, _), AdjUp, AdjRight, AdjDown, AdjLeft) :-
-%     valid_white_center(AdjUp, AdjRight, AdjDown, AdjLeft).
-% % Placeholder for black and empty center cell validation
-% % valid_center_cell((black, _, _, _, _), AdjUp, AdjRight, AdjDown, AdjLeft) :- ...
-% % valid_center_cell((empty, _, _, _, _), AdjUp, AdjRight, AdjDown, AdjLeft) :- ...
+% Define a valid star cell with white center
+valid_star(star((white, false, true, false, true), _, _, _, (_, _, true, _, false))).
+valid_star(star((white, false, true, false, true), _, (_, _, false, _, true), _, (_, false, true, false, true))).
+valid_star(star((white, true, false, true, false), _, _, (_, true, _, false, _), _)).
+valid_star(star((white, true, false, true, false), (_, false, _, true, _), _, (_, true, false, true, false), _)).
 
-% % Define rules for a white center cell
-% valid_white_center(AdjUp, AdjRight, AdjDown, AdjLeft) :-
-%     (is_turn(AdjLeft) ; is_straight(AdjLeft), is_turn(AdjRight)),
-%     (is_turn(AdjUp) ; is_straight(AdjUp), is_turn(AdjDown)).
+% Define a valid star cell with black center
+valid_star(star((black, true, true, false, false), (_, true, false, true, false), (_, false, true, false, true), _, _)).
+valid_star(star((black, false, true, true, false), _, (_, false, true, false, true), (_, true, false, true, false), _)).
+valid_star(star((black, false, false, true, true), _, _, (_, true, false, true, false), (_, false, true, false, true))).
+valid_star(star((black, true, false, false, true), (_ true, false, true, false), _, _, (_, false, true, false, true))).
+
+% Define a valid star cell with empty center
+valid_star(star((empty, _, _, _, _), _, _, _, _)).
