@@ -9,14 +9,12 @@ add_neighbors(Puzzle, PuzzleWithNeighbors) :-
 % Add neighbors for each row in the puzzle
 add_neighbors_rows([], _, []).
 add_neighbors_rows([Row|Rows], Puzzle, [RowWithNeighbors|PuzzleWithNeighbors]) :-
-    writeln('Processing Row:'), writeln(Row),
     add_neighbors_row(Row, 0, Puzzle, RowWithNeighbors),
     add_neighbors_rows(Rows, Puzzle, PuzzleWithNeighbors).
 
 % Add neighbors for each cell in a row
 add_neighbors_row([], _, _, []).
 add_neighbors_row([Center|Centers], ColIndex, Puzzle, [CellWithNeighbors|RowWithNeighbors]) :-
-    writeln('Adding Neighbors for Cell:'), writeln(Center),
     add_neighbors_cell(ColIndex, Center, Puzzle, CellWithNeighbors),
     NextColIndex is ColIndex + 1,
     add_neighbors_row(Centers, NextColIndex, Puzzle, RowWithNeighbors).
