@@ -44,25 +44,28 @@ valid_star(star((white, true, false, true, false), (_, false, _, true, _), _, (_
 valid_star(star((black, true, true, false, false), (_, true, false, true, false), (_, false, true, false, true), _, _)).
 valid_star(star((black, false, true, true, false), _, (_, false, true, false, true), (_, true, false, true, false), _)).
 valid_star(star((black, false, false, true, true), _, _, (_, true, false, true, false), (_, false, true, false, true))).
-valid_star(star((black, true, false, false, true), (_ true, false, true, false), _, _, (_, false, true, false, true))).
+valid_star(star((black, true, false, false, true), (_, true, false, true, false), _, _, (_, false, true, false, true))).
 
 % Define a valid star cell with empty center
-valid_star(star((empty, _, _, _, _), _, _, _, _)).
-
+valid_star(star((empty, true, true, false, false), _, _, _, _)).
+valid_star(star((empty, false, true, true, false), _, _, _, _)).
+valid_star(star((empty, false, false, true, true), _, _, _, _)).
+valid_star(star((empty, true, false, false, true), _, _, _, _)).
+valid_star(star((empty, true, false, true, false), _, _, _, _)).
+valid_star(star((empty, false, true, false, true), _, _, _, _)).
+valid_star(star((empty, false, false, false, false), _, _, _, _)).
 
 
 % Determine the center cell's connections based on its type and adjacent cells
-determine_center_connections(Star, CenterCell) :-
-    % writeln('Determening for Star: '), print_star(Star), nl.
-
+determine_star_center(Star, CenterCell) :-
     % Extract the type of the center cell and adjacent cells from the star
-    Star = star((Type, _, _, _, _), AdjUp, AdjRight, AdjDown, AdjLeft),
+    Star = star((Type, UpKnown, RightKnown, DownKnown, LeftKnown), AdjUp, AdjRight, AdjDown, AdjLeft),
 
-    % Try all possible combinations of connections for the center cell
-    member(Up, [true, false]),
-    member(Right, [true, false]),
-    member(Down, [true, false]),
-    member(Left, [true, false]),
+    % Handle already known connections or try possibilities if unknown
+    (nonvar(UpKnown) -> Up = UpKnown; member(Up, [true, false])),
+    (nonvar(RightKnown) -> Right = RightKnown; member(Right, [true, false])),
+    (nonvar(DownKnown) -> Down = DownKnown; member(Down, [true, false])),
+    (nonvar(LeftKnown) -> Left = LeftKnown; member(Left, [true, false])),
 
     % Check if the star configuration is valid with the given connections
     valid_star(star((Type, Up, Right, Down, Left), AdjUp, AdjRight, AdjDown, AdjLeft)),
