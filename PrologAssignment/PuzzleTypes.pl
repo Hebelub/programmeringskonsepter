@@ -86,12 +86,6 @@ determine_star_center(Star, CenterCell) :-
     % Check if the star configuration is valid with the given connections
     valid_star(star((Type, Up, Right, Down, Left), AdjUp, AdjRight, AdjDown, AdjLeft)),
 
-    % % Print the star and the determined center cell
-    % writeln('Testing Star:'),
-    % print_star(Star),
-    % writeln('Determined Center Cell:'),
-    % write(CenterCell), nl,
-
     % Return the center cell with determined connections
     CenterCell = (Type, Up, Right, Down, Left).
 
