@@ -56,6 +56,22 @@ valid_star(star((empty, false, true, false, true), _, _, _, _)).
 valid_star(star((empty, false, false, false, false), _, _, _, _)).
 
 
+valid_star_smart(star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
+    valid_star(Center),
+
+    % Adjacent stars
+    AdjUpStar = star(AdjUp, _, _, Center, _),
+    AdjRightStar = star(AdjRight, _, _, _, Center),
+    AdjDownStar = star(AdjDown, Center, _, _, _),
+    AdjLeftStar = star(AdjLeft, _, Center, _, _),
+
+    % Check validity of adjacent stars
+    valid_star(AdjUpStar),
+    valid_star(AdjRightStar),
+    valid_star(AdjDownStar),
+    valid_star(AdjLeftStar).
+
+
 % Determine the center cell's connections based on its type and adjacent cells
 determine_star_center(Star, CenterCell) :-
     % Extract the type of the center cell and adjacent cells from the star
@@ -69,6 +85,12 @@ determine_star_center(Star, CenterCell) :-
 
     % Check if the star configuration is valid with the given connections
     valid_star(star((Type, Up, Right, Down, Left), AdjUp, AdjRight, AdjDown, AdjLeft)),
+
+    % % Print the star and the determined center cell
+    % writeln('Testing Star:'),
+    % print_star(Star),
+    % writeln('Determined Center Cell:'),
+    % write(CenterCell), nl,
 
     % Return the center cell with determined connections
     CenterCell = (Type, Up, Right, Down, Left).
