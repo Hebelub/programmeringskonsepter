@@ -13,8 +13,12 @@
 :- include('Optimize').
 
 main :-
+    % Get command-line arguments
+    current_prolog_flag(argv, Args),
+    determine_files(Args, InputFile, OutputFile),
+
     % Read puzzles from the file
-    read_file('puzzles.txt', Puzzles),
+    read_file(InputFile, Puzzles),
 
     % Prepare the puzzles for solving
     prepare_puzzles(Puzzles, PreparedPuzzles),
@@ -23,10 +27,15 @@ main :-
     solve_each_puzzle(PreparedPuzzles, SolvedPuzzles),
 
     % Write the solved puzzles to a file
-    write_solutions_to_file('solved_puzzles.txt', SolvedPuzzles),
+    write_solutions_to_file(OutputFile, SolvedPuzzles),
 
     % Print a confirmation
-    writeln('All puzzles solved and written to solved_puzzles.txt.').
+    format('All puzzles solved and written to ~w.\n', [OutputFile]).
+
+% Determine the input and output files based on command-line arguments
+determine_files(Args, InputFile, OutputFile) :-
+    ( Args = [ArgInput, ArgOutput] -> InputFile = ArgInput, OutputFile = ArgOutput
+    ; InputFile = 'puzzles.txt', OutputFile = 'solved_puzzles.txt' ).
 
 solve_each_puzzle([], []).
 solve_each_puzzle([Puzzle|Puzzles], [SolvedPuzzle|SolvedPuzzles]) :-
