@@ -13,13 +13,14 @@ all_star_cells_in_row_valid([]).
 all_star_cells_in_row_valid([StarCell | RestStarCells]) :-
     % Print length of RestStarCells
     length(RestStarCells, Length),
-    write(Length), write(' '),
+
+    % write('Depth: '), write(Length), write(':'), nl,
+    % write('Star Cell: '), write(StarCell), nl,
     
     valid_star(StarCell),
 
-    write(''), 
-    print_star(StarCell),
-    sleep(1),
+    % print_star(StarCell),
+    % sleep(1),
 
     all_star_cells_in_row_valid(RestStarCells).
 

@@ -4,35 +4,37 @@
 
 % Add neighboring cells to each cell in the puzzle
 add_neighbors(Puzzle, PuzzleWithNeighbors) :-
-    add_neighbors_rows(Puzzle, Puzzle, PuzzleWithNeighbors).
+    add_neighbors_rows(Puzzle, Puzzle, 0, PuzzleWithNeighbors).
 
 % Add neighbors for each row in the puzzle
-add_neighbors_rows([], _, []).
-add_neighbors_rows([Row|Rows], Puzzle, [RowWithNeighbors|PuzzleWithNeighbors]) :-
-    add_neighbors_row(Row, 0, Puzzle, RowWithNeighbors),
-    add_neighbors_rows(Rows, Puzzle, PuzzleWithNeighbors).
+add_neighbors_rows([], _, _, []).
+add_neighbors_rows([Row|Rows], Puzzle, RowIndex, [RowWithNeighbors|PuzzleWithNeighbors]) :-
+    add_neighbors_row(Row, 0, Puzzle, RowIndex, RowWithNeighbors),
+    NextRowIndex is RowIndex + 1,
+    add_neighbors_rows(Rows, Puzzle, NextRowIndex, PuzzleWithNeighbors).
 
 % Add neighbors for each cell in a row
-add_neighbors_row([], _, _, []).
-add_neighbors_row([Center|Centers], ColIndex, Puzzle, [CellWithNeighbors|RowWithNeighbors]) :-
-    add_neighbors_cell(ColIndex, Center, Puzzle, CellWithNeighbors),
+add_neighbors_row([], _, _, _, []).
+add_neighbors_row([Center|Centers], ColIndex, Puzzle, RowIndex, [CellWithNeighbors|RowWithNeighbors]) :-
+    add_neighbors_cell(ColIndex, Center, Puzzle, RowIndex, CellWithNeighbors),
     NextColIndex is ColIndex + 1,
-    add_neighbors_row(Centers, NextColIndex, Puzzle, RowWithNeighbors).
+    add_neighbors_row(Centers, NextColIndex, Puzzle, RowIndex, RowWithNeighbors).
 
 % Add neighbors for a specific cell
-add_neighbors_cell(ColIndex, Center, Puzzle, star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
-    nth0(RowIndex, Puzzle, Row), % Get row index of the current row
+add_neighbors_cell(ColIndex, Center, Puzzle, RowIndex, star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
+    nth0(RowIndex, Puzzle, Row), % Use the passed RowIndex
     find_upper_neighbor(Puzzle, RowIndex, ColIndex, AdjUp),
     find_right_neighbor(Row, ColIndex, AdjRight),
     find_lower_neighbor(Puzzle, RowIndex, ColIndex, AdjDown),
-    find_left_neighbor(Row, ColIndex, AdjLeft),
+    find_left_neighbor(Row, ColIndex, AdjLeft).
 
-    % Debug: Print the current cell's position and its neighbors
-    write('Row: '), write(RowIndex), write(', Col: '), writeln(ColIndex),
-    write('AdjUp: '), writeln(AdjUp),
-    write('AdjRight: '), writeln(AdjRight),
-    write('AdjDown: '), writeln(AdjDown),
-    write('AdjLeft: '), writeln(AdjLeft), nl.
+    % % Debug: Print the current cell's position and its neighbors
+    % write('Row: '), write(RowIndex), write(', Col: '), writeln(ColIndex),
+    % write('Center: '), writeln(Center),
+    % write('AdjUp: '), writeln(AdjUp),
+    % write('AdjRight: '), writeln(AdjRight),
+    % write('AdjDown: '), writeln(AdjDown),
+    % write('AdjLeft: '), writeln(AdjLeft), nl.
 
 
 % FIND NEIGHBORING CELLS

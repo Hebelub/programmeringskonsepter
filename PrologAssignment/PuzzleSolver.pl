@@ -35,7 +35,7 @@ solve_each_puzzle([Puzzle|Puzzles], [SolvedPuzzle|SolvedPuzzles]) :-
 solve_puzzle(Puzzle, SolvedPuzzle) :-
     % Debug: Print out the puzzle structure before attempting to solve.
     writeln('Puzzle structure before solving:'),
-    writeln(Puzzle),
+    % writeln(Puzzle),
     print_puzzle(Puzzle),
 
     % Add neighbours to each cell
@@ -43,23 +43,26 @@ solve_puzzle(Puzzle, SolvedPuzzle) :-
 
     % Flatten the puzzle
     flatten_2d(PuzzleWithNeighbors, FlattenedPuzzleStars),
-    writeln('Flattened puzzlestars:'),
-    writeln(FlattenedPuzzleStars),
+    % writeln('Flattened puzzlestars:'),
+    % writeln(FlattenedPuzzleStars),
 
     % Sort the stars into separate lists based on the center cell's type
-    filter_stars(FlattenedPuzzleStars, is_black_star, BlackStars),
-    filter_stars(FlattenedPuzzleStars, is_white_star, WhiteStars),
-    filter_stars(FlattenedPuzzleStars, is_empty_star, EmptyStars),
+    % filter_stars(FlattenedPuzzleStars, is_black_star, BlackStars),
+    % filter_stars(FlattenedPuzzleStars, is_white_star, WhiteStars),
+    % filter_stars(FlattenedPuzzleStars, is_empty_star, EmptyStars),
 
     % Print out the filtered stars
-    writeln('Black stars:'),
-    writeln(BlackStars),
-    writeln('White stars:'),
-    writeln(WhiteStars),
-    writeln('Empty stars:'),
-    writeln(EmptyStars),
+    % writeln('Num Black stars:'),
+    % length(BlackStars, NumBlackStars),
+    % writeln(NumBlackStars),
+    % writeln('White stars:'),
+    % length(WhiteStars, NumWhiteStars),
+    % writeln(NumWhiteStars),
+    % writeln('Empty stars:'),
+    % length(EmptyStars, NumEmptyStars),
+    % writeln(NumEmptyStars),
 
-    % % Check if the puzzle is valid
+    % Check if the puzzle is valid
     % is_puzzle_valid(BlackStars),
     % writeln('Puzzle with black stars:'),
     % print_puzzle(Puzzle),
@@ -71,21 +74,6 @@ solve_puzzle(Puzzle, SolvedPuzzle) :-
     is_puzzle_valid(FlattenedPuzzleStars),
     writeln('Solved Puzzle:'),
     print_puzzle(Puzzle),
-
-    % % Print out the puzzle after checking if it is valid
-    % writeln('Puzzle after checking if it is valid:'),
-    % writeln(PuzzleWithNeighbors),
-
-    % % % Extract the puzzle from the star puzzle
-    % % extract_center_elements(PuzzleWithNeighbors, Puzzle2),
-
-    % % % Call the solving predicate from PuzzleRules.pl
-    % % % apply_rules(Puzzle, RulesAppliedPuzzle),
-    % % RulesAppliedPuzzle = Puzzle2,
-
-    % Wait for user input
-    % writeln('Press any key to continue...'),
-    % get_single_char(_),
 
     % Assign the solution to the SolvedPuzzle variable
     SolvedPuzzle = Puzzle.
