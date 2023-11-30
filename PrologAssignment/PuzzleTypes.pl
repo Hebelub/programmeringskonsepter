@@ -47,10 +47,26 @@ valid_star(star((black, false, false, true, true), _, _, (_, true, false, true, 
 valid_star(star((black, true, false, false, true), (_, true, false, true, false), _, _, (_, false, true, false, true))).
 
 % Define a valid star cell with empty center
-valid_star(star((empty, true, true, false, false), _, _, _, _)).
-valid_star(star((empty, false, true, true, false), _, _, _, _)).
-valid_star(star((empty, false, false, true, true), _, _, _, _)).
-valid_star(star((empty, true, false, false, true), _, _, _, _)).
+valid_star(star((empty, true, true, false, false), (white, _, _, _, _), (white, _, _, _, _), _, _)).
+valid_star(star((empty, true, true, false, false), (empty, _, _, _, _), (empty, _, _, _, _), _, _)).
+valid_star(star((empty, true, true, false, false), (white, _, _, _, _), (empty, _, _, _, _), _, _)).
+valid_star(star((empty, true, true, false, false), (empty, _, _, _, _), (white, _, _, _, _), _, _)).
+
+valid_star(star((empty, false, true, true, false), _, (white, _, _, _, _), (white, _, _, _, _), _)).
+valid_star(star((empty, false, true, true, false), _, (empty, _, _, _, _), (empty, _, _, _, _), _)).
+valid_star(star((empty, false, true, true, false), _, (white, _, _, _, _), (empty, _, _, _, _), _)).
+valid_star(star((empty, false, true, true, false), _, (empty, _, _, _, _), (white, _, _, _, _), _)).
+
+valid_star(star((empty, false, false, true, true), _, _, (white, _, _, _, _), (white, _, _, _, _))).
+valid_star(star((empty, false, false, true, true), _, _, (empty, _, _, _, _), (empty, _, _, _, _))).
+valid_star(star((empty, false, false, true, true), _, _, (white, _, _, _, _), (empty, _, _, _, _))).
+valid_star(star((empty, false, false, true, true), _, _, (empty, _, _, _, _), (white, _, _, _, _))).
+
+valid_star(star((empty, true, false, false, true), (white, _, _, _, _), _, _, (white, _, _, _, _))).
+valid_star(star((empty, true, false, false, true), (empty, _, _, _, _), _, _, (empty, _, _, _, _))).
+valid_star(star((empty, true, false, false, true), (empty, _, _, _, _), _, _, (white, _, _, _, _))).
+valid_star(star((empty, true, false, false, true), (white, _, _, _, _), _, _, (empty, _, _, _, _))).
+
 valid_star(star((empty, true, false, true, false), _, _, _, _)).
 valid_star(star((empty, false, true, false, true), _, _, _, _)).
 valid_star(star((empty, false, false, false, false), _, _, _, _)).
