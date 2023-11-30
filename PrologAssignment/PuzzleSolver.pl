@@ -41,33 +41,65 @@ solve_puzzle(Puzzle, SolvedPuzzle) :-
     % Add neighbours to each cell
     add_neighbors(Puzzle, PuzzleWithNeighbors),
 
-    % Print out the puzzle after adding neighbours
-    writeln('Puzzle after adding neighbours:'),
-    writeln(PuzzleWithNeighbors),
+    % Flatten the puzzle
+    flatten_2d(PuzzleWithNeighbors, FlattenedPuzzleStars),
+    writeln('Flattened puzzlestars:'),
+    writeln(FlattenedPuzzleStars),
 
-    % Check if the puzzle is valid
-    is_puzzle_valid(PuzzleWithNeighbors),
+    % Sort the stars into separate lists based on the center cell's type
+    filter_stars(FlattenedPuzzleStars, is_black_star, BlackStars),
+    filter_stars(FlattenedPuzzleStars, is_white_star, WhiteStars),
+    filter_stars(FlattenedPuzzleStars, is_empty_star, EmptyStars),
 
-    % Print out the puzzle after checking if it is valid
-    writeln('Puzzle after checking if it is valid:'),
-    writeln(PuzzleWithNeighbors),
+    % Print out the filtered stars
+    writeln('Black stars:'),
+    writeln(BlackStars),
+    writeln('White stars:'),
+    writeln(WhiteStars),
+    writeln('Empty stars:'),
+    writeln(EmptyStars),
 
-    % Extract the puzzle from the star puzzle
-    extract_center_elements(PuzzleWithNeighbors, Puzzle2),
+    % % Check if the puzzle is valid
+    % is_puzzle_valid(BlackStars),
+    % writeln('Puzzle with black stars:'),
+    % print_puzzle(Puzzle),
 
-    % Call the solving predicate from PuzzleRules.pl
-    % apply_rules(Puzzle, RulesAppliedPuzzle),
-    RulesAppliedPuzzle = Puzzle2,
+    % is_puzzle_valid(WhiteStars),
+    % writeln('Puzzle with white stars:'),
+    % print_puzzle(Puzzle),
 
-    % Print Puzzle
-    writeln('Puzzle:'),
-    writeln(Puzzle),
+    is_puzzle_valid(FlattenedPuzzleStars),
+    writeln('Solved Puzzle:'),
     print_puzzle(Puzzle),
 
-    % Print out the puzzle after solving
-    writeln('Puzzle after solving:'),
-    writeln(RulesAppliedPuzzle),
-    print_puzzle(RulesAppliedPuzzle),
+    % % Print out the puzzle after checking if it is valid
+    % writeln('Puzzle after checking if it is valid:'),
+    % writeln(PuzzleWithNeighbors),
+
+    % % % Extract the puzzle from the star puzzle
+    % % extract_center_elements(PuzzleWithNeighbors, Puzzle2),
+
+    % % % Call the solving predicate from PuzzleRules.pl
+    % % % apply_rules(Puzzle, RulesAppliedPuzzle),
+    % % RulesAppliedPuzzle = Puzzle2,
+
+    % Wait for user input
+    % writeln('Press any key to continue...'),
+    % get_single_char(_),
 
     % Assign the solution to the SolvedPuzzle variable
-    SolvedPuzzle = RulesAppliedPuzzle.
+    SolvedPuzzle = Puzzle.
+
+% Flatten a 2D list into a 1D list while maintaining the structure of elements
+flatten_2d([], []).
+flatten_2d([Row|Rows], FlatList) :-
+    flatten_2d(Rows, FlatRest),
+    append(Row, FlatRest, FlatList).
+
+is_black_star(star((black, _, _, _, _), _, _, _, _)).
+is_white_star(star((white, _, _, _, _), _, _, _, _)).
+is_empty_star(star((empty, _, _, _, _), _, _, _, _)).
+
+% Filters the list of Stars based on the given Pattern.
+filter_stars(Stars, Pattern, FilteredStars) :-
+    include(Pattern, Stars, FilteredStars).
