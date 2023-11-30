@@ -14,7 +14,6 @@ write_solutions(Stream, [Solution|Solutions]) :-
     length(Solution, Cols),          % Assuming each row has equal length
     format(Stream, 'size ~wx~w\n', [Rows, Cols]),
     maplist(write_row(Stream), Solution),
-    writeln(Stream, ''),             % Newline after each puzzle
     write_solutions(Stream, Solutions).
 
 write_row(Stream, Row) :-
