@@ -34,9 +34,8 @@ solve_each_puzzle([Puzzle|Puzzles], [SolvedPuzzle|SolvedPuzzles]) :-
     solve_each_puzzle(Puzzles, SolvedPuzzles).
 
 solve_puzzle(Puzzle, SolvedPuzzle) :-
-    % Debug: Print out the puzzle structure before attempting to solve.
+    % Print puzzle structure before solve
     writeln('Puzzle structure before solving:'),
-    % writeln(Puzzle),
     print_puzzle(Puzzle),
     
     % Add neighbours to each cell
