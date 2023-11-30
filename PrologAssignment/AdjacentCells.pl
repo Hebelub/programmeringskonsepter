@@ -25,7 +25,15 @@ add_neighbors_cell(ColIndex, Center, Puzzle, star(Center, AdjUp, AdjRight, AdjDo
     find_upper_neighbor(Puzzle, RowIndex, ColIndex, AdjUp),
     find_right_neighbor(Row, ColIndex, AdjRight),
     find_lower_neighbor(Puzzle, RowIndex, ColIndex, AdjDown),
-    find_left_neighbor(Row, ColIndex, AdjLeft).
+    find_left_neighbor(Row, ColIndex, AdjLeft),
+
+    % Debug: Print the current cell's position and its neighbors
+    write('Row: '), write(RowIndex), write(', Col: '), writeln(ColIndex),
+    write('AdjUp: '), writeln(AdjUp),
+    write('AdjRight: '), writeln(AdjRight),
+    write('AdjDown: '), writeln(AdjDown),
+    write('AdjLeft: '), writeln(AdjLeft), nl.
+
 
 % FIND NEIGHBORING CELLS
 
