@@ -10,6 +10,7 @@
 :- include('AdjacentCells.pl').
 :- include('IsPuzzleLegal.pl').
 :- include('ExtractFromStarPuzzle.pl').
+:- include('Optimize').
 
 main :-
     % Read puzzles from the file
@@ -37,41 +38,22 @@ solve_puzzle(Puzzle, SolvedPuzzle) :-
     writeln('Puzzle structure before solving:'),
     % writeln(Puzzle),
     print_puzzle(Puzzle),
-
+    
     % Add neighbours to each cell
     add_neighbors(Puzzle, PuzzleWithNeighbors),
 
     % Flatten the puzzle
-    flatten_2d(PuzzleWithNeighbors, FlattenedPuzzleStars),
-    % writeln('Flattened puzzlestars:'),
-    % writeln(FlattenedPuzzleStars),
+    flatten_2d(PuzzleWithNeighbors, Stars),
 
-    % Sort the stars into separate lists based on the center cell's type
-    % filter_stars(FlattenedPuzzleStars, is_black_star, BlackStars),
-    % filter_stars(FlattenedPuzzleStars, is_white_star, WhiteStars),
-    % filter_stars(FlattenedPuzzleStars, is_empty_star, EmptyStars),
+    % Optimize the puzzle in the flattened list
+    optimize_stars(Stars),
 
-    % Print out the filtered stars
-    % writeln('Num Black stars:'),
-    % length(BlackStars, NumBlackStars),
-    % writeln(NumBlackStars),
-    % writeln('White stars:'),
-    % length(WhiteStars, NumWhiteStars),
-    % writeln(NumWhiteStars),
-    % writeln('Empty stars:'),
-    % length(EmptyStars, NumEmptyStars),
-    % writeln(NumEmptyStars),
+    % After optimization
+    writeln('Puzzle structure after optimization:'),
+    print_puzzle(Puzzle),
 
-    % Check if the puzzle is valid
-    % is_puzzle_valid(BlackStars),
-    % writeln('Puzzle with black stars:'),
-    % print_puzzle(Puzzle),
-
-    % is_puzzle_valid(WhiteStars),
-    % writeln('Puzzle with white stars:'),
-    % print_puzzle(Puzzle),
-
-    is_puzzle_valid(FlattenedPuzzleStars),
+    % Solve the puzzle
+    is_puzzle_valid(Stars),
     writeln('Solved Puzzle:'),
     print_puzzle(Puzzle),
 
@@ -83,11 +65,3 @@ flatten_2d([], []).
 flatten_2d([Row|Rows], FlatList) :-
     flatten_2d(Rows, FlatRest),
     append(Row, FlatRest, FlatList).
-
-is_black_star(star((black, _, _, _, _), _, _, _, _)).
-is_white_star(star((white, _, _, _, _), _, _, _, _)).
-is_empty_star(star((empty, _, _, _, _), _, _, _, _)).
-
-% Filters the list of Stars based on the given Pattern.
-filter_stars(Stars, Pattern, FilteredStars) :-
-    include(Pattern, Stars, FilteredStars).
