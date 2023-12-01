@@ -115,7 +115,6 @@ determine_star_center(Star, CenterCell) :-
     CenterCell = (Type, Up, Right, Down, Left).
 
 
-
 % TESTING TO GENERATE STARS
 
 % Generate and print all valid star combinations
