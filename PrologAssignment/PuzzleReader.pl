@@ -1,6 +1,9 @@
 % FILEPATH: /C:/Users/glosn/uia/submission/gabriell/PrologAssignment/PuzzleReader.pl
 
-:- include('PuzzleTypes.pl').
+% Mapping the symbols to cell types
+cell_type('*', black).
+cell_type('o', white).
+cell_type('_', empty).
 
 % Cell structure
 create_cell(CellType, Cell) :-
