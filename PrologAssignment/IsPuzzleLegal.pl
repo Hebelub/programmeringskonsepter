@@ -6,23 +6,23 @@
 
 % Main predicate to validate the puzzle
 is_puzzle_valid(Stars) :-
-    all_star_cells_in_row_valid(Stars).
+    all_stars_valid(Stars).
 
 % Check that all star cells in a row are valid
-all_star_cells_in_row_valid([]).
-all_star_cells_in_row_valid([StarCell | RestStarCells]) :-
-    % Print length of RestStarCells
-    length(RestStarCells, Length),
-
-    % write('Depth: '), write(Length), write(':'), nl,
-    % write('Star Cell: '), write(StarCell), nl,
+all_stars_valid([]).
+all_stars_valid([StarCell | RestStarCells]) :-
     
-    valid_star(StarCell),
+    % Check if the original star cell is valid
+    % valid_star(StarCell),
 
-    % print_star(StarCell),
-    % sleep(1),
+    % Check if the center of the star cell is valid
+    StarCell = star(Center, _, _, _, _),
 
-    all_star_cells_in_row_valid(RestStarCells).
+    valid_cell(Center),
+
+    % Proceed with the rest of the star cells
+    all_stars_valid(RestStarCells).
+
 
 % % Define a valid star cell predicate
 % valid_star_cell(star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
