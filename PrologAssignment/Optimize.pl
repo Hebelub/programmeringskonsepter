@@ -2,6 +2,29 @@
 
 optimize_stars([]).
 optimize_stars(Stars) :-
+    unify_opposite_white_cells(Stars),
+    process_stars_plenty(Stars).
+
+    % After this we should order the stars for optimization
+    % TODO: More optimization
+
+% Unify opposite connections for white cells in a list of stars
+unify_opposite_white_cells([]).
+unify_opposite_white_cells([Star|Rest]) :-
+    Star = star((white, Up, Right, Down, Left), _, _, _, _),
+    Up = Down, % Unify the Up and Down connections
+    Right = Left, % Unify the Right and Left connections
+    unify_opposite_white_cells(Rest).
+unify_opposite_white_cells([_|Rest]) :-
+    % For non-white cells, just continue with the rest
+    unify_opposite_white_cells(Rest).
+
+
+% Process stars many times to ensure that all stars are optimized
+process_stars_plenty(Stars) :-
+    process_stars(Stars),
+    process_stars(Stars),
+    process_stars(Stars),
     process_stars(Stars),
     process_stars(Stars),
     process_stars(Stars),
@@ -34,10 +57,7 @@ optimize_stars(Stars) :-
     process_stars(Stars),
     process_stars(Stars),
     process_stars(Stars).
-    % Reverse Stars
 
-    % After this we should order the stars for optimization
-    % TODO: More optimization
 
 % Check each cell in the star to look after only one solution
 process_stars([]).
