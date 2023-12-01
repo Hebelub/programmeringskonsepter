@@ -1,6 +1,5 @@
 % FILEPATH: /C:/Users/glosn/uia/submission/gabriell/PrologAssignment/PuzzleSolver.pl
-
-:- main.
+:- initialization(main).
 
 :- include('PuzzleTypes.pl').
 :- include('PuzzleReader.pl').
