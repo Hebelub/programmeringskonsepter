@@ -10,11 +10,13 @@ write_solutions_to_file(FilePath, Solutions) :-
 
 write_solutions(_, []).
 write_solutions(Stream, [Solution|Solutions]) :-
-    length(Solution, Rows),          % Assuming Solution is a list of rows
-    length(Solution, Cols),          % Assuming each row has equal length
-    format(Stream, 'size ~wx~w\n', [Rows, Cols]),
+    length(Solution, Rows),          % Get the number of rows
+    Solution = [FirstRow|_],         % Get the first row to determine the number of columns
+    length(FirstRow, Cols),          % Get the number of columns
+    format(Stream, 'size ~wx~w\n', [Cols, Rows]),  % Note the switch to [Cols, Rows]
     maplist(write_row(Stream), Solution),
     write_solutions(Stream, Solutions).
+
 
 write_row(Stream, Row) :-
     maplist(cell_to_char, Row, Chars),
