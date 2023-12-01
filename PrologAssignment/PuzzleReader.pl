@@ -31,12 +31,19 @@ read_puzzles(Stream, N, [Grid|Rest]) :- % Modified to return Grid directly
     N1 is N - 1,
     read_puzzles(Stream, N1, Rest).
 
+% Read the grid of the puzzle
 read_grid(_, 0, _, Grid, Grid).
 read_grid(Stream, N, CurrCols, CurrGrid, Grid) :-
     N > 0,
     read_line(Stream, [Line]),
     atom_string(LineAtom, Line),
-    atomic_list_concat(Symbols, ' ', LineAtom),
+    % Trim trailing whitespace
+    trim(LineAtom, TrimmedLineAtom),
+    % Debugging
+    write(TrimmedLineAtom), nl,
+    atomic_list_concat(Symbols, ' ', TrimmedLineAtom),
+    % Debugging
+    write(Symbols), nl,
     maplist(cell_type, Symbols, CellTypes),
     maplist(create_cell, CellTypes, Row),
     append(CurrGrid, [Row], NewGrid),
@@ -46,3 +53,15 @@ read_grid(Stream, N, CurrCols, CurrGrid, Grid) :-
 read_line(Stream, Lines) :-
     read_line_to_string(Stream, Line),
     Lines = [Line].
+
+% Custom predicate to trim trailing whitespace
+trim(String, Trimmed) :-
+    string_codes(String, Codes),
+    reverse(Codes, Reversed),
+    drop_space(Reversed, TrimmedReversed),
+    reverse(TrimmedReversed, TrimmedCodes),
+    string_codes(Trimmed, TrimmedCodes).
+
+drop_space([], []).
+drop_space([32|T], Trimmed) :- drop_space(T, Trimmed), !.  % ASCII code for space is 32
+drop_space(L, L).
