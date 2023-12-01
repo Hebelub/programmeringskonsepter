@@ -1,6 +1,7 @@
 % FILEPATH: /C:/Users/glosn/uia/submission/gabriell/PrologAssignment/PuzzleSolver.pl
 
-:- initialization(main).
+:- main.
+
 :- include('PuzzleTypes.pl').
 :- include('PuzzleReader.pl').
 :- include('PuzzleWriter.pl').
@@ -30,11 +31,14 @@ main :-
     write_solutions_to_file(OutputFile, SolvedPuzzles),
 
     % Print a confirmation
-    format('All puzzles solved and written to ~w.\n', [OutputFile]).
+    format('All puzzles solved and written to ~w.\n', [OutputFile]),
+    
+    % End the program
+    halt.
 
 % Determine the input and output files based on command-line arguments
 determine_files(Args, InputFile, OutputFile) :-
-    ( Args = [ArgInput, ArgOutput] -> InputFile = ArgInput, OutputFile = ArgOutput
+    ( Args = ['--io', ArgInput, ArgOutput] -> InputFile = ArgInput, OutputFile = ArgOutput
     ; InputFile = 'puzzles.txt', OutputFile = 'solved_puzzles.txt' ).
 
 solve_each_puzzle([], []).
