@@ -2,13 +2,6 @@
 
 :- include('PrintStar.pl').
 
-% Checking Cells
-
-% Mapping the symbols to cell types
-cell_type('*', black).
-cell_type('o', white).
-cell_type('_', empty).
-
 % Cell type definitions
 valid_cell((white, Up, Right, Down, Left)) :- is_straight(Up, Right, Down, Left).
 valid_cell((black, Up, Right, Down, Left)) :- is_turn(Up, Right, Down, Left).
@@ -72,20 +65,36 @@ valid_star(star((empty, false, true, false, true), _, _, _, _)).
 valid_star(star((empty, false, false, false, false), _, _, _, _)).
 
 
-valid_star_smart(star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
-    valid_star(Center),
+% valid_star_smart(star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
+%     once((
+%         once(valid_adjacent(up, Center, AdjUp)),
+%         once(valid_adjacent(right, Center, AdjRight)),
+%         once(valid_adjacent(down, Center, AdjDown)),
+%         once(valid_adjacent(left, Center, AdjLeft))
+%     )).
 
-    % Adjacent stars
-    AdjUpStar = star(AdjUp, _, _, Center, _),
-    AdjRightStar = star(AdjRight, _, _, _, Center),
-    AdjDownStar = star(AdjDown, Center, _, _, _),
-    AdjLeftStar = star(AdjLeft, _, Center, _, _),
+% Check if there exists at least one valid configuration for an adjacent cell in a given direction.
+valid_adjacent(Direction, Center, Adjacent) :-
+    % The type of the adjacent cell is known and fixed
+    Adjacent = (Type, UpKnown, RightKnown, DownKnown, LeftKnown),
 
-    % Check validity of adjacent stars
-    valid_star(AdjUpStar),
-    valid_star(AdjRightStar),
-    valid_star(AdjDownStar),
-    valid_star(AdjLeftStar).
+    % Handle already known connections or try possibilities if unknown
+    (nonvar(UpKnown) -> Up = UpKnown; member(Up, [true, false])),
+    (nonvar(RightKnown) -> Right = RightKnown; member(Right, [true, false])),
+    (nonvar(DownKnown) -> Down = DownKnown; member(Down, [true, false])),
+    (nonvar(LeftKnown) -> Left = LeftKnown; member(Left, [true, false])),
+
+    % Construct a phantom star for the adjacent cell based on the direction
+    construct_phantom_star(Direction, (Type, Up, Right, Down, Left), Center, PhantomStar),
+
+    % Check if the phantom star configuration is valid
+    valid_star(PhantomStar).
+
+% Construct a phantom star based on the direction of the adjacent cell
+construct_phantom_star(up, AdjCell, Center, star(AdjCell, _, _, Center, _)).
+construct_phantom_star(right, AdjCell, Center, star(AdjCell, _, _, _, Center)).
+construct_phantom_star(down, AdjCell, Center, star(AdjCell, Center, _, _, _)).
+construct_phantom_star(left, AdjCell, Center, star(AdjCell, _, Center, _, _)).
 
 
 % Determine the center cell's connections based on its type and adjacent cells
