@@ -3,7 +3,7 @@
 optimize_stars([]).
 optimize_stars(Stars) :-
     unify_opposite_white_cells(Stars),
-    process_stars_plenty(Stars).
+    process_stars_n_times(Stars, 1).
 
     % After this we should order the stars for optimization
     % TODO: More optimization
@@ -20,44 +20,17 @@ unify_opposite_white_cells([_|Rest]) :-
     unify_opposite_white_cells(Rest).
 
 
-% Process stars many times to ensure that all stars are optimized
-process_stars_plenty(Stars) :-
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars),
-    process_stars(Stars).
+% Entry point for processing stars a specified number of times.
+process_stars_n_times(Stars, Times) :-
+    process_stars_loop(Stars, Times).
 
+% Recursive loop for processing stars.
+process_stars_loop(_, 0).
+process_stars_loop(Stars, Times) :-
+    Times > 0,
+    process_stars(Stars),
+    NewTimes is Times - 1,
+    process_stars_loop(Stars, NewTimes).
 
 % Check each cell in the star to look after only one solution
 process_stars([]).
@@ -67,9 +40,76 @@ process_stars([Star|Stars]) :-
 
 % Process an individual star
 process_star(Star) :-
+    % First, optimize the center cell
     Star = star(Center, _, _, _, _),
     findall(Center, determine_star_center(Star, Center), Centers),
     optimize_center_cell(Centers, Center).
+
+    % Then, apply pattern rules to the star
+    % apply_pattern_rules(Star).
+
+% Update the original star with the output star values
+update_star_with_output(OriginalStar, OutputStar) :-
+    OriginalStar = star(OrigCenter, OrigAdjUp, OrigAdjRight, OrigAdjDown, OrigAdjLeft),
+    OutputStar = star(OutCenter, OutAdjUp, OutAdjRight, OutAdjDown, OutAdjLeft),
+
+    % Unify the center cell
+    OrigCenter = OutCenter,
+
+    % Unify the adjacent cells
+    OrigAdjUp = OutAdjUp,
+    OrigAdjRight = OutAdjRight,
+    OrigAdjDown = OutAdjDown,
+    OrigAdjLeft = OutAdjLeft.
+
+
+    % % Then, find all valid configurations for the star
+    % findall(ValidStar, valid_star(Star), ValidStars),
+
+    % % Optimize the whole star based on these valid configurations
+    % % (You need to define how you want to optimize based on ValidStars)
+    % % For example, if you want to optimize each adjacent cell:
+    % divide_valid_stars(ValidStars, AdjUpCells, AdjRightCells, AdjDownCells, AdjLeftCells),
+    % optimize_each_adjacent_cell(AdjUpCells, AdjRightCells, AdjDownCells, AdjLeftCells, OptimizedAdjUp, OptimizedAdjRight, OptimizedAdjDown, OptimizedAdjLeft).
+
+    % % Update the original star with the optimized values
+    % update_star(Star, OptimizedCenter, OptimizedAdjUp, OptimizedAdjRight, OptimizedAdjDown, OptimizedAdjLeft).
+
+% Update the star with the optimized values
+update_star(star(_, OriginalAdjUp, OriginalAdjRight, OriginalAdjDown, OriginalAdjLeft),
+            OptimizedCenter, OptimizedAdjUp, OptimizedAdjRight, OptimizedAdjDown, OptimizedAdjLeft) :-
+    % Update each component of the star
+    update_if_optimized(OriginalAdjUp, OptimizedAdjUp),
+    update_if_optimized(OriginalAdjRight, OptimizedAdjRight),
+    update_if_optimized(OriginalAdjDown, OptimizedAdjDown),
+    update_if_optimized(OriginalAdjLeft, OptimizedAdjLeft),
+    update_if_optimized(Star, star(OptimizedCenter, OptimizedAdjUp, OptimizedAdjRight, OptimizedAdjDown, OptimizedAdjLeft)).
+
+% Update the original cell if the optimized cell is different
+update_if_optimized(OriginalCell, OptimizedCell) :-
+    OriginalCell = OptimizedCell -> true; % Do nothing if they are the same
+    OriginalCell = OptimizedCell.         % Update the original cell otherwise
+
+
+optimize_each_adjacent_cell(AdjUpCells, AdjRightCells, AdjDownCells, AdjLeftCells, OptimizedAdjUp, OptimizedAdjRight, OptimizedAdjDown, OptimizedAdjLeft) :-
+    optimize_center_cell(AdjUpCells, OptimizedAdjUp),
+    % Debugging
+    write('Optimized AdjUp: '), writeln(OptimizedAdjUp),
+    write('AdjUpCells: '), writeln(AdjUpCells),
+    optimize_center_cell(AdjRightCells, OptimizedAdjRight),
+    optimize_center_cell(AdjDownCells, OptimizedAdjDown),
+    optimize_center_cell(AdjLeftCells, OptimizedAdjLeft).
+
+
+% Divide valid stars into lists of their respective adjacent cells
+divide_valid_stars([], [], [], [], []).
+divide_valid_stars([Star|Stars], [AdjUp|AdjUps], [AdjRight|AdjRights], [AdjDown|AdjDowns], [AdjLeft|AdjLefts]) :-
+    extract_adjacent_cells(Star, AdjUp, AdjRight, AdjDown, AdjLeft),
+    divide_valid_stars(Stars, AdjUps, AdjRights, AdjDowns, AdjLefts).
+
+% Extract adjacent cells from a star
+extract_adjacent_cells(star(_, AdjUp, AdjRight, AdjDown, AdjLeft), AdjUp, AdjRight, AdjDown, AdjLeft).
+
 
 % Optimize the center cell based on consistent values across all possible configurations
 optimize_center_cell(Centers, OptimizedCenter) :-
