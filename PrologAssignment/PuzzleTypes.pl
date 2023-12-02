@@ -1,6 +1,7 @@
 % FILEPATH: /C:/Users/glosn/uia/submission/gabriell/PrologAssignment/PuzzleTypes.pl
 
 :- include('PrintStar.pl').
+:- include('ValidAdjacency.pl').
 
 % Cell type definitions
 valid_cell((white, Up, Right, Down, Left)) :- is_straight(Up, Right, Down, Left).
@@ -65,83 +66,16 @@ valid_star(star((empty, false, true, false, true), _, _, _, _)).
 valid_star(star((empty, false, false, false, false), _, _, _, _)).
 
 
-% Define a valid cell next to another cell
-valid_adjacent_right((white, true, false, true, false), (white, true, false, true, false)).
-valid_adjacent_right((white, false, true, false, true), (white, false, true, false, true)).
-valid_adjacent_right((white, true, false, true, false), (black, true, true, false, false)).
-valid_adjacent_right((white, true, false, true, false), (black, false, true, true, false)).
-valid_adjacent_right((white, false, true, false, true), (black, true, false, false, true)).
-valid_adjacent_right((white, false, true, false, true), (black, false, false, true, true)).
-valid_adjacent_right((white, true, false, true, false), (empty, true, true, false, false)).
-valid_adjacent_right((white, true, false, true, false), (empty, true, false, true, false)).
-valid_adjacent_right((white, true, false, true, false), (empty, false, true, true, false)).
-valid_adjacent_right((white, false, true, false, true), (empty, true, false, false, true)).
-valid_adjacent_right((white, false, true, false, true), (empty, false, true, false, true)).
-valid_adjacent_right((white, false, true, false, true), (empty, false, false, true, true)).
-valid_adjacent_right((white, true, false, true, false), (empty, false, false, false, false)).
-valid_adjacent_right((black, true, false, false, true), (empty, false, false, false, false)).
-valid_adjacent_right((black, false, false, true, true), (empty, false, false, false, false)).
-valid_adjacent_right((black, false, true, true, false), (white, false, true, false, true)).
-valid_adjacent_right((black, true, true, false, false), (white, false, true, false, true)).
-valid_adjacent_right((black, true, false, false, true), (white, true, false, true, false)).
-valid_adjacent_right((black, false, false, true, true), (white, true, false, true, false)).
-valid_adjacent_right((black, true, false, false, true), (black, true, true, false, false)).
-valid_adjacent_right((black, true, false, false, true), (black, false, true, true, false)).
-valid_adjacent_right((black, false, false, true, true), (black, true, true, false, false)).
-valid_adjacent_right((black, false, false, true, true), (black, false, true, true, false)).
-valid_adjacent_right((black, true, true, false, false), (empty, false, true, false, true)).
-valid_adjacent_right((black, false, true, true, false), (empty, false, true, false, true)).
-valid_adjacent_right((black, true, false, false, true), (empty, true, true, false, false)).
-valid_adjacent_right((black, true, false, false, true), (empty, true, false, true, false)).
-valid_adjacent_right((black, true, false, false, true), (empty, false, true, true, false)).
-valid_adjacent_right((black, false, false, true, true), (empty, true, true, false, false)).
-valid_adjacent_right((black, false, false, true, true), (empty, true, false, true, false)).
-valid_adjacent_right((black, false, false, true, true), (empty, false, true, true, false)).
-valid_adjacent_right((empty, false, false, false, false), (white, true, false, true, false)).
-valid_adjacent_right((empty, false, false, false, false), (black, true, true, false, false)).
-valid_adjacent_right((empty, false, false, false, false), (black, false, true, true, false)).
-valid_adjacent_right((empty, false, true, false, true), (white, false, true, false, true)).
-valid_adjacent_right((empty, false, true, false, true), (black, true, false, false, true)).
-valid_adjacent_right((empty, false, true, false, true), (black, false, false, true, true)).
-valid_adjacent_right((empty, false, true, false, true), (empty, false, true, false, true)).
-valid_adjacent_right((empty, false, true, false, true), (empty, true, false, false, true)).
-valid_adjacent_right((empty, false, true, false, true), (empty, false, false, true, true)).
-valid_adjacent_right((empty, true, true, false, false), (white, false, true, false, true)).
-valid_adjacent_right((empty, true, true, false, false), (empty, true, false, false, true)).
-valid_adjacent_right((empty, true, true, false, false), (empty, false, true, false, true)).
-valid_adjacent_right((empty, true, true, false, false), (empty, false, false, true, true)).
-valid_adjacent_right((empty, false, true, true, false), (white, false, true, false, true)).
-valid_adjacent_right((empty, false, true, true, false), (empty, true, false, false, true)).
-valid_adjacent_right((empty, false, true, true, false), (empty, false, true, false, true)).
-valid_adjacent_right((empty, false, true, true, false), (empty, false, false, true, true)).
-valid_adjacent_right((empty, true, false, false, true), (white, true, false, true, false)).
-valid_adjacent_right((empty, true, false, true, false), (white, true, false, true, false)).
-valid_adjacent_right((empty, false, false, true, true), (white, true, false, true, false)).
-valid_adjacent_right((empty, false, false, true, true), (empty, true, false, true, false)).
-valid_adjacent_right((empty, false, false, true, true), (empty, false, true, true, false)).
-valid_adjacent_right((empty, false, false, true, true), (empty, true, true, false, false)).
-valid_adjacent_right((empty, false, false, true, true), (empty, false, false, false, false)).
-valid_adjacent_right((empty, true, false, true, false), (empty, false, true, true, false)).
-valid_adjacent_right((empty, true, false, true, false), (empty, false, false, false, false)).
-valid_adjacent_right((empty, true, false, true, false), (empty, true, false, true, false)).
-valid_adjacent_right((empty, true, false, true, false), (empty, true, true, false, false)).
-valid_adjacent_right((empty, true, false, false, true), (empty, false, false, false, false)).
-valid_adjacent_right((empty, true, false, false, true), (empty, false, true, true, false)).
-valid_adjacent_right((empty, true, false, false, true), (empty, true, false, true, false)).
-valid_adjacent_right((empty, true, false, false, true), (empty, true, true, false, false)).
-valid_adjacent_right((empty, false, false, true, true), (black, false, true, true, false)).
-valid_adjacent_right((empty, false, false, true, true), (black, true, true, false, false)).
-valid_adjacent_right((empty, true, false, true, false), (black, false, true, true, false)).
-valid_adjacent_right((empty, true, false, true, false), (black, true, true, false, false)).
-valid_adjacent_right((empty, true, false, false, true), (black, true, true, false, false)).
-valid_adjacent_right((empty, true, false, false, true), (black, false, true, true, false)).
-
+% Determine all valid configurations of a star and their consistent values
+determine_valid_star(Star, ValidStars) :-
+    findall(ValidStar, valid_star(Star), ValidStars),
+    optimize_star(ValidStars, Star).
 
 
 % Determine the center cell's connections based on its type and adjacent cells
 determine_star_center(Star, CenterCell) :-
     % Extract the type of the center cell and adjacent cells from the star
-    Star = star((Type, UpKnown, RightKnown, DownKnown, LeftKnown), AdjUp, AdjRight, AdjDown, AdjLeft),
+    Star = star((Type, UpKnown, RightKnown, DownKnown, LeftKnown), AdjUp, _, AdjDown, AdjLeft),
 
     % Handle already known connections or try possibilities if unknown
     (nonvar(UpKnown) -> Up = UpKnown; member(Up, [true, false])),
@@ -151,6 +85,19 @@ determine_star_center(Star, CenterCell) :-
 
     % Check if the star configuration is valid with the given connections
     valid_star(star((Type, Up, Right, Down, Left), AdjUp, AdjRight, AdjDown, AdjLeft)),
+    
+    % Create fresh, uninstantiated adjacent cells
+    FreshAdjRight = (FreshTypeRight, FreshUpRight, FreshRightRight, FreshDownRight, FreshLeftRight),
+    FreshAdjUp = (FreshTypeUp, FreshUpUp, FreshRightUp, FreshDownUp, FreshLeftUp),
+    FreshAdjDown = (FreshTypeDown, FreshUpDown, FreshRightDown, FreshDownDown, FreshLeftDown),
+    FreshAdjLeft = (FreshTypeLeft, FreshUpLeft, FreshRightLeft, FreshDownLeft, FreshLeftLeft),
+
+
+    % Ensure the adjacent connections are valid
+    % once(valid_adjacent_up(FreshAdjUp, (Type, Up, Right, Down, Left))),
+    once(valid_adjacent_right((Type, Up, Right, Down, Left), FreshAdjRight)),
+    % once(valid_adjacent_down(FreshAdjDown, (Type, Up, Right, Down, Left))),
+    once(valid_adjacent_left((Type, Up, Right, Down, Left), FreshAdjLeft)),
 
     % Return the center cell with determined connections
     CenterCell = (Type, Up, Right, Down, Left).
