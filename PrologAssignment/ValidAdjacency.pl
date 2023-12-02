@@ -1,0 +1,75 @@
+% Define a valid cell next to another cell
+valid_adjacent_right((white, true, false, true, false), (white, true, false, true, false)).
+valid_adjacent_right((white, false, true, false, true), (white, false, true, false, true)).
+valid_adjacent_right((white, true, false, true, false), (black, true, true, false, false)).
+valid_adjacent_right((white, true, false, true, false), (black, false, true, true, false)).
+valid_adjacent_right((white, false, true, false, true), (black, true, false, false, true)).
+valid_adjacent_right((white, false, true, false, true), (black, false, false, true, true)).
+valid_adjacent_right((white, true, false, true, false), (empty, true, true, false, false)).
+valid_adjacent_right((white, true, false, true, false), (empty, true, false, true, false)).
+valid_adjacent_right((white, true, false, true, false), (empty, false, true, true, false)).
+valid_adjacent_right((white, false, true, false, true), (empty, true, false, false, true)).
+valid_adjacent_right((white, false, true, false, true), (empty, false, true, false, true)).
+valid_adjacent_right((white, false, true, false, true), (empty, false, false, true, true)).
+valid_adjacent_right((white, true, false, true, false), (empty, false, false, false, false)).
+valid_adjacent_right((black, true, false, false, true), (empty, false, false, false, false)).
+valid_adjacent_right((black, false, false, true, true), (empty, false, false, false, false)).
+valid_adjacent_right((black, false, true, true, false), (white, false, true, false, true)).
+valid_adjacent_right((black, true, true, false, false), (white, false, true, false, true)).
+valid_adjacent_right((black, true, false, false, true), (white, true, false, true, false)).
+valid_adjacent_right((black, false, false, true, true), (white, true, false, true, false)).
+valid_adjacent_right((black, true, false, false, true), (black, true, true, false, false)).
+valid_adjacent_right((black, true, false, false, true), (black, false, true, true, false)).
+valid_adjacent_right((black, false, false, true, true), (black, true, true, false, false)).
+valid_adjacent_right((black, false, false, true, true), (black, false, true, true, false)).
+valid_adjacent_right((black, true, true, false, false), (empty, false, true, false, true)).
+valid_adjacent_right((black, false, true, true, false), (empty, false, true, false, true)).
+valid_adjacent_right((black, true, false, false, true), (empty, true, true, false, false)).
+valid_adjacent_right((black, true, false, false, true), (empty, true, false, true, false)).
+valid_adjacent_right((black, true, false, false, true), (empty, false, true, true, false)).
+valid_adjacent_right((black, false, false, true, true), (empty, true, true, false, false)).
+valid_adjacent_right((black, false, false, true, true), (empty, true, false, true, false)).
+valid_adjacent_right((black, false, false, true, true), (empty, false, true, true, false)).
+valid_adjacent_right((empty, false, false, false, false), (white, true, false, true, false)).
+valid_adjacent_right((empty, false, false, false, false), (black, true, true, false, false)).
+valid_adjacent_right((empty, false, false, false, false), (black, false, true, true, false)).
+valid_adjacent_right((empty, false, true, false, true), (white, false, true, false, true)).
+valid_adjacent_right((empty, false, true, false, true), (black, true, false, false, true)).
+valid_adjacent_right((empty, false, true, false, true), (black, false, false, true, true)).
+valid_adjacent_right((empty, false, true, false, true), (empty, false, true, false, true)).
+valid_adjacent_right((empty, false, true, false, true), (empty, true, false, false, true)).
+valid_adjacent_right((empty, false, true, false, true), (empty, false, false, true, true)).
+valid_adjacent_right((empty, true, true, false, false), (white, false, true, false, true)).
+valid_adjacent_right((empty, true, true, false, false), (empty, true, false, false, true)).
+valid_adjacent_right((empty, true, true, false, false), (empty, false, true, false, true)).
+valid_adjacent_right((empty, true, true, false, false), (empty, false, false, true, true)).
+valid_adjacent_right((empty, false, true, true, false), (white, false, true, false, true)).
+valid_adjacent_right((empty, false, true, true, false), (empty, true, false, false, true)).
+valid_adjacent_right((empty, false, true, true, false), (empty, false, true, false, true)).
+valid_adjacent_right((empty, false, true, true, false), (empty, false, false, true, true)).
+valid_adjacent_right((empty, true, false, false, true), (white, true, false, true, false)).
+valid_adjacent_right((empty, true, false, true, false), (white, true, false, true, false)).
+valid_adjacent_right((empty, false, false, true, true), (white, true, false, true, false)).
+valid_adjacent_right((empty, false, false, true, true), (empty, true, false, true, false)).
+valid_adjacent_right((empty, false, false, true, true), (empty, false, true, true, false)).
+valid_adjacent_right((empty, false, false, true, true), (empty, true, true, false, false)).
+valid_adjacent_right((empty, false, false, true, true), (empty, false, false, false, false)).
+valid_adjacent_right((empty, true, false, true, false), (empty, false, true, true, false)).
+valid_adjacent_right((empty, true, false, true, false), (empty, false, false, false, false)).
+valid_adjacent_right((empty, true, false, true, false), (empty, true, false, true, false)).
+valid_adjacent_right((empty, true, false, true, false), (empty, true, true, false, false)).
+valid_adjacent_right((empty, true, false, false, true), (empty, false, false, false, false)).
+valid_adjacent_right((empty, true, false, false, true), (empty, false, true, true, false)).
+valid_adjacent_right((empty, true, false, false, true), (empty, true, false, true, false)).
+valid_adjacent_right((empty, true, false, false, true), (empty, true, true, false, false)).
+valid_adjacent_right((empty, false, false, true, true), (black, false, true, true, false)).
+valid_adjacent_right((empty, false, false, true, true), (black, true, true, false, false)).
+valid_adjacent_right((empty, true, false, true, false), (black, false, true, true, false)).
+valid_adjacent_right((empty, true, false, true, false), (black, true, true, false, false)).
+valid_adjacent_right((empty, true, false, false, true), (black, true, true, false, false)).
+valid_adjacent_right((empty, true, false, false, true), (black, false, true, true, false)).
+
+
+% Define a valid cell next to another cell on the left
+valid_adjacent_left(LeftCell, CenterCell) :-
+    valid_adjacent_right(CenterCell, LeftCell).
