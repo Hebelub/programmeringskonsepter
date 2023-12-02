@@ -66,10 +66,15 @@ valid_star(star((empty, false, true, false, true), _, _, _, _)).
 valid_star(star((empty, false, false, false, false), _, _, _, _)).
 
 
-% Determine all valid configurations of a star and their consistent values
-determine_valid_star(Star, ValidStars) :-
-    findall(ValidStar, valid_star(Star), ValidStars),
-    optimize_star(ValidStars, Star).
+% TODO: Verify that this works correctly
+% Rules for specific star patterns
+apply_pattern_rules(star((white, false, true, false, true), AdjUp, AdjRight, AdjDown, AdjLeft)) :-
+    AdjRight = (_, false, true, false, true),
+    AdjLeft = (_, _, true, _, false).
+
+apply_pattern_rules(star((white, false, true, false, true), AdjUp, AdjRight, AdjDown, AdjLeft)) :-
+    AdjLeft = (_, false, true, false, true),
+    AdjRight = (_, _, false, _, true).
 
 
 % Determine the center cell's connections based on its type and adjacent cells
