@@ -17,12 +17,3 @@ all_stars_valid([StarCell | RestStarCells]) :-
 
     % Proceed with the rest of the star cells
     all_stars_valid(RestStarCells).
-
-
-% % Copy a star cell with new variables
-% copy_star_cell(star(Center, Up, Down, Left, Right), star(CopiedCenter, CopiedUp, CopiedDown, CopiedLeft, CopiedRight)) :-
-%     copy_term(Center, CopiedCenter),
-%     copy_term(Up, CopiedUp),
-%     copy_term(Down, CopiedDown),
-%     copy_term(Left, CopiedLeft),
-%     copy_term(Right, CopiedRight).
