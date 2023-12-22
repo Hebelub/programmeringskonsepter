@@ -4,9 +4,7 @@ optimize_stars([]).
 optimize_stars(Stars) :-
     unify_opposite_white_cells(Stars),
     process_stars_n_times(Stars, 40).
-
-    % After this we should order the stars for optimization
-    % TODO: More optimization
+    % optimize_star_order(Stars).
 
 % Unify opposite connections for white cells in a list of stars
 unify_opposite_white_cells([]).

@@ -68,13 +68,33 @@ valid_star(star((empty, false, false, false, false), _, _, _, _)).
 
 % TODO: Verify that this works correctly
 % Rules for specific star patterns
-apply_pattern_rules(star((white, false, true, false, true), AdjUp, AdjRight, AdjDown, AdjLeft)) :-
-    AdjRight = (_, false, true, false, true),
+apply_pattern_rules(star(Center, AdjUp, AdjRight, AdjDown, AdjLeft)) :-
+    Center = (CenterType, CenterUp, CenterRight, CenterDown, CenterLeft),
+    AdjRight = (AdjRightType, AdjRightUp, AdjRightRight, AdjRightDown, AdjRightLeft),
+    (   nonvar(CenterType), nonvar(CenterUp), nonvar(CenterRight), nonvar(CenterDown), nonvar(CenterLeft)
+    ->  % Add pattern check for Center here if necessary
+        true
+    ;   true
+    ),
+    (   nonvar(AdjRightUp), nonvar(AdjRightRight), nonvar(AdjRightDown), nonvar(AdjRightLeft)
+    ->  AdjRightUp = false, AdjRightRight = true, AdjRightDown = false, AdjRightLeft = true
+    ;   true
+    ),
     AdjLeft = (_, _, true, _, false).
 
-apply_pattern_rules(star((white, false, true, false, true), AdjUp, AdjRight, AdjDown, AdjLeft)) :-
-    AdjLeft = (_, false, true, false, true),
-    AdjRight = (_, _, false, _, true).
+
+% Test apply_pattern_rules
+test_apply_pattern_rules :-
+    apply_pattern_rules(star((white, false, true, false, true), AdjUp, AdjRight, AdjDown, AdjLeft)),
+    print_star(star((white, false, true, false, true), AdjUp, AdjRight, AdjDown, AdjLeft)).
+
+
+
+
+
+% apply_pattern_rules(star((white, false, true, false, true), AdjUp, AdjRight, AdjDown, AdjLeft)) :-
+%     AdjLeft = (_, false, true, false, true),
+%     AdjRight = (_, _, false, _, true).
 
 
 % Determine the center cell's connections based on its type and adjacent cells

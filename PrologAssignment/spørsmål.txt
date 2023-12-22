@@ -1,0 +1,138 @@
+[
+    [
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (black,false,_868,_874,false),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,_898,_904,_868),
+            Down:   (empty,_874,_1084,_1090,false),
+            Left:   (empty,false,false,false,false)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,false,_898,_904,_868),
+            Up:     (empty,false,false,false,false),
+            Right:  (white,false,_928,_934,_898),
+            Down:   (empty,_904,_1114,_1120,_1084),
+            Left:   (black,false,_868,_874,false)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (white,false,_928,_934,_898),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,false,_964,_928),
+            Down:   (empty,_934,_1144,_1150,_1114),
+            Left:   (empty,false,_898,_904,_868)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,false,false,_964,_928),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,false,false,false),
+            Down:   (empty,_964,false,_1180,_1144),
+            Left:   (white,false,_928,_934,_898)
+        )
+    ],
+    [
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,_874,_1084,_1090,false),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,_898,_904,_868),
+            Down:   (empty,_874,_1084,_1090,false),
+            Left:   (empty,false,false,false,false)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,_904,_1114,_1120,_1084),
+            Up:     (empty,false,false,false,false),
+            Right:  (white,false,_928,_934,_898),
+            Down:   (empty,_904,_1114,_1120,_1084),
+            Left:   (black,false,_868,_874,false)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,_934,_1144,_1150,_1114),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,false,_964,_928),
+            Down:   (empty,_934,_1144,_1150,_1114),
+            Left:   (empty,false,_898,_904,_868)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,_964,false,_1180,_1144),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,false,false,false),
+            Down:   (empty,_964,false,_1180,_1144),
+            Left:   (white,false,_928,_934,_898)
+        )
+    ],
+    [
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (white,_1090,_1306,_1312,false),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,_898,_904,_868),
+            Down:   (empty,_874,_1084,_1090,false),
+            Left:   (empty,false,false,false,false)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,_1120,_1336,_1342,_1306),
+            Up:     (empty,false,false,false,false),
+            Right:  (white,false,_928,_934,_898),
+            Down:   (empty,_904,_1114,_1120,_1084),
+            Left:   (black,false,_868,_874,false)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,_1150,_1366,_1372,_1336),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,false,_964,_928),
+            Down:   (empty,_934,_1144,_1150,_1114),
+            Left:   (empty,false,_898,_904,_868)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (black,_1180,false,_1402,_1366),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,false,false,false),
+            Down:   (empty,_964,false,_1180,_1144),
+            Left:   (white,false,_928,_934,_898)
+        )
+    ],
+    [
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,_1312,_1534,false,false),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,_898,_904,_868),
+            Down:   (empty,_874,_1084,_1090,false),
+            Left:   (empty,false,false,false,false)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,_1342,_1564,false,_1534),
+            Up:     (empty,false,false,false,false),
+            Right:  (white,false,_928,_934,_898),
+            Down:   (empty,_904,_1114,_1120,_1084),
+            Left:   (black,false,_868,_874,false)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,_1372,_1594,false,_1564),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,false,_964,_928),
+            Down:   (empty,_934,_1144,_1150,_1114),
+            Left:   (empty,false,_898,_904,_868)
+        ),
+        star(
+                    Center, Up, Right, Down, Left
+            Center: (empty,_1402,false,false,_1594),
+            Up:     (empty,false,false,false,false),
+            Right:  (empty,false,false,false,false),
+            Down:   (empty,_964,false,_1180,_1144),
+            Left:   (white,false,_928,_934,_898)
+        )
+    ]
+]

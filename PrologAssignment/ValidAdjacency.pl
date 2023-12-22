@@ -69,7 +69,6 @@ valid_adjacent_right((empty, true, false, true, false), (black, true, true, fals
 valid_adjacent_right((empty, true, false, false, true), (black, true, true, false, false)).
 valid_adjacent_right((empty, true, false, false, true), (black, false, true, true, false)).
 
-
 % Define a valid cell next to another cell on the left
 valid_adjacent_left(LeftCell, CenterCell) :-
     valid_adjacent_right(CenterCell, LeftCell).
